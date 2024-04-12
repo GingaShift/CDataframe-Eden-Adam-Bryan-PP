@@ -30,8 +30,13 @@
     <ClCompile Include="Analyse_et_stats.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="struct_columns.c">
+    <ClCompile Include="Colonne.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Colonne.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

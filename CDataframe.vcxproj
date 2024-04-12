@@ -132,7 +132,10 @@
     <ClCompile Include="Analyse_et_stats.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="operation.c" />
-    <ClCompile Include="struct_columns.c" />
+    <ClCompile Include="Colonne.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Colonne.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
