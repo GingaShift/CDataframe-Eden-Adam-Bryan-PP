@@ -130,6 +130,7 @@
     <ClCompile Include="Affichage.c" />
     <ClCompile Include="Alimentation.c" />
     <ClCompile Include="Analyse_et_stats.c" />
+    <ClCompile Include="CDataframe.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="operation.c" />
     <ClCompile Include="Colonne.c" />
