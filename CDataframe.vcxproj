@@ -135,6 +135,7 @@
     <ClCompile Include="Colonne.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CDataframe.h" />
     <ClInclude Include="Colonne.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
