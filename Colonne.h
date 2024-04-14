@@ -1,10 +1,9 @@
 #pragma once
-#pragma once
-#include <stdbool.h>
-// #ifndef COLONNE_H
-// #define COLONNE_H
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define NOMBRE_LIGNES_PAR_COLONNE 16 //256
+#define NOMBRE_LIGNES_PAR_COLONNE 10 //256
 #define VALEUR_PAR_DEFAUT_DATA_COLONNE NULL
 
 typedef struct Colonne
@@ -15,15 +14,8 @@ typedef struct Colonne
     int taille_logique;
 } COLONNE;
 
-//#endif /* COLONNE_H */
+COLONNE* creer_colonne(const char* nom);
 
-COLONNE CreerColonne(char* nom);
+int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom_colonne);
 
-bool IniValeursColonne(COLONNE* col);
-
-void AfficherColonne(COLONNE col);
-
-void InsererValeurDansColonne();
-
-void RechercherValeurDansColonne(COLONNE col, int valeur);
-
+void afficher_colonne(COLONNE** dataframe, int indice_colonne, int taille_CDataframe);
