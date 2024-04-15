@@ -13,13 +13,14 @@ COLONNE* creer_colonne(const char* nom) {
     // Initialisation de la nouvelle colonne
     strncpy(nouvelle_colonne->nom, nom, sizeof(nouvelle_colonne->nom) - 1);
     nouvelle_colonne->nom[sizeof(nouvelle_colonne->nom) - 1] = '\0'; // Assure la terminaison de la chaîne
+    nouvelle_colonne->data = NULL;
     nouvelle_colonne->taille_physique = 0;
     nouvelle_colonne->taille_logique = 0;
 
     // Initialisation du tableau data de cette colonne
-    for (int i = 0; i < NOMBRE_LIGNES_PAR_COLONNE; i++) {
-        nouvelle_colonne->data[i] = 0;
-    }
+    /*for (int i = 0; i < NOMBRE_LIGNES_PAR_COLONNE; i++) {
+        nouvelle_colonne->data[i] = VALEUR_PAR_DEFAUT_DATA_COLONNE;
+    }*/
 
     return nouvelle_colonne;
 }
@@ -50,29 +51,48 @@ int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom
         return 1;
     }
 
-    // Ajout de la colonne au tableau
+    // Ajout de la colonne au dataframe
     (*dataframe)[*taille_dataframe - 1] = nouvelle_colonne;
 }
 
-void afficher_colonne(COLONNE** dataframe, int indice_colonne, int taille_CDataframe)
+void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne)
 {
-
     if (dataframe == NULL || indice_colonne < 0) {
         fprintf(stderr, "Erreur : dataframe invalide ou indice de colonne invalide.\n");
         return;
     }
 
-    if (indice_colonne >= taille_CDataframe) {
+    if (indice_colonne >= taille_dataframe) {
         fprintf(stderr, "Erreur : indice de colonne hors limites.\n");
         return;
     }
 
     printf("Valeurs de la colonne %s :\n", dataframe[indice_colonne]->nom);
 
-    for (int i = 0; i < dataframe[indice_colonne]->taille_physique; i++) {
-        printf("Ligne %d = %d ", i, dataframe[indice_colonne]->data[i]);
+    for (int i = 0; i < dataframe[indice_colonne]->taille_logique; i++) {
+        printf("Ligne [%d] = %d ", i, dataframe[indice_colonne]->data[i]);
         printf("\n");
     }
     printf("\n");
 }
 
+void renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne, const char* nouveau_nom)
+{
+    // Vérifier si le numéro de colonne est valide
+    if (num_colonne < 0 || num_colonne >= taille_dataframe) {
+        fprintf(stderr, "Numéro de colonne invalide.\n");
+        return;
+    }
+
+    // Vérifier si le nouveau nom est déjà utilisé par une autre colonne
+    for (int i = 0; i < taille_dataframe; ++i) {
+        if (i != num_colonne && strcmp(dataframe[i]->nom, nouveau_nom) == 0) {
+            fprintf(stderr, "Le nom \"%s\" est déjà utilisé par une autre colonne.\n", nouveau_nom);
+            return;
+        }
+    }
+
+    // Mettre à jour le nom de la colonne
+    strncpy(dataframe[num_colonne]->nom, nouveau_nom, sizeof(dataframe[num_colonne]->nom) - 1);
+    dataframe[num_colonne]->nom[sizeof(dataframe[num_colonne]->nom) - 1] = '\0';
+}

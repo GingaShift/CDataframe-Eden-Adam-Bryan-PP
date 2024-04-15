@@ -131,12 +131,14 @@
     <ClCompile Include="Alimentation.c" />
     <ClCompile Include="Analyse_et_stats.c" />
     <ClCompile Include="CDataframe.c" />
+    <ClCompile Include="Divers.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Colonne.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CDataframe.h" />
     <ClInclude Include="Colonne.h" />
+    <ClInclude Include="Divers.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
