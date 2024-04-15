@@ -2,50 +2,17 @@
 #include <stdlib.h>
 #include <string.h>
 #include "Colonne.h"
+#include "CDataframe.h"
 #include "Divers.h"
+#include "Alimentation.h"
 
-int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc)
-{
-    // Vérifier si le tableau data est vide
-    if (colonne->data == NULL)
-    {
-        // Allouer de la mémoire pour un tableau de 10 entiers et l'initialiser à zéro
-        colonne->data = malloc(nombre_lignes_par_bloc * sizeof(int));
-
-        if (colonne->data == NULL) {
-            fprintf(stderr, "Erreur d'allocation de mémoire lors de la création du tableau data de la colonne.\n");
-            return 1;
-        }
-
-        colonne->taille_physique = nombre_lignes_par_bloc;
-    }
-    // Vérifier si le tableau data est plein
-    else if (colonne->taille_logique == colonne->taille_physique)
-    {
-        // Augmenter la taille physique du tableau data par tranche de 256
-        int nouvelle_taille = colonne->taille_physique + nombre_lignes_par_bloc;
-        int* nouveau_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
-        if (nouveau_data == NULL)
-        {
-            fprintf(stderr, "Erreur de réallocation de mémoire pour le tableau data de la colonne.\n");
-            return;
-        }
-        colonne->data = nouveau_data;
-        colonne->taille_physique = nouvelle_taille;
-    }
-
-    // Insérer la valeur dans le tableau data et mettre à jour la taille logique
-    colonne->data[colonne->taille_logique] = valeur;
-    colonne->taille_logique++;
-}
-
-// Todo: A implémenter
+// Todo: A implémenter et à inserer dans CDataframe
 int supprimer_ligne()
 {
 
 }
 
-// Todo: A tester
+// Todo: A tester et à inserer dans Colonne
 int modifier_valeur(COLONNE** dataframe, int taille_dataframe, int num_col, int num_ligne, int valeur)
 {
     // Parcourir toutes les colonnes du dataframe
@@ -64,32 +31,55 @@ int modifier_valeur(COLONNE** dataframe, int taille_dataframe, int num_col, int 
     }
 }
 
+
+typedef enum {
+    SUPERIEUR,
+    EGAL,
+    INFERIEUR
+} Condition;
+
+int stats_sur_valeur(COLONNE** CDataframe, int taille_dataframe, int valeur, Condition operateur_de_comparaison)
+{
+    int total = 0;
+
+    for (int i = 0; i < taille_dataframe; i++) {
+
+        for (int k = 0; k < CDataframe[i]->taille_logique; k++) {
+
+            switch (operateur_de_comparaison)
+            {
+                case SUPERIEUR:
+                    if (CDataframe[i]->data[k] > valeur)
+                        total++;
+                    break;
+                case EGAL:
+                    if (CDataframe[i]->data[k] == valeur)
+                        total++;
+                    break;
+                case INFERIEUR:
+                    if (CDataframe[i]->data[k] < valeur)
+                        total++;
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
+
+    return total;
+}
+
+
+
 int main()
 {
     // Creer le CDataframe vide
     COLONNE** CDataframe = NULL;
     int taille_CDataframe = 0;
 
-    // Todo: A faire
-    // Peupler le CDataframe artificiellement
-    // populate_dataframe_artificially
-
-    // Ajouter une colonne au dataframe
-    ajouter_colonne(&CDataframe, &taille_CDataframe, "Colonne 1");
-
-    // Ajouter une valeur à Colonne 1
-    inserer_valeur(CDataframe[0], 1, NOMBRE_LIGNES_PAR_BLOC);
-    inserer_valeur(CDataframe[0], 2, NOMBRE_LIGNES_PAR_BLOC);
-
-    afficher_colonne(CDataframe, taille_CDataframe, 0);
-
-    // Ajouter une colonne au dataframe
-    ajouter_colonne(&CDataframe, &taille_CDataframe, "Colonne 2");
-
-    // Ajouter une valeur à Colonne 2
-    inserer_valeur(CDataframe[1], 1000, NOMBRE_LIGNES_PAR_BLOC);
-    inserer_valeur(CDataframe[1], 2000, NOMBRE_LIGNES_PAR_BLOC);
-        
+    // Peupler le CDataframe artificiellement - Test seulement
+    populate_dataframe_artificially(&CDataframe, &taille_CDataframe);
+    
     // Afficher colonnes du dataframe
     afficher_colonne(CDataframe, taille_CDataframe, 0);
     afficher_colonne(CDataframe, taille_CDataframe, 1);

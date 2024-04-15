@@ -55,6 +55,41 @@ int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom
     (*dataframe)[*taille_dataframe - 1] = nouvelle_colonne;
 }
 
+int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc)
+{
+    // Vérifier si le tableau data est vide
+    if (colonne->data == NULL)
+    {
+        // Allouer de la mémoire pour un tableau de 10 entiers et l'initialiser à zéro
+        colonne->data = malloc(nombre_lignes_par_bloc * sizeof(int));
+
+        if (colonne->data == NULL) {
+            fprintf(stderr, "Erreur d'allocation de mémoire lors de la création du tableau data de la colonne.\n");
+            return 1;
+        }
+
+        colonne->taille_physique = nombre_lignes_par_bloc;
+    }
+    // Vérifier si le tableau data est plein
+    else if (colonne->taille_logique == colonne->taille_physique)
+    {
+        // Augmenter la taille physique du tableau data par tranche de 256
+        int nouvelle_taille = colonne->taille_physique + nombre_lignes_par_bloc;
+        int* nouveau_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
+        if (nouveau_data == NULL)
+        {
+            fprintf(stderr, "Erreur de réallocation de mémoire pour le tableau data de la colonne.\n");
+            return;
+        }
+        colonne->data = nouveau_data;
+        colonne->taille_physique = nouvelle_taille;
+    }
+
+    // Insérer la valeur dans le tableau data et mettre à jour la taille logique
+    colonne->data[colonne->taille_logique] = valeur;
+    colonne->taille_logique++;
+}
+
 void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne)
 {
     if (dataframe == NULL || indice_colonne < 0) {
@@ -70,7 +105,7 @@ void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colo
     printf("Valeurs de la colonne %s :\n", dataframe[indice_colonne]->nom);
 
     for (int i = 0; i < dataframe[indice_colonne]->taille_logique; i++) {
-        printf("Ligne [%d] = %d ", i, dataframe[indice_colonne]->data[i]);
+        printf("[%d] = %d ", i, dataframe[indice_colonne]->data[i]);
         printf("\n");
     }
     printf("\n");
@@ -96,3 +131,4 @@ void renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne
     strncpy(dataframe[num_colonne]->nom, nouveau_nom, sizeof(dataframe[num_colonne]->nom) - 1);
     dataframe[num_colonne]->nom[sizeof(dataframe[num_colonne]->nom) - 1] = '\0';
 }
+

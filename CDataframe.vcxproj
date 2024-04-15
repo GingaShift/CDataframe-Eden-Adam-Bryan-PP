@@ -136,6 +136,7 @@
     <ClCompile Include="Colonne.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Alimentation.h" />
     <ClInclude Include="CDataframe.h" />
     <ClInclude Include="Colonne.h" />
     <ClInclude Include="Divers.h" />

@@ -18,6 +18,8 @@ COLONNE* creer_colonne(const char* nom);
 
 int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom_colonne);
 
+int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc);
+
 void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne);
 
 void renommer_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne, const char* nouveau_nom);
