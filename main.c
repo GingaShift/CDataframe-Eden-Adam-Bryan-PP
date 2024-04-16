@@ -5,6 +5,7 @@
 #include "CDataframe.h"
 #include "Divers.h"
 #include "Alimentation.h"
+#include "Analyses_et_stats.h"
 
 // Todo: A implémenter et à inserer dans CDataframe
 int supprimer_ligne()
@@ -31,46 +32,6 @@ int modifier_valeur(COLONNE** dataframe, int taille_dataframe, int num_col, int 
     }
 }
 
-
-typedef enum {
-    SUPERIEUR,
-    EGAL,
-    INFERIEUR
-} Condition;
-
-int stats_sur_valeur(COLONNE** CDataframe, int taille_dataframe, int valeur, Condition operateur_de_comparaison)
-{
-    int total = 0;
-
-    for (int i = 0; i < taille_dataframe; i++) {
-
-        for (int k = 0; k < CDataframe[i]->taille_logique; k++) {
-
-            switch (operateur_de_comparaison)
-            {
-                case SUPERIEUR:
-                    if (CDataframe[i]->data[k] > valeur)
-                        total++;
-                    break;
-                case EGAL:
-                    if (CDataframe[i]->data[k] == valeur)
-                        total++;
-                    break;
-                case INFERIEUR:
-                    if (CDataframe[i]->data[k] < valeur)
-                        total++;
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
-    return total;
-}
-
-
-
 int main()
 {
     // Creer le CDataframe vide
@@ -83,12 +44,18 @@ int main()
     // Afficher colonnes du dataframe
     afficher_colonne(CDataframe, taille_CDataframe, 0);
     afficher_colonne(CDataframe, taille_CDataframe, 1);
+    afficher_colonne(CDataframe, taille_CDataframe, 2);
 
     // Afficher toutes les colonnes du CDataframe par la fonction suivante:
     // Todo : afficher_les_colonnes(COLONNE** dataframe, int taille_CDataframe, int nombre_colonnes_a_afficher)
 
+    OPERATEURS_DE_COMPARAISON egal = {EGAL};
+    OPERATEURS_DE_COMPARAISON superieur = {SUPERIEUR};
+    OPERATEURS_DE_COMPARAISON inferieur = {INFERIEUR};
+
+    stats_sur_valeur(CDataframe, taille_CDataframe, 10, egal);
+
     // Libération de la mémoire occupée par les colonnes et le dataframe
-    // A deplacer dans Divers
     free_ressources(CDataframe, taille_CDataframe);
 
     return 0;

@@ -24,7 +24,7 @@
     <ClCompile Include="Affichage.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
-    <ClCompile Include="Analyse_et_stats.c">
+    <ClCompile Include="Analyses_et_stats.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
     <ClCompile Include="Colonne.c">
@@ -48,6 +48,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="Alimentation.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Analyses_et_stats.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

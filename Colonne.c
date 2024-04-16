@@ -75,19 +75,27 @@ int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc)
     {
         // Augmenter la taille physique du tableau data par tranche de 256
         int nouvelle_taille = colonne->taille_physique + nombre_lignes_par_bloc;
+        // Creation du nouveau tableau qui est composé de l'ancien tableau + le bloc de nouvelles lignes 
         int* nouveau_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
         if (nouveau_data == NULL)
         {
             fprintf(stderr, "Erreur de réallocation de mémoire pour le tableau data de la colonne.\n");
             return;
         }
+        
+        // Assignation du tableau "agrandi"
         colonne->data = nouveau_data;
+
+        // Mise à jour de la taille physique du tableau
         colonne->taille_physique = nouvelle_taille;
     }
 
     // Insérer la valeur dans le tableau data et mettre à jour la taille logique
     colonne->data[colonne->taille_logique] = valeur;
     colonne->taille_logique++;
+
+    // Mettre à jour toutes les autres colonnes afin de preserver la matrice du dataframe
+
 }
 
 void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne)

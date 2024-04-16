@@ -129,7 +129,7 @@
   <ItemGroup>
     <ClCompile Include="Affichage.c" />
     <ClCompile Include="Alimentation.c" />
-    <ClCompile Include="Analyse_et_stats.c" />
+    <ClCompile Include="Analyses_et_stats.c" />
     <ClCompile Include="CDataframe.c" />
     <ClCompile Include="Divers.c" />
     <ClCompile Include="Main.c" />
@@ -137,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alimentation.h" />
+    <ClInclude Include="Analyses_et_stats.h" />
     <ClInclude Include="CDataframe.h" />
     <ClInclude Include="Colonne.h" />
     <ClInclude Include="Divers.h" />
