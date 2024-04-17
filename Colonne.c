@@ -55,8 +55,10 @@ int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom
     (*dataframe)[*taille_dataframe - 1] = nouvelle_colonne;
 }
 
-int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc)
+int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc, int* bloc_lignes_ajouté_a_colonne)
 {
+    (*bloc_lignes_ajouté_a_colonne) = 0;
+    
     // Vérifier si le tableau data est vide
     if (colonne->data == NULL)
     {
@@ -64,23 +66,26 @@ int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc)
         colonne->data = malloc(nombre_lignes_par_bloc * sizeof(int));
 
         if (colonne->data == NULL) {
-            fprintf(stderr, "Erreur d'allocation de mémoire lors de la création du tableau data de la colonne.\n");
-            return 1;
+            fprintf(stderr, "Erreur d'allocation mémoire lors de la création du tableau data de la colonne.\n");
+            return 0;
         }
 
         colonne->taille_physique = nombre_lignes_par_bloc;
+
+        (*bloc_lignes_ajouté_a_colonne) = 1;
     }
     // Vérifier si le tableau data est plein
     else if (colonne->taille_logique == colonne->taille_physique)
     {
-        // Augmenter la taille physique du tableau data par tranche de 256
+        // Si le tableau de data est plein, augmenter la taille physique du tableau data par tranche de 256
         int nouvelle_taille = colonne->taille_physique + nombre_lignes_par_bloc;
-        // Creation du nouveau tableau qui est composé de l'ancien tableau + le bloc de nouvelles lignes 
+        
+        // Creation du nouveau tableau (composé de l'ancien tableau auquel on ajoute le bloc de nouvelles lignes vierges) 
         int* nouveau_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
         if (nouveau_data == NULL)
         {
-            fprintf(stderr, "Erreur de réallocation de mémoire pour le tableau data de la colonne.\n");
-            return;
+            fprintf(stderr, "Erreur de réallocation de mémoire lors de l'extention du tableau data de la colonne.\n");
+            return 0;
         }
         
         // Assignation du tableau "agrandi"
@@ -88,14 +93,17 @@ int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc)
 
         // Mise à jour de la taille physique du tableau
         colonne->taille_physique = nouvelle_taille;
+
+        // Savoir qu'il faudra mettre à jour toutes les autres colonnes à la sortie de la fonction afin de preserver la matrice du dataframe
+        (*bloc_lignes_ajouté_a_colonne) = 1;
     }
 
     // Insérer la valeur dans le tableau data et mettre à jour la taille logique
     colonne->data[colonne->taille_logique] = valeur;
     colonne->taille_logique++;
-
-    // Mettre à jour toutes les autres colonnes afin de preserver la matrice du dataframe
-
+    
+    // Success
+    return 1;
 }
 
 void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne)

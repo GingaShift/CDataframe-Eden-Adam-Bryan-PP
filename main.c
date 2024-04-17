@@ -18,19 +18,25 @@ int modifier_valeur(COLONNE** dataframe, int taille_dataframe, int num_col, int 
 {
     // Parcourir toutes les colonnes du dataframe
     for (int i = 0; i < taille_dataframe; ++i) {
+        
         COLONNE* colonne = dataframe[i];
 
-        // Vérifier si la colonne est pleine
-        if (colonne->taille_logique >= NOMBRE_LIGNES_PAR_BLOC) {
-            fprintf(stderr, "La colonne %s est pleine. Impossible d'ajouter une nouvelle ligne.\n", colonne->nom);
-            continue;
-        }
+        // gerer num_col et num_ligne...
+        // todo
 
         // Ajouter la nouvelle valeur à la colonne
         colonne->data[colonne->taille_logique] = valeur;
         colonne->taille_logique++;
     }
 }
+
+
+int afficher_les_colonnes()
+{
+
+}
+
+
 
 int main()
 {

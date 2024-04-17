@@ -141,6 +141,7 @@
     <ClInclude Include="CDataframe.h" />
     <ClInclude Include="Colonne.h" />
     <ClInclude Include="Divers.h" />
+    <ClInclude Include="Main.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
