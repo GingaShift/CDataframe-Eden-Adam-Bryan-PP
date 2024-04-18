@@ -106,3 +106,15 @@ int main()
 
 
 
+void afficher_noms_colonnes(COLONNE** dataframe, int taille_dataframe) {
+    if (dataframe == NULL || taille_dataframe <= 0) {
+        printf("Le CDataframe est vide ou non initialise.\n");
+        return;
+    }
+
+    printf("Noms des colonnes :\n");
+    for (int i = 0; i < taille_dataframe; ++i) {
+        COLONNE* colonne = dataframe[i];
+        printf("%s\n", colonne->nom);
+    }
+}   
