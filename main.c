@@ -6,9 +6,16 @@
 #include "Divers.h"
 #include "Alimentation.h"
 #include "Analyses_et_stats.h"
+#include "Main.h"
+#include "String_manager.h"
+
+int ajouter_ligne_de_valeur(int valeur)
+{
+
+}
 
 // Todo: A implémenter et à inserer dans CDataframe
-int supprimer_ligne()
+int supprimer_ligne_de_valeur(int num_ligne)
 {
 
 }
@@ -30,8 +37,7 @@ int modifier_valeur(COLONNE** dataframe, int taille_dataframe, int num_col, int 
     }
 }
 
-
-int afficher_les_colonnes()
+int afficher_colonnes(int nombre_colonnes)
 {
 
 }
@@ -46,7 +52,25 @@ int main()
 
     // Peupler le CDataframe artificiellement - Test seulement
     populate_dataframe_artificially(&CDataframe, &taille_CDataframe);
+
+    char* chaine;
+    chaine = saisie_chaine("Veuillez saisir le nom de la colonne: \n");
     
+    // Afficher le nom saisi
+    printf("Le nom que vous avez saisi est : %s\n", chaine);
+
+    int res = nom_colonne_existe(CDataframe, chaine, taille_CDataframe);
+    if (res == 1)
+    {
+        printf("%s", "Le nom de la colonne existe déjà");
+    }
+    else
+        printf("%s", "Le nom de la colonne n'existe pas");
+
+
+
+
+
     // Afficher colonnes du dataframe
     afficher_colonne(CDataframe, taille_CDataframe, 0);
     afficher_colonne(CDataframe, taille_CDataframe, 1);

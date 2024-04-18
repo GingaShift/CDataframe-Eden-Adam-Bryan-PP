@@ -56,3 +56,14 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(COLONNE*** dataframe, int*
     return 1;
 }
 
+int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_CDataframe)
+{
+    for (int i = 0; i < taille_CDataframe; i++)
+    {
+        const char* nom = dataframe[i]->nom;
+
+        if (compare_chaines(nom, nom_colonne) == 0)
+            return SUCCESS;
+    }
+    return FAILED;
+}

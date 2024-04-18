@@ -134,6 +134,7 @@
     <ClCompile Include="Divers.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Colonne.c" />
+    <ClCompile Include="String_manager.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Alimentation.h" />
@@ -142,6 +143,7 @@
     <ClInclude Include="Colonne.h" />
     <ClInclude Include="Divers.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="String_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
