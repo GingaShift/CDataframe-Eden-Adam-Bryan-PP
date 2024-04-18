@@ -67,3 +67,20 @@ int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_
     }
     return FAILED;
 }
+
+COLONNE** creer_cdataframe(int* taille_CDataframe)
+{
+    (*taille_CDataframe) = 0;
+    COLONNE** CDataframe = NULL;
+    return CDataframe;
+}
+
+int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)
+{
+    for (int num_col = 0; num_col < taille_dataframe; num_col++)
+    {
+        afficher_colonne(dataframe, taille_dataframe, num_col);
+    }
+}
+
+

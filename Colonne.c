@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "Main.h"
 #include "Colonne.h"
 
 COLONNE* creer_colonne(const char* nom) {
@@ -127,24 +128,25 @@ void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colo
     printf("\n");
 }
 
-void renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne, const char* nouveau_nom)
+int renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne, const char* nouveau_nom)
 {
     // Vérifier si le numéro de colonne est valide
     if (num_colonne < 0 || num_colonne >= taille_dataframe) {
         fprintf(stderr, "Numéro de colonne invalide.\n");
-        return;
+        return FAILED;
     }
 
     // Vérifier si le nouveau nom est déjà utilisé par une autre colonne
     for (int i = 0; i < taille_dataframe; ++i) {
         if (i != num_colonne && strcmp(dataframe[i]->nom, nouveau_nom) == 0) {
             fprintf(stderr, "Le nom \"%s\" est déjà utilisé par une autre colonne.\n", nouveau_nom);
-            return;
+            return FAILED;
         }
     }
 
     // Mettre à jour le nom de la colonne
     strncpy(dataframe[num_colonne]->nom, nouveau_nom, sizeof(dataframe[num_colonne]->nom) - 1);
     dataframe[num_colonne]->nom[sizeof(dataframe[num_colonne]->nom) - 1] = '\0';
+    return SUCCESS;
 }
 
