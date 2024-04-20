@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Main.h"
 #include "Colonne.h"
+#include "Divers.h"
 
 int obtenir_nombre_colonnes(int taille_dataframe)
 {
@@ -68,10 +69,11 @@ int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_
     return FAILED;
 }
 
-COLONNE** creer_cdataframe(int* taille_CDataframe)
+COLONNE** creer_cdataframe(int *taille_CDataframe, bool *CDataframe_exists)
 {
     (*taille_CDataframe) = 0;
     COLONNE** CDataframe = NULL;
+    (*CDataframe_exists) = true;
     return CDataframe;
 }
 
@@ -83,4 +85,24 @@ int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)
     }
 }
 
+int afficher_noms_colonnes(COLONNE** dataframe, int taille_dataframe)
+{
+    if (dataframe == NULL || taille_dataframe == -1)
+    {
+        printf("\nLe CDataframe est vide ou non initialise.\n");
+        return FAILED;
+    }
 
+    int nombre_col = 0;
+
+    printf("\nNoms des colonnes :\n\n");
+
+    for (int i = 0; i < taille_dataframe; i++) {
+        COLONNE* colonne = dataframe[i];
+        printf(" [%d] = ", nombre_col);
+        printf("%s\n", colonne->nom);
+        nombre_col += 1;
+    }
+
+    return nombre_col;
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include <stdio.h>
 #include "Colonne.h"
+#include "Divers.h"
 
 int obtenir_nombre_colonnes(int taille_dataframe);
 
@@ -12,6 +13,8 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(COLONNE*** dataframe, int*
 
 int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_CDataframe);
 
-COLONNE** creer_cdataframe(int* taille_CDataframe);
+COLONNE** creer_cdataframe(int* taille_CDataframe, bool* CDataframe_exists);
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe);
+
+int afficher_noms_colonnes(COLONNE** dataframe, int taille_dataframe);

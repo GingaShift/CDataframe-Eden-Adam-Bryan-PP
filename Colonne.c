@@ -107,25 +107,26 @@ int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc, int
     return 1;
 }
 
-void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne)
+void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne)
 {
-    if (dataframe == NULL || indice_colonne < 0) {
-        fprintf(stderr, "Erreur : dataframe invalide ou indice de colonne invalide.\n");
+    if (dataframe == NULL || num_colonne < 0) {
+        fprintf(stderr, "\n\nErreur : dataframe invalide ou indice de colonne invalide.\n\n");
         return;
     }
 
-    if (indice_colonne >= taille_dataframe) {
-        fprintf(stderr, "Erreur : indice de colonne hors limites.\n");
+    if (num_colonne >= taille_dataframe) {
+        fprintf(stderr, "\n\nErreur : indice de colonne hors limites.\n\n");
         return;
     }
 
-    printf("Valeurs de la colonne %s :\n", dataframe[indice_colonne]->nom);
+    //printf("Valeurs de la colonne %s :\n", dataframe[num_colonne]->nom);
 
-    for (int i = 0; i < dataframe[indice_colonne]->taille_logique; i++) {
-        printf("[%d] = %d ", i, dataframe[indice_colonne]->data[i]);
+    for (int i = 0; i < dataframe[num_colonne]->taille_logique; i++) {
+        printf("[%d] = %d ", i, dataframe[num_colonne]->data[i]);
         printf("\n");
     }
-    printf("\n");
+    
+    //printf("\n");
 }
 
 int renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne, const char* nouveau_nom)
