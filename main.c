@@ -46,6 +46,7 @@ int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_co
 {   
     if (dataframe == NULL)
     {
+        printf("\n\n");
         printf("Veuillez d'abord creer le CDataframe et le remplir\n\n");
         return FAILED;
     }
@@ -58,10 +59,20 @@ int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_co
     for(int i=0; i < nombre_col; i++)
     {
         printf("Col %d - \"%s\"  ||  ", i, dataframe[i]->nom);
-
     }
 
+    // affichage des donnees des colonnes:
     printf("\n\n");
+    printf("Affichage des donnees des colonnes:");
+    printf("\n\n");
+    
+    for (int i = 0; i < nombre_col; i++)
+    {
+        printf("Colonne \"%s :\"", dataframe[i]->nom); 
+        printf("\n");
+        afficher_colonne(dataframe, taille_dataframe, i);
+        printf("\n");
+    }
 
     // Commentaire final
     switch (taille_dataframe)
@@ -84,7 +95,40 @@ int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_co
 
 void afficher_menu()
 {
-
+    printf("\n");
+    printf(" ****************************************************************************\n");
+    printf(" *                                                                          *\n");
+    printf(" *                         =-    MENU GENERAL    -=                         *\n");
+    printf(" *                                                                          *\n");
+    printf(" ****************************************************************************\n");
+    printf(" *                                                                          *\n");
+    printf(" *  1. Creer le CDataframe");
+    printf("             ");
+    printf(" 2. Charger un CDataframe            *");
+    printf("\n");
+    printf(" *                                                                          *");
+    printf("\n");
+    printf(" *  3. Creer une colonne");
+    printf("               ");
+    printf(" 4. Afficher le nom des colonnes     *");
+    printf("\n");
+    printf(" *                                                                          *");
+    printf("\n");
+    printf(" *  5. Gestion donnees (Remplir)");
+    printf("       ");
+    printf(" 6. Afficher le CDataframe           *");
+    printf("\n");
+    printf(" *                                                                          *");
+    printf("\n");
+    printf(" *                                                                          *");
+    printf("\n");
+    printf(" *                       0. Quitter le programme                            *");
+    printf("\n");
+    printf(" *                                                                          *");
+    printf("\n");
+    printf(" *                                                                          *");
+    printf("\n");
+    printf(" ****************************************************************************\n");
 }
 
 int main()
@@ -94,31 +138,19 @@ int main()
     COLONNE** CDataframe = NULL;
     bool CDataframe_exists = false;
 
-    // a mettre dans fonction "afficher_menu_general"
-    printf("\n");
-    printf("************************************************************************\n");
-    printf("*                                                                      *\n");
-    printf("*                     =-    MENU GENERAL    -=                         *\n");    
-    printf("*                                                                      *\n");
-    printf("************************************************************************\n");
-    printf("\n");
-    printf("1. Creer le CDataframe");
-    printf("                  ");
-    printf("2. Charger un CDataframe\n\n");
-    printf("3. Creer une colonne");
-    printf("                    ");
-    printf("4. Afficher le nom des colonnes\n\n");
-    printf("5. Gestion des donnees (Ajout, Suppr, Stats, Autre...)\n\n");
-    printf("6. Afficher le CDataframe\n\n");
-    printf("0. Quitter le programme\n\n");
-    printf("************************************************************************\n");
-
     int choix = 0;
     int go = 1;
     int nombre_col = 0;
 
-    printf("\nChoisissez un des numeros du menu puis validez en appuyant sur la touche Entree\n\n");
-    printf("POUR UNE DEMO RAPIDE, CHOISISSEZ DANS L'ORDRE L'ENTREE 1, PUIS 4 ET, ENFIN 6\n\n");
+    afficher_menu();
+    
+    printf("\n\n");
+    printf("INSTRUCTIONS:");
+    printf("\n");
+    printf("Choisissez un des numeros du menu puis validez en appuyant sur la touche Entree\n\n");
+    printf("NOTE IMPORTANTE:");
+    printf("\n");
+    printf("Pour une demo rapide, choisissez dans l'ordre l'entree 1, puis 5,\nensuite 4 et enfin 6\n\n");
 
     // Boucle jusqu'à ce que la saisie soit valide
     while (go == 1)
@@ -144,15 +176,10 @@ int main()
                     // dataframe vide créé avec succès
                     if (CDataframe == NULL && taille_CDataframe == 0)
                     {
-                        printf("\nLe CDataframe a ete cree avec succes\n");
+                        printf("\nLe CDataframe a ete cree avec succes\n\n");
 
                         // si le CDataframe a été créé, taille_CDataframe passe de -1 à 0. taille_CDataframe = 0 signifie qu'il a été créé via creer_cdataframe
                         taille_CDataframe == 0;
-
-                        // Peupler le CDataframe artificiellement - Test seulement
-                        populate_dataframe_artificially(&CDataframe, &taille_CDataframe);
-
-                        printf("\nTrois colonnes ont ete ajoutees. Elles contiennent quelques donnees pour un test rapide\n\n");
                     }
                 }
                 else if (taille_CDataframe >= 0)
@@ -169,11 +196,22 @@ int main()
             case 4:
                 printf("\nChoix 4 - Affichage du nom des colonnes:\n");
                 nombre_col = afficher_noms_colonnes(CDataframe, taille_CDataframe);
-                printf("\n Le(s) nom(s) de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
+                printf("\nLe(s) nom(s) de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
                 break;
             case 5:
                 printf("\nChoix 5 - Gestion des donnees:\n");
-                printf("\nLa gestion des donnees sera bientot disponible...\n\n");
+                if (! CDataframe_exists)
+                {
+                    printf("Veuillez d'abord creer un CDataframe\n\n");
+                    break;
+                }
+                // Peupler le CDataframe artificiellement - Test seulement - 
+                populate_dataframe_artificially(&CDataframe, &taille_CDataframe);
+                
+                printf("\nLa gestion des donnees sera bientot disponible dans son entierete...\n");
+                printf("\nCependant, trois colonnes ont ete ajoutees. Elles contiennent egalement quelques donnees pour cette demo\n");
+                printf("Vous pouvez visualiser ces colonnes dans le detail en choisissant l'entree de menu \"6\"\n\n");
+
                 break;
             case 6:
                 printf("\nChoix 6 - Affichage du CDataframe:");

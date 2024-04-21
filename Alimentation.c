@@ -7,7 +7,7 @@ int populate_dataframe_artificially(COLONNE*** dataframe, int* taille_dataframe)
 {
     int ajouter_bloc_lignes_a_toutes_les_colonnes = 0;
     
-    if (dataframe == NULL)
+    if (dataframe == NULL) 
     {
         fprintf(stderr, "Erreur lors de l'ajout de la colonne, le dataframe est NULL.\n");
         return 1;
@@ -30,9 +30,6 @@ int populate_dataframe_artificially(COLONNE*** dataframe, int* taille_dataframe)
 
     inserer_valeur((*dataframe)[0], 12, NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE, &ajouter_bloc_lignes_a_toutes_les_colonnes);
     inserer_valeur((*dataframe)[0], 256, NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE, &ajouter_bloc_lignes_a_toutes_les_colonnes);
-
-     
-    
 
     // Ajouter une valeur à Colonne 2
     inserer_valeur((*dataframe)[1], 20, NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE, &ajouter_bloc_lignes_a_toutes_les_colonnes);
