@@ -21,6 +21,6 @@ int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom
 
 int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc, int* bloc_lignes_ajoute_a_colonne);
 
-void afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne);
+int afficher_colonne(COLONNE** dataframe, int taille_dataframe, int indice_colonne);
 
 int renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne, const char* nouveau_nom);
