@@ -1,18 +1,18 @@
 # CDataframe
 
-- Noms et prénoms des membres de l'équipe projet 
+- Noms et prénoms des membres de l'équipe projet :
  
    - Eden Elfassy
-   - Brian Tewado
+   - Bryan Tewado
    - Adam Assayag
 
 
-- Lien direct vers le dépôt Git de votre projet 
+- Lien direct vers le dépôt Git de votre projet :
   
-   https://github.com/eden2807/projetchatbotpythonL1
+   https://github.com/eden2807/CDataframe-Eden-Adam-Bryan-PP
 
 
-- Fonctionnalités principales de votre application 
+- Fonctionnalités principales de votre application :
 
    - Le programme
    
@@ -21,17 +21,22 @@
    - 
    
 
-- Instructions d'exécution de votre code 
+- Instructions d'exécution de votre code :
 
-   1) Lancer Visual Studio 2022
-   
-   2) Dans la barre de menu, cliquer sur le menu "VCS" puis cliquer sur l'entrée de menu "Get from  Version Control"
-   
-   3) Cliquer sur l'onglet "Repository URL" puis entrer l'URL du projet dans la zone nommée "URL" 
-   
-   4) Préciser le dossier qui hebergera le projet puis cliquer sur "Clone"
-   
-   5) Lancer le programme en cliquant sur "Play" ou en utilisant le raccourci-clavier "Maj + F10"
+   1) Installer Visual Studio 2022 Community Edition avec, au minimum, la charge de travail C++
+
+   2) Lancer Visual Studio et choisir "Cloner un dépôt"
+
+   3) Dans la zone "Emplacement du dépôt", entrer l'adresse du projet suivante:
+      https://github.com/eden2807/CDataframe-Eden-Adam-Bryan-PP
+
+   4) Dans la zone "Chemin", choisir un dossier qui hebergera le projet localement
+
+   5) Cliquer ensuite sur le bouton "Cloner"
+
+   6) Lancer le projet en appuyant sur la touche F5
+
+   7) Choisir l'entrée de menu 6 pour créer et visualiser des données de colonnes
    
    
    

@@ -82,6 +82,11 @@ int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_co
     return SUCCESS;
 }
 
+void afficher_menu()
+{
+
+}
+
 int main()
 {
     // Creation et ini du CDataframe
@@ -106,7 +111,8 @@ int main()
     printf("5. Gestion des donnees (Ajout, Suppr, Stats, Autre...)\n\n");
     printf("6. Afficher le CDataframe\n\n");
     printf("0. Quitter le programme\n\n");
-    
+    printf("************************************************************************\n");
+
     int choix = 0;
     int go = 1;
     int nombre_col = 0;
