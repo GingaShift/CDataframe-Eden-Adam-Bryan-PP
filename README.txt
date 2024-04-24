@@ -43,4 +43,5 @@
    5) Cliquer ensuite sur le bouton "Cloner"
 
    6) Lancer le projet en appuyant sur la touche F5
+
    
