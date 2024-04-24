@@ -9,6 +9,8 @@
 #include "Main.h"
 #include "String_manager.h"
 
+
+
 //OPERATEURS_DE_COMPARAISON egal = { EGAL };
 //OPERATEURS_DE_COMPARAISON superieur = { SUPERIEUR };
 //OPERATEURS_DE_COMPARAISON inferieur = { INFERIEUR };
@@ -16,7 +18,7 @@
 
 int ajouter_ligne_de_valeur(int valeur)
 {
-
+    int Dump = 10;
 }
 
 // Todo: A implémenter et à inserer dans CDataframe
