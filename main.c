@@ -10,7 +10,6 @@
 #include "String_manager.h"
 
 
-
 //OPERATEURS_DE_COMPARAISON egal = { EGAL };
 //OPERATEURS_DE_COMPARAISON superieur = { SUPERIEUR };
 //OPERATEURS_DE_COMPARAISON inferieur = { INFERIEUR };
@@ -44,7 +43,7 @@ int modifier_valeur(COLONNE** dataframe, int taille_dataframe, int num_col, int 
     }
 }
 
-int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_col)
+int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe)
 {   
     if (dataframe == NULL)
     {
@@ -55,26 +54,48 @@ int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_co
     
     printf("\n\n");
 
-    int nombre_colonnes_a_afficher = 0;
-
     // affichage de la ligne des noms de toutes les colonnes voulues
-    for(int i=0; i < nombre_col; i++)
+    for(int i=0; i < taille_dataframe; i++)
     {
-        printf("Col %d - \"%s\"  ||  ", i, dataframe[i]->nom);
+        printf("Col %d - \"%s\"  ||  ", i, dataframe[i]->titre);
     }
-
-    // affichage des donnees des colonnes:
-    printf("\n\n");
-    printf("Affichage des donnees des colonnes:");
-    printf("\n\n");
     
-    for (int i = 0; i < nombre_col; i++)
+    printf("\n");
+
+    int largeur_nombre = 5;
+    int ligne_courante = 0;
+
+    // Traiter toutes les colonnes du dataframe
+    for (int ligne_courante = 0; ligne_courante <= dataframe[0]->taille_physique; ligne_courante++)
     {
-        printf("Colonne \"%s :\"", dataframe[i]->nom); 
-        printf("\n");
-        afficher_colonne(dataframe, taille_dataframe, i);
-        printf("\n");
+        if (ligne_courante==0)
+            printf("\n");
+        else
+            printf("\n\n");
+
+        // Afficher une ligne contenant les données de toutes les colonnes pour cette ligne là
+        for (int col_courante = 0; col_courante < taille_dataframe; col_courante++)
+        {
+            // Affichage du num de ligne en début de ligne une seule et unique fois
+            if (col_courante == 0)
+            { 
+                printf(" [%d]", ligne_courante);
+                printf("    ");
+            }
+            else
+                printf("              ");
+                        
+            // Si la colonne contient encore des données pour cette ligne, les afficher
+            if (ligne_courante <= dataframe[col_courante]->taille_logique - 1)
+                printf("  %*d", largeur_nombre, dataframe[col_courante]->data[ligne_courante]);
+            // Sinon afficher une val par défaut (à la place d'une valeur quelconque incohérente de la cellule lorsque celle-ci ne contient rien) 
+            else
+                printf("  %*d", largeur_nombre, VALEUR_PAR_DEFAUT_DATA_COLONNE);
+        }
     }
+    
+    printf("\n\n");
+    printf(" ");
 
     // Commentaire final
     switch (taille_dataframe)
@@ -83,10 +104,10 @@ int afficher_cdataframe(COLONNE** dataframe, int taille_dataframe, int nombre_co
             printf("Il n'y a aucune colonne a afficher dans le CDataframe");
             break;
         case 1:
-            printf("Une colonne a ete affichee pour ce CDataframe");
+            printf("Les valeurs d'une colonne ont ete affichee pour ce CDataframe");
             break;
         default:
-            printf("%d colonnes ont ete affiches pour ce CDataframe", taille_dataframe);
+            printf("Les valeurs de %d colonnes ont ete affiches pour ce CDataframe", taille_dataframe);
             break;
     }
 
@@ -135,14 +156,22 @@ void afficher_menu()
 
 int main()
 {
-    // Creation et ini du CDataframe
+    // Declaration du CDataframe
     int taille_CDataframe = -1;
     COLONNE** CDataframe = NULL;
     bool CDataframe_exists = false;
 
-    int choix = 0;
+    // struct CDataframe
+    //   string titre
+    //   int taille
+    //   COLONNE** colonnes = NULL;
+ 
+
+    // TEST SEULEMENT : REMETTRE A 0
+    int choix = -1;
     int go = 1;
     int nombre_col = 0;
+    int res_choix_menu = -1;
 
     afficher_menu();
     
@@ -157,7 +186,10 @@ int main()
     // Boucle jusqu'à ce que la saisie soit valide
     while (go == 1)
     {
-        scanf("%d", &choix);
+        printf("\n");
+        printf(" - Choisissez une des entrees du menu puis validez :\n\n");
+
+        res_choix_menu = scanf("%d", &choix);
 
         // a mettre dans fonction "manager_choix_menu_general" et creer aussi une fonction "manager_choix_menu_gestion_des_donnees"
         switch (choix)
@@ -216,8 +248,28 @@ int main()
 
                 break;
             case 6:
+                
+                ////////////////////////////////////////////////////////////////////////
+                // A virer
+                CDataframe = creer_cdataframe(&taille_CDataframe, &CDataframe_exists);
+                // Peupler le CDataframe artificiellement - Test seulement - 
+                populate_dataframe_artificially(&CDataframe, &taille_CDataframe);
+                // Fin A virer
+                ////////////////////////////////////////////////////////////////////////
+
                 printf("\nChoix 6 - Affichage du CDataframe:");
-                afficher_cdataframe(CDataframe, taille_CDataframe, taille_CDataframe);
+                
+                if (!CDataframe_exists)
+                {
+                    printf("\n Impossible d'afficher le CDataframe car il n'existe pas.");
+                    printf("\n Veuillez le creer ou le charger a partir d'une source.");
+                    break;
+                }
+
+                int res = afficher_cdataframe(CDataframe, taille_CDataframe);
+
+                choix = -1;
+
                 break;
         default:
             break;

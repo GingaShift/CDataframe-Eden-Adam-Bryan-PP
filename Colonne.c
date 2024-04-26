@@ -4,16 +4,16 @@
 #include "Main.h"
 #include "Colonne.h"
 
-COLONNE* creer_colonne(const char* nom) {
+COLONNE* creer_colonne(const char* titre) {
     COLONNE* nouvelle_colonne = malloc(sizeof(COLONNE));
     if (nouvelle_colonne == NULL) {
-        fprintf(stderr, "Erreur d'allocation de mémoire pour la nouvelle colonne.\n");
+        printf("\nErreur d'allocation de mémoire pour la nouvelle colonne.\n");
         return NULL;
     }
 
     // Initialisation de la nouvelle colonne
-    strncpy(nouvelle_colonne->nom, nom, sizeof(nouvelle_colonne->nom) - 1);
-    nouvelle_colonne->nom[sizeof(nouvelle_colonne->nom) - 1] = '\0'; // Assure la terminaison de la chaîne
+    strncpy(nouvelle_colonne->titre, titre, sizeof(nouvelle_colonne->titre) - 1);
+    nouvelle_colonne->titre[sizeof(nouvelle_colonne->titre) - 1] = '\0'; // Assure la terminaison de la chaîne
     nouvelle_colonne->data = NULL;
     nouvelle_colonne->taille_physique = 0;
     nouvelle_colonne->taille_logique = 0;
@@ -30,7 +30,7 @@ int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom
 {
     if (dataframe == NULL)
     {
-        fprintf(stderr, "Erreur lors de la l'ajout de la colonne, le dataframe est NULL.\n");
+        printf("\nErreur lors de la l'ajout de la colonne, le dataframe est NULL.\n");
         return 1;
     }
 
@@ -63,11 +63,11 @@ int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc, int
     // Vérifier si le tableau data est vide
     if (colonne->data == NULL)
     {
-        // Allouer de la mémoire pour un tableau de 10 entiers et l'initialiser à zéro
+        // Allouer de la mémoire pour un tableau de X entiers et l'initialiser à zéro
         colonne->data = malloc(nombre_lignes_par_bloc * sizeof(int));
 
         if (colonne->data == NULL) {
-            fprintf(stderr, "Erreur d'allocation mémoire lors de la création du tableau data de la colonne.\n");
+            printf("\nErreur d'allocation mémoire lors de la création du tableau data de la colonne.\n");
             return 0;
         }
 
@@ -142,15 +142,15 @@ int renommer_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne,
 
     // Vérifier si le nouveau nom est déjà utilisé par une autre colonne
     for (int i = 0; i < taille_dataframe; ++i) {
-        if (i != num_colonne && strcmp(dataframe[i]->nom, nouveau_nom) == 0) {
+        if (i != num_colonne && strcmp(dataframe[i]->titre, nouveau_nom) == 0) {
             fprintf(stderr, "Le nom \"%s\" est déjà utilisé par une autre colonne.\n", nouveau_nom);
             return FAILED;
         }
     }
 
     // Mettre à jour le nom de la colonne
-    strncpy(dataframe[num_colonne]->nom, nouveau_nom, sizeof(dataframe[num_colonne]->nom) - 1);
-    dataframe[num_colonne]->nom[sizeof(dataframe[num_colonne]->nom) - 1] = '\0';
+    strncpy(dataframe[num_colonne]->titre, nouveau_nom, sizeof(dataframe[num_colonne]->titre) - 1);
+    dataframe[num_colonne]->titre[sizeof(dataframe[num_colonne]->titre) - 1] = '\0';
     return SUCCESS;
 }
 

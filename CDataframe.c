@@ -30,7 +30,7 @@ int ajouter_bloc_lignes_aux_colonnes(COLONNE** dataframe, int taille_dataframe, 
         int nouvelle_taille = colonne->taille_physique + NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
         int* nouvelle_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
         if (nouvelle_data == NULL) {
-            fprintf(stderr, "Erreur d'allocation de mémoire pour la colonne %s.\n", colonne->nom);
+            fprintf(stderr, "Erreur d'allocation de mémoire pour la colonne %s.\n", colonne->titre);
             continue; // Passer à la prochaine colonne en cas d'erreur
         }
 
@@ -54,6 +54,11 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(COLONNE*** dataframe, int*
     if (ajouter_bloc_lignes_a_toutes_les_colonnes == 1)
         ajouter_bloc_lignes_aux_colonnes((*dataframe), (*taille_dataframe), num_col);
 
+    // Ici: Si nouveau bloc de lignes ajoutés aux colonnes, ini les valeurs à 0 de toutes les nouvelles lignes pr toutes les colonnes
+    
+    // Ini les col auxquelles on vient d'ajouter le nouveau bloc de lignes, tout en respectant les data présentes
+    
+
     return 1;
 }
 
@@ -61,7 +66,7 @@ int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_
 {
     for (int i = 0; i < taille_CDataframe; i++)
     {
-        const char* nom = dataframe[i]->nom;
+        const char* nom = dataframe[i]->titre;
 
         if (compare_chaines(nom, nom_colonne) == 0)
             return SUCCESS;
@@ -100,7 +105,7 @@ int afficher_noms_colonnes(COLONNE** dataframe, int taille_dataframe)
     for (int i = 0; i < taille_dataframe; i++) {
         COLONNE* colonne = dataframe[i];
         printf(" [%d] = ", nombre_col);
-        printf("%s\n", colonne->nom);
+        printf("%s\n", colonne->titre);
         nombre_col += 1;
     }
 
