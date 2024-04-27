@@ -2,6 +2,7 @@
 #include "Main.h"
 #include "Colonne.h"
 #include "Divers.h"
+#include "CDataframe.h"
 
 int obtenir_nombre_colonnes(int taille_dataframe)
 {
@@ -74,12 +75,28 @@ int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_
     return FAILED;
 }
 
-COLONNE** creer_cdataframe(int *taille_CDataframe, bool *CDataframe_exists)
+COLONNE** creer_cdataframe_old(int *taille_CDataframe, bool *CDataframe_exists)
 {
     (*taille_CDataframe) = 0;
     COLONNE** CDataframe = NULL;
     (*CDataframe_exists) = true;
     return CDataframe;
+}
+DATAFRAME creer_cdataframe_new(bool* CDataframe_exists, const char* nom_colonne)
+{
+    // Declaration du dataframe
+    DATAFRAME dataframe;
+
+    // Allocation de mémoire pour la dataframe
+    dataframe.colonnes = NULL;
+    dataframe.taille = 0;
+    strcpy(dataframe.titre, "Nom Dataframe"); // Titre par défaut
+
+    // Modifier le pointeur de booléen pour indiquer que la dataframe a été créée
+    (*CDataframe_exists) = true;
+
+    // Retourner la dataframe créé
+    return dataframe;
 }
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)

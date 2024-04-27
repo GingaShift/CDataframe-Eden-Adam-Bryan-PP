@@ -3,6 +3,13 @@
 #include "Colonne.h"
 #include "Divers.h"
 
+typedef struct Dataframe
+{
+    char titre[256];
+    int taille;
+    COLONNE** colonnes;
+} DATAFRAME;
+
 int obtenir_nombre_colonnes(int taille_dataframe);
 
 int obtenir_nombre_lignes(COLONNE** dataframe, int taille_dataframe);
@@ -13,7 +20,8 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(COLONNE*** dataframe, int*
 
 int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_CDataframe);
 
-COLONNE** creer_cdataframe(int* taille_CDataframe, bool* CDataframe_exists);
+COLONNE** creer_cdataframe_old(int* taille_CDataframe, bool* CDataframe_exists);
+DATAFRAME creer_cdataframe_new(bool* CDataframe_exists, const char* nom_colonne);
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe);
 

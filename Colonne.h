@@ -17,7 +17,7 @@ typedef struct Colonne
 
 COLONNE* creer_colonne(const char* nom);
 
-int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom_colonne);
+int ajouter_colonne_old(COLONNE*** dataframe, int* taille_dataframe, const char* nom_colonne);
 
 int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc, int* bloc_lignes_ajoute_a_colonne);
 

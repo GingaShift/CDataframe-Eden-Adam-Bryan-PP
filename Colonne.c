@@ -3,6 +3,7 @@
 #include <string.h>
 #include "Main.h"
 #include "Colonne.h"
+#include "CDataframe.h"
 
 COLONNE* creer_colonne(const char* titre) {
     COLONNE* nouvelle_colonne = malloc(sizeof(COLONNE));
@@ -26,34 +27,29 @@ COLONNE* creer_colonne(const char* titre) {
     return nouvelle_colonne;
 }
 
-int ajouter_colonne(COLONNE*** dataframe, int* taille_dataframe, const char* nom_colonne)
+int ajouter_colonne_old(COLONNE*** colonnes, int* taille_dataframe, const char* nom_colonne)
 {
-    if (dataframe == NULL)
-    {
-        printf("\nErreur lors de la l'ajout de la colonne, le dataframe est NULL.\n");
-        return 1;
-    }
-
+    
     // Ajout d'une colonne en utilisant la fonction creer_colonne
     COLONNE* nouvelle_colonne = creer_colonne(nom_colonne);
     if (nouvelle_colonne == NULL)
     {
-        fprintf(stderr, "Erreur lors de la création de la colonne.\n");
-        return 1;
+        printf("\nErreur lors de la création de la colonne.\n");
+        return FAILED;
     }
 
     // Agrandissement du tableau CDataframe pour ajouter la nouvelle colonne
     (*taille_dataframe)++;
-    *dataframe = realloc(*dataframe, (*taille_dataframe) * sizeof(COLONNE*));
-    if (*dataframe == NULL)
+    *colonnes = realloc(*colonnes, (*taille_dataframe) * sizeof(COLONNE*));
+    if (*colonnes == NULL)
     {
-        fprintf(stderr, "Erreur d'allocation mémoire pour CDataframe.\n");
+        printf("\nErreur d'allocation mémoire pour CDataframe.\n");
         free(nouvelle_colonne);
         return 1;
     }
 
     // Ajout de la colonne au dataframe
-    (*dataframe)[*taille_dataframe - 1] = nouvelle_colonne;
+    (*colonnes)[*taille_dataframe - 1] = nouvelle_colonne;
 }
 
 int inserer_valeur(COLONNE* colonne, int valeur, int nombre_lignes_par_bloc, int* bloc_lignes_ajouté_a_colonne)
