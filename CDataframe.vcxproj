@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Affichage.c" />
     <ClCompile Include="Alimentation.c" />
     <ClCompile Include="Analyses_et_stats.c" />
     <ClCompile Include="CDataframe.c" />

@@ -10,4 +10,4 @@ typedef struct {
     OPERATEURS_COMPARAISON Operateur;
 } OPERATEURS_DE_COMPARAISON;
 
-int stats_sur_valeur(COLONNE** CDataframe, int taille_dataframe, int valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison);
+int stats_sur_valeur(DATAFRAME* dataframe, int valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison);

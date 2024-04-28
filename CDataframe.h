@@ -10,19 +10,24 @@ typedef struct Dataframe
     COLONNE** colonnes;
 } DATAFRAME;
 
-int obtenir_nombre_colonnes(int taille_dataframe);
+int ajouter_colonne(DATAFRAME* dataframe, const char* nom_colonne);
 
-int obtenir_nombre_lignes(COLONNE** dataframe, int taille_dataframe);
+int obtenir_nombre_lignes(DATAFRAME* dataframe);
 
-int ajouter_bloc_lignes_aux_colonnes(COLONNE** dataframe, int taille_dataframe, int* num_colonne_a_ignorer);
+int ajouter_bloc_lignes_aux_colonnes(COLONNE** dataframe, int taille_dataframe, int num_colonne_a_ignorer);
 
-int inserer_valeur_avec_gestion_memoire_data_colonnes(COLONNE*** dataframe, int* taille_dataframe, int num_col, int valeur);
+int inserer_valeur_avec_gestion_memoire_data_colonnes_new(DATAFRAME* dataframe, int num_col, int valeur);
 
-int nom_colonne_existe(COLONNE** dataframe, const char* nom_colonne, int taille_CDataframe);
+int nom_colonne_existe(COLONNE** dataframe, char* nom_colonne, int taille_CDataframe);
 
-COLONNE** creer_cdataframe_old(int* taille_CDataframe, bool* CDataframe_exists);
-DATAFRAME creer_cdataframe_new(bool* CDataframe_exists, const char* nom_colonne);
+DATAFRAME creer_cdataframe(bool* dataframe_exists, const char* nom_dataframe);
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe);
 
-int afficher_noms_colonnes(COLONNE** dataframe, int taille_dataframe);
+int afficher_noms_colonnes(DATAFRAME dataframe);
+
+int afficher_cdataframe(DATAFRAME* dataframe);
+
+int modifier_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int valeur);
+
+int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_nom);

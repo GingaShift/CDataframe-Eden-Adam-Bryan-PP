@@ -1,4 +1,4 @@
 #pragma once
-#define FAILED 0
-#define SUCCESS 1
+#include "CDataframe.h"
 
+int free_all_ressources(DATAFRAME* dataframe);
