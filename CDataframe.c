@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
+#include "CDataframe.h"
 #include "Main.h"
 #include "Colonne.h"
 #include "Divers.h"
+#include "String_manager.h"
 
 int ajouter_colonne(DATAFRAME* dataframe, const char* nom_colonne)
 {
@@ -40,22 +42,25 @@ int obtenir_nombre_lignes(DATAFRAME* dataframe)
     return dataframe->colonnes[0]->taille_physique;
 }
 
-int ajouter_bloc_lignes_aux_colonnes(COLONNE** dataframe, int taille_dataframe, int num_colonne_a_ignorer)
+int egalisation_bloc_lignes_des_colonnes(DATAFRAME* dataframe)
 {
-    // Parcourir toutes les colonnes du dataframe
-    for (int i = 0; i < taille_dataframe; ++i) {
-    
-        if (i == num_colonne_a_ignorer)
-            continue;
+    // Chercher la valeur de taille physique la + élevée, donc la taille max que doivent faire toutes les colonnes
 
-        COLONNE* colonne = dataframe[i];
+    // Ajuster eventuellement la taille des colonnes à cette taille max si besoin
+
+    // Parcourir toutes les colonnes du dataframe
+    for (int i = 0; i < dataframe->taille; ++i)
+    {
+        COLONNE* colonne = dataframe->colonnes[i];
 
         // Allouer de la mémoire pour x nouvelles lignes
         int nouvelle_taille = colonne->taille_physique + NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
+        
         int* nouvelle_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
-        if (nouvelle_data == NULL) {
-            fprintf(stderr, "Erreur d'allocation de mémoire pour la colonne %s.\n", colonne->titre);
-            continue; // Passer à la prochaine colonne en cas d'erreur
+        if (nouvelle_data == NULL)
+        {
+            printf("\nErreur d'allocation de mémoire pour la colonne %s.\n", colonne->titre);
+            return 1;
         }
 
         // Mettre à jour les données de la colonne
@@ -64,29 +69,26 @@ int ajouter_bloc_lignes_aux_colonnes(COLONNE** dataframe, int taille_dataframe, 
     }
 }
 
-int inserer_valeur_avec_gestion_memoire_data_colonnes_new(DATAFRAME* dataframe, int num_col, int valeur)
+int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int num_col, int valeur)
 {
     // todo:
     //Verifier que la valeur à inserer soit dans la plage des valeurs acceptables
     // "valeur" doit donc être compris entre -2 147 483 648 et 2 147 483 647
     
-    int ajouter_bloc_lignes_a_toutes_les_colonnes = 0;
+    bool nouveau_bloc_lignes_ajoute_a_colonne = false;
 
     // Ajouter valeur à colonne
-    int ret = inserer_valeur(dataframe->colonnes[num_col], valeur, NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE, &ajouter_bloc_lignes_a_toutes_les_colonnes);
+    int ret = inserer_valeur(dataframe->colonnes[num_col], valeur, &nouveau_bloc_lignes_ajoute_a_colonne);
     if (ret != 0)
     {
         printf("\nErreur d'allocation de mémoire lors de la création du tableau data de la colonne.\n");
         return 1;
     }
-    
-    // Temp à virer des la reso du bug de ajouter_bloc_lignes_aux_colonnes
+
+    if (nouveau_bloc_lignes_ajoute_a_colonne == true)
+        egalisation_bloc_lignes_des_colonnes(dataframe->colonnes, (dataframe->taille), num_col);
+
     return 0;
-
-    if (ajouter_bloc_lignes_a_toutes_les_colonnes == 1)
-        ajouter_bloc_lignes_aux_colonnes(dataframe->colonnes, (dataframe->taille), num_col);
-
-    //return 0;
 }
 
 int nom_colonne_existe(COLONNE** dataframe, char* nom_colonne, int taille_CDataframe)
@@ -114,7 +116,8 @@ DATAFRAME creer_cdataframe(bool* dataframe_exists, const char* nom_dataframe)
         strncpy(dataframe.titre, nom_dataframe, sizeof(dataframe.titre) - 1);
         dataframe.titre[sizeof(dataframe.titre) - 1] = '\0'; // Assurer que la chaîne est terminée par un caractère nul
     }
-    else {
+    else
+    {
         // Si nom_dataframe est NULL, affecter une chaîne vide
         dataframe.titre[0] = '\0';
     }

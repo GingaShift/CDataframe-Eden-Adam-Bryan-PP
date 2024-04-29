@@ -13,12 +13,12 @@
 DATAFRAME CDataframe;
 bool CDataframe_exists = false;
 
+int res = 0;
+
 //OPERATEURS_DE_COMPARAISON egal = { EGAL };
 //OPERATEURS_DE_COMPARAISON superieur = { SUPERIEUR };
 //OPERATEURS_DE_COMPARAISON inferieur = { INFERIEUR };
 //stats_sur_valeur(CDataframe, taille_CDataframe, 10, egal);  
-
-int res = 0;
 
 void afficher_menu()
 {

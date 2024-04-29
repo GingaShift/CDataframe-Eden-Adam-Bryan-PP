@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include "Colonne.h"
 #include "CDataframe.h"
 #include "Analyses_et_stats.h"
 

@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include "String_manager.h"
 
 int compare_chaines(const char* str1, const char* str2)
 {

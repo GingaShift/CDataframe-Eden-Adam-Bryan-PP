@@ -1,6 +1,5 @@
 #include <stdio.h>
-#include "Main.h"
-#include "Colonne.h"
+#include "Alimentation.h"
 #include "CDataframe.h"
 
 int populate_dataframe_artificially(DATAFRAME* dataframe)
@@ -13,22 +12,22 @@ int populate_dataframe_artificially(DATAFRAME* dataframe)
     // Ajouter une colonne au dataframe
     ajouter_colonne(dataframe, "Colonne 2");
 
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 0, 10);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 0, 10);
     
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 0, 11);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 0, 11);
 
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 0, 12);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 0, 12);
 
     // Ajouter une valeur à Colonne 2
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 1, 20);
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 1, 21);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 1, 20);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 1, 21);
 
     // Ajouter une colonne au dataframe
     ajouter_colonne(dataframe, "Colonne 3");
 
     // Ajouter quelques valeurs à Colonne 3
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 2, 30);
-    inserer_valeur_avec_gestion_memoire_data_colonnes_new(dataframe, 2, 31);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 2, 30);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 2, 31);
 
     return 0;
 }

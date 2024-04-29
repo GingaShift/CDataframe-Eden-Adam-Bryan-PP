@@ -1,4 +1,5 @@
 #pragma once
+#include "CDataframe.h"
 
 typedef enum {
     SUPERIEUR,
