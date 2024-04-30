@@ -42,30 +42,54 @@ int obtenir_nombre_lignes(DATAFRAME* dataframe)
     return dataframe->colonnes[0]->taille_physique;
 }
 
-int egalisation_bloc_lignes_des_colonnes(DATAFRAME* dataframe)
+int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe)
 {
-    // Chercher la valeur de taille physique la + élevée, donc la taille max que doivent faire toutes les colonnes
+    if (dataframe->taille <= 1)
+        return 0;
 
-    // Ajuster eventuellement la taille des colonnes à cette taille max si besoin
+    int taille_du_plus_grand_tab_data = 0;
+    int nombre_blocs_a_ajouter = 0;
+    int delta_taille = 0;
 
-    // Parcourir toutes les colonnes du dataframe
+    // Parcourir toutes les colonnes et recherchee le tab data ayant la taille physique la + élevée
+    // Cette taille devra être allouée, si ce n'est pas déjà le cas, à tous les autres tab data des colonnes
+    for (int i = 0; i < dataframe->taille; ++i)
+    {
+        if (dataframe->colonnes[i]->taille_physique > taille_du_plus_grand_tab_data)
+        {
+            taille_du_plus_grand_tab_data = dataframe->colonnes[i]->taille_physique;
+        }
+    }
+
+    // Examiner et ajuster eventuellement la taille des colonnes à cette taille max si besoin
     for (int i = 0; i < dataframe->taille; ++i)
     {
         COLONNE* colonne = dataframe->colonnes[i];
 
-        // Allouer de la mémoire pour x nouvelles lignes
-        int nouvelle_taille = colonne->taille_physique + NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
-        
-        int* nouvelle_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
-        if (nouvelle_data == NULL)
-        {
-            printf("\nErreur d'allocation de mémoire pour la colonne %s.\n", colonne->titre);
-            return 1;
-        }
+        if (colonne->taille_physique == taille_du_plus_grand_tab_data)
+            continue;
 
-        // Mettre à jour les données de la colonne
-        colonne->taille_physique = nouvelle_taille;
-        colonne->data = nouvelle_data;
+        if (colonne->taille_physique < taille_du_plus_grand_tab_data)
+        {
+            // Calculer le nombre de blocs à allouer. Il peut y avoir un ou plusieurs bloc(s).
+            // Ex: Si on vient de créer une col alors qu'il en existe déjà une de 512 lignes (2 blocs))
+            delta_taille = taille_du_plus_grand_tab_data - colonne->taille_physique;
+            nombre_blocs_a_ajouter = delta_taille / NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
+
+            // Allouer le ou les blocs mémoire nécessaires
+            int nouvelle_taille = colonne->taille_physique + (NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE * nombre_blocs_a_ajouter);
+
+            int* nouveau_tab_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
+            if (nouveau_tab_data == NULL)
+            {
+                printf("\nErreur d'allocation de mémoire pour la colonne %s.\n", colonne->titre);
+                return 1;
+            }
+
+            // Mettre à jour les données de la colonne
+            colonne->taille_physique = nouvelle_taille;
+            colonne->data = nouveau_tab_data;
+        }
     }
 }
 
@@ -86,7 +110,7 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int 
     }
 
     if (nouveau_bloc_lignes_ajoute_a_colonne == true)
-        egalisation_bloc_lignes_des_colonnes(dataframe->colonnes, (dataframe->taille), num_col);
+        egaliser_taille_des_tabs_data_des_colonnes(dataframe->colonnes, (dataframe->taille), num_col);
 
     return 0;
 }
