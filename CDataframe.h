@@ -16,7 +16,7 @@ int ajouter_colonne(DATAFRAME* dataframe, const char* nom_colonne);
 
 int obtenir_nombre_lignes(DATAFRAME* dataframe);
 
-int egalisation_bloc_lignes_des_colonnes(DATAFRAME* dataframe);
+int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe);
 
 int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int num_col, int valeur);
 
