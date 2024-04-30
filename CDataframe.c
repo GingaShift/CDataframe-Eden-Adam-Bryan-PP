@@ -187,7 +187,7 @@ int afficher_noms_colonnes(DATAFRAME dataframe)
     return nombre_col;
 }
 
-int afficher_cdataframe(DATAFRAME* dataframe)
+int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne_max)
 {
     if (dataframe == NULL)
     {

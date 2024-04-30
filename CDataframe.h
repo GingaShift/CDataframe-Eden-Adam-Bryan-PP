@@ -28,7 +28,7 @@ int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe);
 
 int afficher_noms_colonnes(DATAFRAME dataframe);
 
-int afficher_cdataframe(DATAFRAME* dataframe);
+int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne_max);
 
 int modifier_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int valeur);
 

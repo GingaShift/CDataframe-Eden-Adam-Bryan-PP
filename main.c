@@ -182,7 +182,7 @@ int main()
                     break;
                 }
 
-                res = afficher_cdataframe(&CDataframe);
+                res = afficher_cdataframe(&CDataframe, -1, -1);
 
                 choix = -1;
 
