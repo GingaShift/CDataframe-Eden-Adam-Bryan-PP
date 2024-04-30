@@ -33,3 +33,5 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne
 int modifier_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int valeur);
 
 int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_nom);
+
+int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne);

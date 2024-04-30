@@ -309,3 +309,33 @@ int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_
 
     return 0;
 }
+
+int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas.\n");
+        return 1;
+    }
+    
+    if (num_col < 0)
+    {
+        printf("\nLa ligne entree n'existe pas\n");
+    }
+
+    if (num_col >= dataframe->taille)
+    {
+        printf(" Dans la limite de la plage de colonne disponible ");
+    }
+
+    if (num_ligne >= dataframe->colonnes[num_col]->taille_logique)
+    {
+        printf("ERREUR, ce n'est pas réglementaire aux données enregistrées");
+        return 1;
+    }
+
+    int valeur = dataframe->colonnes[num_col]->data[num_ligne];
+    
+    printf("\nValeur à la colonne %d, ligne %d : %d\n", num_col, num_ligne, valeur);
+
+}

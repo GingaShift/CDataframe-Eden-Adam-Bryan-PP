@@ -173,6 +173,8 @@ int main()
                 //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
                 res = populate_dataframe_artificially(&CDataframe);
 
+                res = afficher_valeur(&CDataframe, 0, 2);
+
                 printf("\nChoix 6 - Affichage du CDataframe:");
                 
                 if (!CDataframe_exists)
