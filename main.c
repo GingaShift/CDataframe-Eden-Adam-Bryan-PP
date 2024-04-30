@@ -184,6 +184,8 @@ int main()
 
                 res = afficher_cdataframe(&CDataframe, 0, 0);
 
+                // res = afficher_cdataframe(&CDataframe, 2, 100);
+
                 choix = -1;
 
                 break;

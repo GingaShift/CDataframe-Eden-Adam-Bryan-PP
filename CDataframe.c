@@ -184,7 +184,7 @@ int afficher_noms_colonnes(DATAFRAME dataframe)
     return nombre_col;
 }
 
-int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne_max)
+int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int num_ligne_max)
 {
     if (dataframe == NULL)
     {
@@ -196,22 +196,29 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne
     // todo: Optimisation: Chercher ici la colonne qui contient le plus de données, et limiter l'affichage des données
     // à cette valeur de ligne au lieu d'afficher toutes les lignes inconditionnellement.
     // rappel: ecrire une fonction nommee "obtenir_num_lignes_max_contenant_donnees(DATAFRAME* dataframe)
+    
+    int largeur_colonne_nombre_col = 5;
 
     printf("\n\n");
+        
+    // Si aucune limites de cols précisée, alors afficher toutes les colonnes
+    if (num_col_max == 0)
+        num_col_max = dataframe->taille;
+
+    // Si aucune limites de lignes précisée, alors afficher toutes les lignes
+    if (num_ligne_max == 0)
+        num_ligne_max = dataframe->colonnes[0]->taille_physique;
 
     // affichage de la ligne des noms de toutes les colonnes voulues
-    for (int i = 0; i < dataframe->taille; i++)
+    for (int i = 0; i < num_col_max; i++)
     {
-        printf("Col %d - \"%s\"  ||  ", i, dataframe->colonnes[i]->titre);
+        printf("\"%s\"         ", dataframe->colonnes[i]->titre);
     }
 
     printf("\n");
 
-    int largeur_nombre = 5;
-    int ligne_courante = 0;
-
-    // Traiter toutes les colonnes du dataframe
-    for (int ligne_courante = 0; ligne_courante <= dataframe->colonnes[0]->taille_physique; ligne_courante++)
+    // Traiter toutes les lignes de toutes les colonnes du dataframe en respectant d'eventuelles limites spécifiées
+    for (int ligne_courante = 0; ligne_courante <= num_ligne_max; ligne_courante++)
     {
         if (ligne_courante == 0)
             printf("\n");
@@ -219,7 +226,7 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne
             printf("\n\n");
 
         // Afficher une ligne contenant les données de toutes les colonnes à cet indice
-        for (int col_courante = 0; col_courante < dataframe->taille; col_courante++)
+        for (int col_courante = 0; col_courante < num_col_max; col_courante++)
         {
             // Affichage du num de ligne en début de ligne une seule et unique fois
             if (col_courante == 0)
@@ -232,10 +239,10 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne
 
             // Si la colonne contient encore des données pour cette ligne, les afficher
             if (ligne_courante <= dataframe->colonnes[col_courante]->taille_logique - 1)
-                printf("  %*d", largeur_nombre, dataframe->colonnes[col_courante]->data[ligne_courante]);
+                printf("  %*d", largeur_colonne_nombre_col, dataframe->colonnes[col_courante]->data[ligne_courante]);
             // Sinon afficher une val par défaut (à la place d'une valeur quelconque incohérente de la cellule lorsque celle-ci ne contient rien) 
             else
-                printf("  %*d", largeur_nombre, VALEUR_PAR_DEFAUT_DATA_COLONNE);
+                printf("  %*d", largeur_colonne_nombre_col, VALEUR_PAR_DEFAUT_DATA_COLONNE);
         }
     }
 
@@ -252,7 +259,7 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne
         printf("Les valeurs d'une colonne ont ete affichee pour ce CDataframe");
         break;
     default:
-        printf("Les valeurs des %d colonnes ont ete affiches pour ce CDataframe", dataframe->taille);
+        printf("Les valeurs de %d colonnes ont ete affiches pour ce CDataframe", num_col_max);
         break;
     }
 
