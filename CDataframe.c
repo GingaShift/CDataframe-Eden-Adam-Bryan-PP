@@ -44,7 +44,8 @@ int obtenir_nombre_lignes(DATAFRAME* dataframe)
 
 int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe)
 {
-    if (dataframe->taille <= 1)
+    // Si une seule colonne présente, ne rien faire
+    if (dataframe->taille == 1)
         return 0;
 
     int taille_du_plus_grand_tab_data = 0;
@@ -76,8 +77,8 @@ int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe)
             delta_taille = taille_du_plus_grand_tab_data - colonne->taille_physique;
             nombre_blocs_a_ajouter = delta_taille / NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
 
-            // Allouer le ou les blocs mémoire nécessaires
-            int nouvelle_taille = colonne->taille_physique + (NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE * nombre_blocs_a_ajouter);
+            // Allouer le ou les bloc(s) mémoire nécessaire(s)
+            int nouvelle_taille = colonne->taille_physique + (nombre_blocs_a_ajouter * NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE);
 
             int* nouveau_tab_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
             if (nouveau_tab_data == NULL)
@@ -95,10 +96,6 @@ int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe)
 
 int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int num_col, int valeur)
 {
-    // todo:
-    //Verifier que la valeur à inserer soit dans la plage des valeurs acceptables
-    // "valeur" doit donc être compris entre -2 147 483 648 et 2 147 483 647
-    
     bool nouveau_bloc_lignes_ajoute_a_colonne = false;
 
     // Ajouter valeur à colonne
@@ -110,7 +107,7 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int 
     }
 
     if (nouveau_bloc_lignes_ajoute_a_colonne == true)
-        egaliser_taille_des_tabs_data_des_colonnes(dataframe->colonnes, (dataframe->taille), num_col);
+        egaliser_taille_des_tabs_data_des_colonnes(dataframe);
 
     return 0;
 }
