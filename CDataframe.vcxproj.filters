@@ -36,6 +36,9 @@
     <ClCompile Include="String_manager.c">
       <Filter>Fichiers sources</Filter>
     </ClCompile>
+    <ClCompile Include="Gestion_actions_utilisateur.c">
+      <Filter>Fichiers sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Colonne.h">
@@ -57,6 +60,9 @@
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
     <ClInclude Include="String_manager.h">
+      <Filter>Fichiers d%27en-tête</Filter>
+    </ClInclude>
+    <ClInclude Include="Gestion_actions_utilisateur.h">
       <Filter>Fichiers d%27en-tête</Filter>
     </ClInclude>
   </ItemGroup>

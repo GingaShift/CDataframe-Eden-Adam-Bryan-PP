@@ -173,8 +173,6 @@ int main()
                 //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
                 res = populate_dataframe_artificially(&CDataframe);
 
-                res = remplacer_valeur(&CDataframe, 0, 2, 24);
-
                 printf("\nChoix 6 - Affichage du CDataframe:");
                 
                 if (!CDataframe_exists)
@@ -186,6 +184,34 @@ int main()
 
                 res = afficher_cdataframe(&CDataframe, 0, 0);
 
+                choix = -1;
+
+                break;
+            
+            case 7:
+
+                // DEMO:
+                CDataframe = creer_cdataframe(&CDataframe_exists, "CDataframe1");
+
+                // Peupler le CDataframe artificiellement - Test seulement - 
+                //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
+                res = populate_dataframe_artificially(&CDataframe);
+
+                /////////////////////////////////////////////////////////////////////////////////
+                // Fonction à tester
+
+                /////////////////////////////////////////////////////////////////////////////////
+
+                printf("\nChoix 6 - Affichage du CDataframe:");
+
+                if (!CDataframe_exists)
+                {
+                    printf("\n Impossible d'afficher le CDataframe car il n'existe pas.");
+                    printf("\n Veuillez le creer ou le charger a partir d'une source.");
+                    break;
+                }
+
+                res = afficher_cdataframe(&CDataframe, 0, 0);
 
                 choix = -1;
 

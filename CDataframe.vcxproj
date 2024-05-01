@@ -131,6 +131,7 @@
     <ClCompile Include="Analyses_et_stats.c" />
     <ClCompile Include="CDataframe.c" />
     <ClCompile Include="Divers.c" />
+    <ClCompile Include="Gestion_actions_utilisateur.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Colonne.c" />
     <ClCompile Include="String_manager.c" />
@@ -141,6 +142,7 @@
     <ClInclude Include="CDataframe.h" />
     <ClInclude Include="Colonne.h" />
     <ClInclude Include="Divers.h" />
+    <ClInclude Include="Gestion_actions_utilisateur.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="String_manager.h" />
   </ItemGroup>
