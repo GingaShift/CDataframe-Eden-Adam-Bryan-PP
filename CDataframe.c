@@ -374,3 +374,34 @@ int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_v
     
     return 0;
 }
+
+int supprimer_colonne(DATAFRAME* dataframe, int num_col)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas.\n");
+        return 1;
+    }
+
+    if (num_col < 0 || num_col >= dataframe->taille)
+    {
+        printf("\nLa colonne numero %d n'existe pas.\n", num_col);
+        return 1;
+    }
+    
+    // Libérer les données de la colonne si nécessaire
+    if (dataframe->colonnes[num_col]->data != NULL)
+        free(dataframe->colonnes[num_col]->data);
+
+    free(dataframe->colonnes[num_col]);
+
+    for (int i = num_col; i < dataframe->taille - 1; i++)
+        dataframe->colonnes[i] = dataframe->colonnes[i + 1];
+
+    dataframe->taille--;
+
+    return 0;
+}
+
+
+

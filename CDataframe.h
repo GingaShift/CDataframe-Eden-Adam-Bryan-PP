@@ -37,3 +37,5 @@ int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_
 int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne);
 
 int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_val);
+
+int supprimer_colonne(DATAFRAME* dataframe, int num_col);
