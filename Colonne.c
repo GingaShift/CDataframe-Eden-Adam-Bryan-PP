@@ -20,11 +20,6 @@ COLONNE* creer_colonne(const char* titre)
     nouvelle_colonne->taille_physique = 0;
     nouvelle_colonne->taille_logique = 0;
 
-    // Initialisation du tableau data de cette colonne
-    /*for (int i = 0; i < NOMBRE_LIGNES_PAR_COLONNE; i++) {
-        nouvelle_colonne->data[i] = VALEUR_PAR_DEFAUT_DATA_COLONNE;
-    }*/
-
     return nouvelle_colonne;
 }
 
@@ -41,7 +36,7 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
         if (colonne->data == NULL)
         {
             printf("\nErreur d'allocation mémoire lors de la création du tableau data de la colonne.\n");
-            return 1;
+            return 0;
         }
 
         colonne->taille_physique = NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
@@ -58,8 +53,8 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
         int* nouveau_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
         if (nouveau_data == NULL)
         {
-            fprintf(stderr, "Erreur de réallocation de mémoire lors de l'extention du tableau data de la colonne.\n");
-            return 1;
+            printf("\nErreur de réallocation de mémoire lors de l'extension du tableau data de la colonne.\n");
+            return 0;
         }
         
         // Assignation du tableau "agrandi"
@@ -76,30 +71,40 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
     colonne->data[colonne->taille_logique] = valeur;
     colonne->taille_logique++;
     
-    return 0;
+    return 1;
 }
 
-int afficher_colonne(COLONNE** dataframe, int taille_dataframe, int num_colonne)
+int afficher_colonne(COLONNE* colonne, int taille_dataframe, int num_colonne)
 {
-    if (dataframe == NULL || num_colonne < 0) {
-        fprintf(stderr, "\n\nErreur : dataframe invalide ou indice de colonne invalide.\n\n");
-        return 1;
+    if (colonne == NULL || num_colonne < 0) {
+        printf("\nErreur : colonne invalide ou indice de colonne invalide\n");
+        return 0;
     }
 
     if (num_colonne >= taille_dataframe) {
-        fprintf(stderr, "\n\nErreur : indice de colonne hors limites.\n\n");
-        return 1;
+        printf("\nErreur : indice de colonne hors limites\n");
+        return 0;
     }
-
-    //printf("Valeurs de la colonne %s :\n", dataframe[num_colonne]->nom);
 
     int nombre_valeurs_affichees = 0;
 
-    for (int i = 0; i < dataframe[num_colonne]->taille_logique; i++) {
-        printf("[%d] = %d ", i, dataframe[num_colonne]->data[i]);
+    for (int i = 0; i < colonne->taille_logique; i++)
+    {
+        printf("[%d] = %d ", i, colonne->data[i]);
         printf("\n");
         nombre_valeurs_affichees++;
     }
     
     return nombre_valeurs_affichees;
+}
+
+int supprimer_colonne(COLONNE* colonne)
+{
+    // Libérer les données de la colonne
+    if (colonne->data != NULL)
+        free(colonne->data);
+
+    free(colonne);
+
+    return 1;
 }

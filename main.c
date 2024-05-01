@@ -198,8 +198,9 @@ int main()
                 res = populate_dataframe_artificially(&CDataframe);
 
                 /////////////////////////////////////////////////////////////////////////////////
-                // Fonction à tester 2 colonnes
-                res = supprimer_colonne(&CDataframe, 2);
+                // Fonction à tester avec 2 colonnes
+                if (supprimer_colonne_du_cdataframe(&CDataframe, 2))
+                    printf("\nLa colonne a ete supprimee\n");
                 /////////////////////////////////////////////////////////////////////////////////
 
                 printf("\nChoix 6 - Affichage du CDataframe:");
@@ -211,7 +212,7 @@ int main()
                     break;
                 }
 
-                res = afficher_cdataframe(&CDataframe, 0, 0);
+                res = afficher_cdataframe(&CDataframe, 0, 10);
 
                 choix = -1;
 

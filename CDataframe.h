@@ -20,7 +20,7 @@ int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe);
 
 int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int num_col, int valeur);
 
-int nom_colonne_existe(COLONNE** dataframe, char* nom_colonne, int taille_CDataframe);
+int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe);
 
 DATAFRAME creer_cdataframe(bool* dataframe_exists, const char* nom_dataframe);
 
@@ -38,4 +38,4 @@ int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne);
 
 int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_val);
 
-int supprimer_colonne(DATAFRAME* dataframe, int num_col);
+int supprimer_colonne_du_cdataframe(DATAFRAME* dataframe, int num_col);
