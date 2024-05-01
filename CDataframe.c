@@ -395,11 +395,14 @@ int supprimer_colonne(DATAFRAME* dataframe, int num_col)
 
     free(dataframe->colonnes[num_col]);
 
-    for (int i = num_col; i < dataframe->taille - 1; i++)
-        dataframe->colonnes[i] = dataframe->colonnes[i + 1];
-
     dataframe->taille--;
 
+    if (dataframe->taille == 1)
+        return 0;
+
+    for (int i = num_col; i <= dataframe->taille - 1; i++)
+        dataframe->colonnes[i] = dataframe->colonnes[i + 1];
+    
     return 0;
 }
 

@@ -29,5 +29,20 @@ int populate_dataframe_artificially(DATAFRAME* dataframe)
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 2, 30);
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 2, 31);
 
+    // Ajouter une colonne au dataframe
+    ajouter_colonne(dataframe, "Colonne 4");
+
+    // Ajouter quelques valeurs à Colonne 4
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 3, 40);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 3, 41);
+
+        // Ajouter une colonne au dataframe
+    ajouter_colonne(dataframe, "Colonne 5");
+
+    // Ajouter quelques valeurs à Colonne 5
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 4, 50);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 4, 51);
+
+
     return 0;
 }
