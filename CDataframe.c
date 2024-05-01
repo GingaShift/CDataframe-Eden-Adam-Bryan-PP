@@ -343,3 +343,34 @@ int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne)
     printf("\nValeur à la colonne %d, ligne %d : %d\n", num_col, num_ligne, valeur);
 
 }
+
+int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_val)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas.\n");
+        return 1;
+    }
+
+    if (num_col < 0)
+    {
+        printf("\nLa ligne entree n'existe pas\n");
+        return 1;
+    }
+
+    if (num_col >= dataframe->taille)
+    {
+        printf(" Dans la limite de la plage de colonne disponible ");
+        return 1;
+    }
+
+    if (num_ligne >= dataframe->colonnes[num_col]->taille_logique)
+    {
+        printf("ERREUR, ce n'est pas réglementaire aux données enregistrées");
+        return 1;
+    }
+
+    dataframe->colonnes[num_col]->data[num_ligne] = new_val;
+    
+    return 0;
+}
