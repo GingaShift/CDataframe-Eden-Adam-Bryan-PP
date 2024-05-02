@@ -76,7 +76,7 @@ int free_all_ressources(DATAFRAME* dataframe)
         // liberer la mémoires allouée au dataframe
         free(dataframe->colonnes);
 
-    return 0;
+    return 1;
 }
 
 int main()
@@ -186,8 +186,8 @@ int main()
             case 7:
 
                 // DEMO:
-                //CDataframe = creer_cdataframe(&CDataframe_exists, "CDataframe1");
-                CDataframe = gestion_creation_cdataframe(&CDataframe_exists);
+                //CDataframe = gestion_creation_cdataframe(&CDataframe_exists);
+                CDataframe = creer_cdataframe(&CDataframe_exists, "Dataframe 1");
 
                 // Peupler le CDataframe artificiellement - Test seulement - 
                 res = populate_dataframe_artificially(CDataframe);
@@ -206,7 +206,7 @@ int main()
                     break;
                 }
 
-                res = afficher_cdataframe(CDataframe, 0, 10);
+                res = afficher_cdataframe(CDataframe, NO_LIMIT, 20);
 
                 choix = -1;
 
@@ -220,5 +220,5 @@ int main()
     // Libération de la mémoire occupée par les colonnes et le dataframe
     free_all_ressources(&CDataframe);
 
-    return 0;
+    return 1;
 }

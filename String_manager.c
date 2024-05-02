@@ -24,7 +24,7 @@ char* saisie_chaine(char* invite_saisie)
     // Demander à l'utilisateur de saisir une chaine
     printf(invite_saisie);
 
-    scanf("%s", chaine); // Lire la saisie de l'utilisateur et la stocker dans le tableau input
+    int res = scanf("%s", chaine); // Lire la saisie de l'utilisateur et la stocker dans le tableau input
 
     // Supprimer le saut de ligne (\n) ajouté par scanf si présent
     chaine[strcspn(chaine, "\n")] = '\0';

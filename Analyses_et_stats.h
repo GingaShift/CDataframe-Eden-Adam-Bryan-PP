@@ -1,13 +1,15 @@
 #pragma once
 #include "CDataframe.h"
 
-typedef enum {
+typedef enum
+{
     SUPERIEUR,
     EGAL,
     INFERIEUR
 } OPERATEURS_COMPARAISON;
 
-typedef struct {
+typedef struct
+{
     OPERATEURS_COMPARAISON Operateur;
 } OPERATEURS_DE_COMPARAISON;
 

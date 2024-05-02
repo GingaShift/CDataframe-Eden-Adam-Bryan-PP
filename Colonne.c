@@ -10,7 +10,7 @@ COLONNE* creer_colonne(const char* titre)
     COLONNE* nouvelle_colonne = malloc(sizeof(COLONNE));
     if (nouvelle_colonne == NULL) {
         printf("\nErreur d'allocation de mémoire pour la nouvelle colonne.\n");
-        return NULL;
+        return 0;
     }
 
     // Initialisation de la nouvelle colonne
@@ -79,6 +79,8 @@ int supprimer_colonne(COLONNE* colonne)
     // Libérer les données de la colonne
     if (colonne->data != NULL)
         free(colonne->data);
+    else
+        return 0;
 
     free(colonne);
 
@@ -107,30 +109,4 @@ int afficher_colonne(COLONNE* colonne)
     }
     
     return 1;
-}
-
-int ajouter_valeur_par_utilisateur(DATAFRAME* dataframe, int num_col, int valeur)
-{
-    if (dataframe == NULL)
-    {
-        printf("\nLe dataframe n'existe pas\n");
-        return 0;
-    }
-
-    if (num_col < 0 || num_col >= dataframe->taille)
-    {
-        printf("\nLa colonne spécifiée est invalide car elle n'existe pas dans le dataframe.\n");
-        return 0;
-    }
-
-    if(inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, num_col, valeur))
-    {
-        printf("\nLa valeur a bien été ajoutée\n");
-        return 1;
-    }
-    else
-    {
-        printf("\nUne erreur est survenue\n"); 
-        return 0;
-    }
 }

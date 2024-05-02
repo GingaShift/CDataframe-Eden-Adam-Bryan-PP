@@ -41,3 +41,5 @@ int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_v
 int supprimer_colonne_du_cdataframe(DATAFRAME* dataframe, int num_col);
 
 int afficher_nombre_colonnes(DATAFRAME* dataframe);
+
+int ajouter_valeur_par_utilisateur(DATAFRAME* dataframe, int num_col, int valeur);

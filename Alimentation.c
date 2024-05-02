@@ -51,5 +51,5 @@ int populate_dataframe_artificially(DATAFRAME* dataframe)
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 5, 62);
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 5, 63);
 
-    return 0;
+    return 1;
 }

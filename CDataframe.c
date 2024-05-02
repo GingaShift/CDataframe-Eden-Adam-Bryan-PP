@@ -13,7 +13,7 @@ int ajouter_colonne(DATAFRAME* dataframe, const char* nom_colonne)
     if (nouvelle_colonne == NULL)
     {
         printf("\nErreur lors de la création de la colonne.\n");
-        return 1;
+        return 0;
     }
 
     // Agrandissement du tableau CDataframe pour ajouter la nouvelle colonne
@@ -24,14 +24,14 @@ int ajouter_colonne(DATAFRAME* dataframe, const char* nom_colonne)
     {
         printf("\nErreur d'allocation mémoire lors de l'ajout d'une colonne au CDataframe.\n");
         free(nouvelle_colonne);
-        return 1;
+        return 0;
     }
 
     // Ajout de la colonne au dataframe
     // (*colonnes)[*taille_dataframe - 1] = nouvelle_colonne;
     dataframe->colonnes[dataframe->taille - 1] = nouvelle_colonne;
 
-    return 0;
+    return 1;
 }
 
 int obtenir_nombre_lignes(DATAFRAME* dataframe)
@@ -46,7 +46,7 @@ int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe)
 {
     // Si une seule colonne présente, ne rien faire
     if (dataframe->taille == 1)
-        return 0;
+        return 1;
 
     int taille_du_plus_grand_tab_data = 0;
     int nombre_blocs_a_ajouter = 0;
@@ -84,7 +84,7 @@ int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME* dataframe)
             if (nouveau_tab_data == NULL)
             {
                 printf("\nErreur d'allocation de mémoire pour la colonne %s.\n", colonne->titre);
-                return 1;
+                return 0;
             }
 
             // Mettre à jour les données de la colonne
@@ -105,7 +105,7 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int 
     if (nouveau_bloc_lignes_ajoute_a_colonne == true)
         egaliser_taille_des_tabs_data_des_colonnes(dataframe);
 
-    return 0;
+    return 1;
 }
 
 int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe)
@@ -115,9 +115,9 @@ int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDatafra
         const char* nom = colonne[i]->titre;
 
         if (compare_chaines(nom, nom_colonne) == 0)
-            return 0;
+            return 1;
     }
-    return 1;
+    return 0;
 }
 
 DATAFRAME* creer_cdataframe(bool* dataframe_exists, char* nom_dataframe)
@@ -126,7 +126,7 @@ DATAFRAME* creer_cdataframe(bool* dataframe_exists, char* nom_dataframe)
     
     if (nouveau_dataframe == NULL) {
         printf("\nErreur lors de l'allocation de mémoire pour le dataframe.\n");
-        exit(EXIT_FAILURE);
+        return 0;
     }
     
     // Attribution du nom (si nom_dataframe est valide)
@@ -136,10 +136,8 @@ DATAFRAME* creer_cdataframe(bool* dataframe_exists, char* nom_dataframe)
         nouveau_dataframe->titre[sizeof(nouveau_dataframe->titre) - 1] = '\0'; // Assurer que la chaîne est terminée par un caractère nul
     }
     else
-    {
         // Si nom_dataframe est NULL, affecter une chaîne vide
         nouveau_dataframe->titre[0] = '\0';
-    }
 
     nouveau_dataframe->taille = 0;
     
@@ -149,32 +147,6 @@ DATAFRAME* creer_cdataframe(bool* dataframe_exists, char* nom_dataframe)
     (*dataframe_exists) = true;
 
     return nouveau_dataframe;
-    
-    //// Declaration du dataframe
-    //DATAFRAME dataframe;
-
-    //// Ini dataframe
-    //dataframe.taille = 0;
-    //
-    //// Attribution du nom (si nom_dataframe est valide)
-    //if (nom_dataframe != NULL)
-    //{
-    //    strncpy(dataframe.titre, nom_dataframe, sizeof(dataframe.titre) - 1);
-    //    dataframe.titre[sizeof(dataframe.titre) - 1] = '\0'; // Assurer que la chaîne est terminée par un caractère nul
-    //}
-    //else
-    //{
-    //    // Si nom_dataframe est NULL, affecter une chaîne vide
-    //    dataframe.titre[0] = '\0';
-    //}
-
-    //dataframe.colonnes = NULL;
-
-    //// Modifier le pointeur de booléen pour indiquer que la dataframe a été créée
-    //(*dataframe_exists) = true;
-
-    //// Retourner le dataframe créé
-    //return dataframe;
 }
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)
@@ -183,6 +155,7 @@ int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)
     {
         afficher_colonne(dataframe, taille_dataframe, num_col);
     }
+    return 1;
 }
 
 int afficher_noms_colonnes(DATAFRAME* dataframe)
@@ -190,7 +163,7 @@ int afficher_noms_colonnes(DATAFRAME* dataframe)
     if (dataframe->taille == 0)
     {
         printf("\nLe CDataframe est vide ou non initialise.\n");
-        return 1;
+        return 0;
     }
 
     int nombre_col = 0;
@@ -213,7 +186,7 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int num_ligne_max
     {
         printf("\n\n");
         printf("Veuillez d'abord creer et remplir le CDataframe\n\n");
-        return 1;
+        return 0;
     }
 
     // todo: Optimisation: Chercher ici la colonne qui contient le plus de données, et limiter l'affichage des données
@@ -225,11 +198,11 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int num_ligne_max
     printf("\n\n");
         
     // Si aucune limites de cols précisée, alors afficher toutes les colonnes
-    if (num_col_max == 0)
+    if (num_col_max == NO_LIMIT)
         num_col_max = dataframe->taille;
 
     // Si aucune limites de lignes précisée, alors afficher toutes les lignes
-    if (num_ligne_max == 0)
+    if (num_ligne_max == NO_LIMIT)
         num_ligne_max = dataframe->colonnes[0]->taille_physique;
 
     // affichage de la ligne des noms de toutes les colonnes voulues
@@ -291,7 +264,7 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int num_ligne_max
 
     printf("\n\n");
 
-    return 0;
+    return 1;
 }
 
 int modifier_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int valeur)
@@ -299,13 +272,13 @@ int modifier_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int valeur
     if (num_col > dataframe->taille - 1)
     {
         printf("La colonne num %d n'existe pas", num_col);
-        return 1;
+        return 0;
     }
 
     if (num_ligne > dataframe->colonnes[num_col]->taille_logique)
     {
         printf("La colonne num %d ne possede pas de valeur à la ligne %d, on ne peut donc pas la modifier", num_col, num_ligne);
-        return 1;
+        return 0;
     }
 
     // Modification de la valeur
@@ -318,7 +291,7 @@ int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_
     if (num_colonne < 0 || num_colonne >= dataframe->taille)
     {
         printf("\nLe numéro de colonne %d est invalide.\n", num_colonne);
-        return 1;
+        return 0;
     }
 
     // Vérifier si le nouveau nom est déjà utilisé par une autre colonne
@@ -327,7 +300,7 @@ int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_
         if (i != num_colonne && strcmp(dataframe->colonnes[i]->titre, nouveau_nom) == 0)
         {
             printf("\nLe nom \"%s\" est déjà utilisé par la colonne %d.\n", nouveau_nom, i);
-            return 1;
+            return 0;
         }
     }
 
@@ -337,7 +310,7 @@ int renommer_colonne(DATAFRAME* dataframe, int num_colonne, const char* nouveau_
     // Ajouter le char terminal
     dataframe->colonnes[num_colonne]->titre[sizeof(dataframe->colonnes[num_colonne]->titre) - 1] = '\0';
 
-    return 0;
+    return 1;
 }
 
 int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne)
@@ -345,7 +318,7 @@ int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne)
     if (dataframe == NULL)
     {
         printf("\nLe dataframe n'existe pas.\n");
-        return 1;
+        return 0;
     }
     
     if (num_col < 0)
@@ -361,13 +334,14 @@ int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne)
     if (num_ligne >= dataframe->colonnes[num_col]->taille_logique)
     {
         printf("ERREUR, ce n'est pas réglementaire aux données enregistrées");
-        return 1;
+        return 0;
     }
 
     int valeur = dataframe->colonnes[num_col]->data[num_ligne];
     
     printf("\nValeur à la colonne %d, ligne %d : %d\n", num_col, num_ligne, valeur);
 
+    return 1;
 }
 
 int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_val)
@@ -375,30 +349,30 @@ int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_v
     if (dataframe == NULL)
     {
         printf("\nLe dataframe n'existe pas.\n");
-        return 1;
+        return 0;
     }
 
     if (num_col < 0)
     {
         printf("\nLa ligne entree n'existe pas\n");
-        return 1;
+        return 0;
     }
 
     if (num_col >= dataframe->taille)
     {
         printf(" Dans la limite de la plage de colonne disponible ");
-        return 1;
+        return 0;
     }
 
     if (num_ligne >= dataframe->colonnes[num_col]->taille_logique)
     {
         printf("ERREUR, ce n'est pas réglementaire aux données enregistrées");
-        return 1;
+        return 0;
     }
 
     dataframe->colonnes[num_col]->data[num_ligne] = new_val;
     
-    return 0;
+    return 1;
 }
 
 int supprimer_colonne_du_cdataframe(DATAFRAME* dataframe, int num_col)
@@ -437,6 +411,32 @@ int (afficher_nombre_colonnes)(DATAFRAME* dataframe)
     }
 
     printf("Nombre de colonnes presentes dans le CDataframe \"%s\" : %d\n", dataframe->titre ,dataframe->taille);
+    
     return 1;
 }
 
+int ajouter_valeur_par_utilisateur(DATAFRAME* dataframe, int num_col, int valeur)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas\n");
+        return 0;
+    }
+
+    if (num_col < 0 || num_col >= dataframe->taille)
+    {
+        printf("\nLa colonne spécifiée est invalide car elle n'existe pas dans le dataframe.\n");
+        return 0;
+    }
+
+    if (inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, num_col, valeur))
+    {
+        printf("\nLa valeur a bien été ajoutée\n");
+        return 1;
+    }
+    else
+    {
+        printf("\nUne erreur est survenue\n");
+        return 0;
+    }
+}
