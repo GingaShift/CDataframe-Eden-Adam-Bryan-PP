@@ -120,34 +120,61 @@ int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDatafra
     return 1;
 }
 
-DATAFRAME creer_cdataframe(bool* dataframe_exists, const char* nom_dataframe)
+DATAFRAME* creer_cdataframe(bool* dataframe_exists, char* nom_dataframe)
 {
-    // Declaration du dataframe
-    DATAFRAME dataframe;
-
-    // Ini dataframe
-    dataframe.taille = 0;
+    DATAFRAME* nouveau_dataframe = (DATAFRAME*)malloc(sizeof(DATAFRAME));
+    
+    if (nouveau_dataframe == NULL) {
+        printf("\nErreur lors de l'allocation de mémoire pour le dataframe.\n");
+        exit(EXIT_FAILURE);
+    }
     
     // Attribution du nom (si nom_dataframe est valide)
-    if (nom_dataframe != NULL) {
-        strncpy(dataframe.titre, nom_dataframe, sizeof(dataframe.titre) - 1);
-        dataframe.titre[sizeof(dataframe.titre) - 1] = '\0'; // Assurer que la chaîne est terminée par un caractère nul
+    if (nom_dataframe != NULL)
+    {
+        strncpy(nouveau_dataframe->titre, nom_dataframe, sizeof(nouveau_dataframe->titre) - 1);
+        nouveau_dataframe->titre[sizeof(nouveau_dataframe->titre) - 1] = '\0'; // Assurer que la chaîne est terminée par un caractère nul
     }
     else
     {
         // Si nom_dataframe est NULL, affecter une chaîne vide
-        dataframe.titre[0] = '\0';
+        nouveau_dataframe->titre[0] = '\0';
     }
 
-    dataframe.colonnes = NULL;
-
-    // Rappel : les colonnes seront créées par la suite, en just in time
-
-    // Modifier le pointeur de booléen pour indiquer que la dataframe a été créée
+    nouveau_dataframe->taille = 0;
+    
+    // Initialiser le tableau de pointeurs de colonnes à NULL
+    nouveau_dataframe->colonnes = NULL;
+    
     (*dataframe_exists) = true;
 
-    // Retourner le dataframe créé
-    return dataframe;
+    return nouveau_dataframe;
+    
+    //// Declaration du dataframe
+    //DATAFRAME dataframe;
+
+    //// Ini dataframe
+    //dataframe.taille = 0;
+    //
+    //// Attribution du nom (si nom_dataframe est valide)
+    //if (nom_dataframe != NULL)
+    //{
+    //    strncpy(dataframe.titre, nom_dataframe, sizeof(dataframe.titre) - 1);
+    //    dataframe.titre[sizeof(dataframe.titre) - 1] = '\0'; // Assurer que la chaîne est terminée par un caractère nul
+    //}
+    //else
+    //{
+    //    // Si nom_dataframe est NULL, affecter une chaîne vide
+    //    dataframe.titre[0] = '\0';
+    //}
+
+    //dataframe.colonnes = NULL;
+
+    //// Modifier le pointeur de booléen pour indiquer que la dataframe a été créée
+    //(*dataframe_exists) = true;
+
+    //// Retourner le dataframe créé
+    //return dataframe;
 }
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)
@@ -158,9 +185,9 @@ int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe)
     }
 }
 
-int afficher_noms_colonnes(DATAFRAME dataframe)
+int afficher_noms_colonnes(DATAFRAME* dataframe)
 {
-    if (dataframe.taille == 0)
+    if (dataframe->taille == 0)
     {
         printf("\nLe CDataframe est vide ou non initialise.\n");
         return 1;
@@ -170,8 +197,8 @@ int afficher_noms_colonnes(DATAFRAME dataframe)
 
     printf("\nNoms des colonnes :\n\n");
 
-    for (int i = 0; i < dataframe.taille; i++) {
-        COLONNE* colonne = dataframe.colonnes[i];
+    for (int i = 0; i < dataframe->taille; i++) {
+        COLONNE* colonne = dataframe->colonnes[i];
         printf(" [%d] = ", nombre_col);
         printf("%s\n", colonne->titre);
         nombre_col += 1;
@@ -207,7 +234,12 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int num_ligne_max
 
     // affichage de la ligne des noms de toutes les colonnes voulues
     for (int i = 0; i < num_col_max; i++)
-        printf("        \"%s\"  ", dataframe->colonnes[i]->titre);
+    {
+        if (i==0)
+            printf(" Num:");
+        
+        printf("      \"%s\"   ", dataframe->colonnes[i]->titre);
+    }
 
     printf("\n");
 
@@ -225,7 +257,7 @@ int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int num_ligne_max
             // Affichage du num de ligne en début de ligne une seule et unique fois
             if (col_courante == 0)
             {
-                printf(" [%d]", ligne_courante);
+                printf(" [%02d]", ligne_courante);
                 printf("    ");
             }
             else

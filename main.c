@@ -8,9 +8,10 @@
 #include "Analyses_et_stats.h"
 #include "Main.h"
 #include "String_manager.h"
+#include "Gestion_actions_utilisateur.h"
 
 // Declaration du CDataframe
-DATAFRAME CDataframe;
+DATAFRAME* CDataframe;
 bool CDataframe_exists = false;
 
 int res = 0;
@@ -113,21 +114,15 @@ int main()
                 break;
             
             case 1:
-                printf("\nChoix 1 - Creation du CDataframe:\n");
-                
-                // si le dataframe n'existe pas
-                if (! CDataframe_exists)
-                {
-                    CDataframe = creer_cdataframe(&CDataframe_exists, "CDataframe1");
 
-                    // dataframe vide créé avec succès
-                    if (CDataframe_exists)
-                    {
-                        printf("\nLe CDataframe a ete cree avec succes\n\n");
-                    }
-                }
-                else
+                if (CDataframe_exists)
+                {
                     printf("\nLe CDataframe a deja ete cree\n");
+                    break;
+                }
+
+                CDataframe = gestion_creation_cdataframe(&CDataframe_exists);
+                
                 break;
 
             case 2:
@@ -171,7 +166,7 @@ int main()
                               
                 // Peupler le CDataframe artificiellement - Test seulement - 
                 //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
-                res = populate_dataframe_artificially(&CDataframe);
+                res = populate_dataframe_artificially(CDataframe);
 
                 printf("\nChoix 6 - Affichage du CDataframe:");
                 
@@ -191,16 +186,16 @@ int main()
             case 7:
 
                 // DEMO:
-                CDataframe = creer_cdataframe(&CDataframe_exists, "CDataframe1");
+                //CDataframe = creer_cdataframe(&CDataframe_exists, "CDataframe1");
+                CDataframe = gestion_creation_cdataframe(&CDataframe_exists);
 
                 // Peupler le CDataframe artificiellement - Test seulement - 
-                //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
-                res = populate_dataframe_artificially(&CDataframe);
+                res = populate_dataframe_artificially(CDataframe);
 
                 /////////////////////////////////////////////////////////////////////////////////
-                // Fonction à tester avec 2 colonnes
-                if (supprimer_colonne_du_cdataframe(&CDataframe, 2))
-                    printf("\nLa colonne a ete supprimee\n");
+                // Emplacement de la fonction à tester:
+                afficher_valeur(CDataframe, 1, 1);
+
                 /////////////////////////////////////////////////////////////////////////////////
 
                 printf("\nChoix 6 - Affichage du CDataframe:");
@@ -212,7 +207,7 @@ int main()
                     break;
                 }
 
-                res = afficher_cdataframe(&CDataframe, 0, 10);
+                res = afficher_cdataframe(CDataframe, 0, 10);
 
                 choix = -1;
 

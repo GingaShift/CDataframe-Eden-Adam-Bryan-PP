@@ -24,9 +24,9 @@ char* saisie_chaine(char* invite_saisie)
     // Demander à l'utilisateur de saisir une chaine
     printf(invite_saisie);
 
-    fgets(chaine, sizeof(chaine), stdin);
+    scanf("%s", chaine); // Lire la saisie de l'utilisateur et la stocker dans le tableau input
 
-    // Supprimer le saut de ligne (\n) ajouté par fgets si présent
+    // Supprimer le saut de ligne (\n) ajouté par scanf si présent
     chaine[strcspn(chaine, "\n")] = '\0';
 
     return chaine;

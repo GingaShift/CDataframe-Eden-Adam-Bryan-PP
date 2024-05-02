@@ -22,11 +22,11 @@ int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME* dataframe, int 
 
 int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe);
 
-DATAFRAME creer_cdataframe(bool* dataframe_exists, const char* nom_dataframe);
+DATAFRAME* creer_cdataframe(bool* dataframe_exists, const char* nom_dataframe);
 
 int afficher_les_colonnes(COLONNE** dataframe, int taille_dataframe);
 
-int afficher_noms_colonnes(DATAFRAME dataframe);
+int afficher_noms_colonnes(DATAFRAME* dataframe);
 
 int afficher_cdataframe(DATAFRAME* dataframe, int num_col_max, int int_num_ligne_max);
 

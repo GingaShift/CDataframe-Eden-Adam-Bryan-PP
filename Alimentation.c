@@ -43,6 +43,13 @@ int populate_dataframe_artificially(DATAFRAME* dataframe)
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 4, 50);
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 4, 51);
 
+    ajouter_colonne(dataframe, "Colonne 6");
+    
+    // Ajouter quelques valeurs à Colonne 6
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 5, 60);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 5, 61);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 5, 62);
+    inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 5, 63);
 
     return 0;
 }
