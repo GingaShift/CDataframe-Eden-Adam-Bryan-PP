@@ -429,5 +429,14 @@ int supprimer_colonne_du_cdataframe(DATAFRAME* dataframe, int num_col)
     return 1;
 }
 
+int (afficher_nombre_colonnes)(DATAFRAME* dataframe)
+{
+    if (dataframe == NULL) {
+        printf("\nVeuillez d'abord creer un dataframe.\n");
+        return 0;
+    }
 
+    printf("Nombre de colonnes presentes dans le CDataframe \"%s\" : %d\n", dataframe->titre ,dataframe->taille);
+    return 1;
+}
 

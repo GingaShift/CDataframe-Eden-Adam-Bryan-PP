@@ -39,3 +39,5 @@ int afficher_valeur(DATAFRAME* dataframe, int num_col, int num_ligne);
 int remplacer_valeur(DATAFRAME* dataframe, int num_col, int num_ligne, int new_val);
 
 int supprimer_colonne_du_cdataframe(DATAFRAME* dataframe, int num_col);
+
+int afficher_nombre_colonnes(DATAFRAME* dataframe);

@@ -23,3 +23,9 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
 int afficher_colonne(COLONNE* colonne, int taille_dataframe, int indice_colonne);
 
 int supprimer_colonne(COLONNE* colonne);
+
+int afficher_colonne(COLONNE* colonne);
+
+int ajouter_valeur_par_utilisateur(DATAFRAME* dataframe, int num_col, int valeur);
+
+

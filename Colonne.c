@@ -74,30 +74,6 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
     return 1;
 }
 
-int afficher_colonne(COLONNE* colonne, int taille_dataframe, int num_colonne)
-{
-    if (colonne == NULL || num_colonne < 0) {
-        printf("\nErreur : colonne invalide ou indice de colonne invalide\n");
-        return 0;
-    }
-
-    if (num_colonne >= taille_dataframe) {
-        printf("\nErreur : indice de colonne hors limites\n");
-        return 0;
-    }
-
-    int nombre_valeurs_affichees = 0;
-
-    for (int i = 0; i < colonne->taille_logique; i++)
-    {
-        printf("[%d] = %d ", i, colonne->data[i]);
-        printf("\n");
-        nombre_valeurs_affichees++;
-    }
-    
-    return nombre_valeurs_affichees;
-}
-
 int supprimer_colonne(COLONNE* colonne)
 {
     // Libérer les données de la colonne
@@ -107,4 +83,54 @@ int supprimer_colonne(COLONNE* colonne)
     free(colonne);
 
     return 1;
+}
+
+int afficher_colonne(COLONNE* colonne)
+{
+    if (colonne == NULL)
+    {
+        printf("\nLa colonne n'existe pas\n");
+        return 0;
+    }
+
+    if (colonne->taille_logique == 0)
+    {
+        printf("\nLa colonne %s ne contient aucunes données\n\n", colonne->titre);
+        return 1;
+    }
+
+    printf("\nVoici le contenu de la colonne \"%s\" :\n\n", colonne->titre);
+    
+    for (int i = 0; i < colonne->taille_logique; i++)
+    {
+        printf("[%d] : %d\n", i, colonne->data[i]);
+    }
+    
+    return 1;
+}
+
+int ajouter_valeur_par_utilisateur(DATAFRAME* dataframe, int num_col, int valeur)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas\n");
+        return 0;
+    }
+
+    if (num_col < 0 || num_col >= dataframe->taille)
+    {
+        printf("\nLa colonne spécifiée est invalide car elle n'existe pas dans le dataframe.\n");
+        return 0;
+    }
+
+    if(inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, num_col, valeur))
+    {
+        printf("\nLa valeur a bien été ajoutée\n");
+        return 1;
+    }
+    else
+    {
+        printf("\nUne erreur est survenue\n"); 
+        return 0;
+    }
 }
