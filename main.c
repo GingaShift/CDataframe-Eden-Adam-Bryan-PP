@@ -10,16 +10,64 @@
 #include "String_manager.h"
 #include "Gestion_actions_utilisateur.h"
 
-// Declaration du CDataframe
-DATAFRAME* CDataframe;
-bool CDataframe_exists = false;
-
 int res = 0;
 
-//OPERATEURS_DE_COMPARAISON egal = { EGAL };
-//OPERATEURS_DE_COMPARAISON superieur = { SUPERIEUR };
-//OPERATEURS_DE_COMPARAISON inferieur = { INFERIEUR };
-//stats_sur_valeur(CDataframe, taille_CDataframe, 10, egal);  
+#pragma region CDataframe 1
+
+// Declaration du CDataframe
+DATAFRAME1* CDataframe1;
+bool CDataframe1_exists = false;
+
+int free_all_ressources(DATAFRAME1* dataframe)
+{
+    // liberer la mémoire allouée aux colonnes
+    for (int i = 0; i < dataframe->taille; i++)
+    {
+        // Libérer les données de la colonne si nécessaire
+        if (dataframe->colonnes[i]->data != NULL)
+            free(dataframe->colonnes[i]->data);
+
+        // Libérer la mémoire allouée pour la structure de colonne
+        free(dataframe->colonnes[i]);
+    }
+
+    if (dataframe->taille > 0)
+        // liberer la mémoires allouée au dataframe
+        free(dataframe->colonnes);
+
+    return 1;
+}
+
+#pragma endregion Fin CDataframe 1
+
+#pragma region CDataframe 2
+
+// Declaration du CDataframe
+DATAFRAME2* CDataframe2;
+bool CDataframe2_exists = false;
+
+int free_ressources(DATAFRAME2* dataframe)
+{
+    // liberer la mémoire allouée aux colonnes
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        // Libérer les données de la colonne si nécessaire
+        if (dataframe->columns[i]->data != NULL)
+            free(dataframe->columns[i]->data);
+
+        // Libérer la mémoire allouée pour la structure de colonne
+        free(dataframe->columns[i]);
+    }
+
+    if (dataframe->size > 0)
+        // liberer la mémoires allouée au dataframe
+        free(dataframe->columns);
+
+    return 1;
+}
+
+#pragma endregion Fin CDataframe 2
+
 
 void afficher_menu()
 {
@@ -59,29 +107,9 @@ void afficher_menu()
     printf(" ****************************************************************************\n");
 }
 
-int free_all_ressources(DATAFRAME* dataframe)
-{
-    // liberer la mémoire allouée aux colonnes
-    for (int i = 0; i < dataframe->taille; i++)
-    {
-        // Libérer les données de la colonne si nécessaire
-        if (dataframe->colonnes[i]->data != NULL)
-            free(dataframe->colonnes[i]->data);
-
-        // Libérer la mémoire allouée pour la structure de colonne
-        free(dataframe->colonnes[i]);
-    }
-
-    if (dataframe->taille > 0)
-        // liberer la mémoires allouée au dataframe
-        free(dataframe->colonnes);
-
-    return 1;
-}
-
 int main()
 {
-    int choix = 6; //-1;
+    int choix = 7; //-1;
     int go = 1;
     int nombre_col = 0;
     int res_choix_menu = -1;
@@ -102,7 +130,7 @@ int main()
         printf("\n");
         printf(" - Choisissez une des entrees du menu puis validez :\n\n");
 
-        //if (choix == -1)
+        if (choix == -1)
             res_choix_menu = scanf("%d", &choix);
 
         // a mettre dans fonction "manager_choix_menu_general" et creer aussi une fonction "manager_choix_menu_gestion_des_donnees"
@@ -115,13 +143,13 @@ int main()
             
             case 1:
 
-                if (CDataframe_exists)
+                if (CDataframe1_exists)
                 {
                     printf("\nLe CDataframe a deja ete cree\n");
                     break;
                 }
 
-                CDataframe = gestion_creation_cdataframe(&CDataframe_exists);
+                CDataframe1 = gestion_creation_cdataframe(&CDataframe1_exists);
                 
                 break;
 
@@ -138,46 +166,45 @@ int main()
                 break;
             
             case 4:
+                
                 printf("\nChoix 4 - Affichage du nom des colonnes:\n");
-                nombre_col = afficher_noms_colonnes(CDataframe);
+                nombre_col = afficher_noms_colonnes(CDataframe1);
                 printf("\nLe(s) nom(s) de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
                 break;
+
             case 5:
+                
                 printf("\nChoix 5 - Gestion des donnees:\n");
-                if (! CDataframe_exists)
+                if (! CDataframe1_exists)
                 {
                     printf("Veuillez d'abord creer un CDataframe\n\n");
                     break;
                 }
 
                 // Peupler le CDataframe artificiellement - Test seulement - 
-                res = populate_dataframe_artificially(&CDataframe);
+                res = populate_dataframe_artificially(CDataframe1);
                 
-                printf("\nLa gestion des donnees sera bientot disponible dans son entierete...\n");
-                printf("\nCependant, trois colonnes ont ete ajoutees. Elles contiennent egalement quelques donnees pour cette demo\n");
-                printf("Vous pouvez visualiser ces colonnes dans le detail en choisissant l'entree de menu \"6\"\n\n");
-
                 break;
 
             case 6:
                 
                 // DEMO:
-                CDataframe = creer_cdataframe(&CDataframe_exists, "CDataframe1");
+                CDataframe1 = creer_cdataframe(&CDataframe1_exists, "CDataframe1");
                               
                 // Peupler le CDataframe artificiellement - Test seulement - 
                 //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
-                res = populate_dataframe_artificially(CDataframe);
+                res = populate_dataframe_artificially(CDataframe1);
 
                 printf("\nChoix 6 - Affichage du CDataframe:");
                 
-                if (!CDataframe_exists)
+                if (!CDataframe1_exists)
                 {
                     printf("\n Impossible d'afficher le CDataframe car il n'existe pas.");
                     printf("\n Veuillez le creer ou le charger a partir d'une source.");
                     break;
                 }
 
-                res = afficher_cdataframe(&CDataframe, 0, 0);
+                res = afficher_cdataframe(&CDataframe1, 0, 0);
 
                 choix = -1;
 
@@ -185,12 +212,40 @@ int main()
             
             case 7:
 
-                // DEMO:
+                CDataframe2 = create_cdataframe(&CDataframe1_exists, "Dataframe 2");
+
+                // DEMO DF2:
+                //COLUMN* col = create_column(INT, "MyIntegerColumn");
+                
+                add_column(CDataframe2, INT, "Col_Un");
+
+                int value1 = 10;
+                if (insert_value(CDataframe2->columns[0], &value1))
+                    printf("\nValeur col 0, cell 0: %d", *((int*)CDataframe2->columns[0]->data[0]));
+                
+                int value2 = 11;
+                if (insert_value(CDataframe2->columns[0], &value2))
+                    printf("\nValeur col 0, cell 1: %d", *((int*)CDataframe2->columns[0]->data[1]));
+
+                add_column(CDataframe2, INT, "Col_Deux");
+
+                int value3 = 20;
+                if (insert_value(CDataframe2->columns[1], &value3))
+                    printf("\nValeur col 1, cell 0: %d", *((int*)CDataframe2->columns[1]->data[0]));
+
+                int value4 = 21;
+                if (insert_value(CDataframe2->columns[1], &value4))
+                    printf("\nValeur col1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[1]));
+                break;
+
+                // FIN DEMO DF2:
+
+                // DEMO DF1:
                 //CDataframe = gestion_creation_cdataframe(&CDataframe_exists);
-                CDataframe = creer_cdataframe(&CDataframe_exists, "Dataframe 1");
+                CDataframe1 = creer_cdataframe(&CDataframe1_exists, "Dataframe 1");
 
                 // Peupler le CDataframe artificiellement - Test seulement - 
-                res = populate_dataframe_artificially(CDataframe);
+                res = populate_dataframe_artificially(CDataframe1);
 
                 /////////////////////////////////////////////////////////////////////////////////
                 // Emplacement de la fonction à tester:
@@ -199,14 +254,14 @@ int main()
 
                 printf("\nChoix 6 - Affichage du CDataframe:");
 
-                if (!CDataframe_exists)
+                if (!CDataframe1_exists)
                 {
                     printf("\n Impossible d'afficher le CDataframe car il n'existe pas.");
                     printf("\n Veuillez le creer ou le charger a partir d'une source.");
                     break;
                 }
 
-                res = afficher_cdataframe(CDataframe, NO_LIMIT, 20);
+                res = afficher_cdataframe(CDataframe1, NO_LIMIT, 20);
 
                 choix = -1;
 
@@ -218,7 +273,7 @@ int main()
     }
     
     // Libération de la mémoire occupée par les colonnes et le dataframe
-    free_all_ressources(&CDataframe);
+    free_all_ressources(&CDataframe1);
 
     return 1;
 }

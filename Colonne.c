@@ -5,6 +5,8 @@
 #include "Main.h"
 #include "Divers.h"
 
+#pragma region CDataframe 1
+
 COLONNE* creer_colonne(const char* titre)
 {
     COLONNE* nouvelle_colonne = malloc(sizeof(COLONNE));
@@ -31,15 +33,15 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
     if (colonne->data == NULL)
     {
         // Allouer de la mémoire pour un tableau de X entiers
-        colonne->data = malloc(NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE * sizeof(int));
+        colonne->data = malloc(NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE * sizeof(int));
 
         if (colonne->data == NULL)
         {
-            printf("\nErreur d'allocation mémoire lors de la création du tableau data de la colonne.\n");
+            printf("\nErreur d'allocation mémoire lors de la création du tableau data de la colonne\n");
             return 0;
         }
 
-        colonne->taille_physique = NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
+        colonne->taille_physique = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
 
         (*bloc_lignes_ajoute_a_colonne) = true;
     }
@@ -47,7 +49,7 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
     else if (colonne->taille_logique == colonne->taille_physique)
     {
         // Si le tableau de data est plein, augmenter la taille physique du tableau data par tranche de 256
-        int nouvelle_taille = colonne->taille_physique + NOMBRE_LIGNES_PAR_BLOC_DATA_COLONNE;
+        int nouvelle_taille = colonne->taille_physique + NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
         
         // Creation du nouveau tableau (composé de l'ancien tableau auquel on ajoute le bloc de nouvelles lignes vierges) 
         int* nouveau_data = realloc(colonne->data, nouvelle_taille * sizeof(int));
@@ -110,3 +112,110 @@ int afficher_colonne(COLONNE* colonne)
     
     return 1;
 }
+
+#pragma endregion Fin CDataframe 1
+
+#pragma region CDataframe 2
+
+COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
+{
+    // Allocation de mémoire pour la colonne
+    COLUMN* new_column = (COLUMN*)malloc(sizeof(COLUMN));
+    if (new_column == NULL)
+    {
+        printf("Erreur d'allocation memoire lors de la creation de la colonne\n");
+        return NULL;
+    }
+
+    // Allocation de mémoire pour le titre de la colonne
+    new_column->title = (char*)malloc(strlen(column_title) + 1);
+    if (new_column->title == NULL)
+    {
+        printf("Erreur lors de l'allocation memoire du titre de la nouvelle colonne\n");
+        return NULL;
+    }
+    strcpy(new_column->title, column_title);
+
+    // Ini de la taille logique de la colonne
+    new_column->size = 0;
+    
+    // Ini de la taille physique de la colonne
+    new_column->max_size = 0;
+    
+    // Autres ini
+    new_column->column_type = column_type;
+    new_column->data = NULL;
+    new_column->index = NULL;
+
+    // Retourne le pointeur vers la colonne créée
+    return new_column;
+}
+
+int insert_value(COLUMN* col, void* value)
+{
+    // Retourne 0 si le pointeur de colonne ou la valeur est NULL
+    if (col == NULL)
+    {
+        printf("\nLa colonne n'existe pas, impopssible d'y ajouter la valeur specifiee\n");
+        return 0;
+    }
+
+    if (col->data == NULL)
+    {
+        col->data = malloc(NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE * sizeof(COL_TYPE*));
+        if (col->data == NULL)
+        {
+            printf("\nErreur d'allocation mémoire lors de la création du tableau data de la colonne\n");
+            return 0;
+        }
+        col->max_size = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+    }
+
+    // Vérifie si le tableau de données de la colonne est plein
+    if (col->size == col->max_size)
+    {
+        // Si oui, réallocation de mémoire pour augmenter la capacité de la colonne en y ajoutant un bloc de données
+        col->max_size += NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+        
+        col->data = realloc(col->data, col->max_size * sizeof(COL_TYPE*));
+        if (col->data == NULL) {
+            printf("\nErreur de réallocation de mémoire lors de l'extension du tableau data de la colonne\n");
+            return 0;
+        }
+    }
+
+    // Allocation de mémoire pour stocker la nouvelle valeur dans la colonne
+    switch (col->column_type)
+    {
+
+        // Note: Ajoutez les autres types
+
+        case INT:
+
+            col->data[col->size] = (int*)malloc(sizeof(int));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule du tableau de donnees\n");
+                return 0;
+            }
+
+            if (value != NULL)
+                *((int*)col->data[col->size]) = *((int*)value);
+            else
+                col->data[col->size] = NULL;
+
+            break;
+
+    default:
+        // Type de colonne non pris en charge
+        return 0;
+    }
+
+    // Incrémente la taille logique de la colonne
+    col->size++;
+
+    // Retourne 1 pour indiquer que la valeur a été insérée avec succès
+    return 1;
+}
+
+#pragma endregion Fin CDataframe 2

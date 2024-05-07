@@ -2,7 +2,7 @@
 #include "Alimentation.h"
 #include "CDataframe.h"
 
-int populate_dataframe_artificially(DATAFRAME* dataframe)
+int populate_dataframe_artificially(DATAFRAME1* dataframe)
 {
     int ajouter_bloc_lignes_a_toutes_les_colonnes = 0;
     
