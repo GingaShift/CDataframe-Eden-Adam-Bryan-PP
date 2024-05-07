@@ -18,6 +18,14 @@ typedef struct Colonne
     int taille_logique;
 } COLONNE;
 
+COLONNE* creer_colonne(const char* nom);
+
+int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colonne);
+
+int liberer_ressources_colonne(COLONNE* colonne);
+
+int afficher_colonne(COLONNE* colonne);
+
 #pragma endregion CDataframe 1
 
 #pragma region CDataframe 2
@@ -43,7 +51,7 @@ typedef union column_type COL_TYPE;
 typedef struct Column
 {
     // Titre de la colonne
-    char *title;
+    char* title;
 
     // Taille logique du tab de données (Nombre de données stockées à l'instant T)
     unsigned int size;
@@ -53,7 +61,7 @@ typedef struct Column
 
     // Type de données de la colonne
     ENUM_TYPE column_type;
-    
+
     // Tableau de pointeurs sur les données
     COL_TYPE** data;
 
@@ -62,26 +70,8 @@ typedef struct Column
 };
 typedef struct Column COLUMN;
 
-#pragma endregion CDataframe 2
-
-#pragma region CDataframe 1
-
-COLONNE* creer_colonne(const char* nom);
-
-int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colonne);
-
-int supprimer_colonne(COLONNE* colonne);
-
-int afficher_colonne(COLONNE* colonne);
-
-#pragma endregion CDataframe 1
-
-#pragma region CDataframe 2
-
 COLUMN* create_column(ENUM_TYPE column_type, char* column_title);
 
 int insert_value(COLUMN* col, void* value);
-
-
 
 #pragma endregion CDataframe 2

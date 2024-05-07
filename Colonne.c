@@ -76,7 +76,7 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
     return 1;
 }
 
-int supprimer_colonne(COLONNE* colonne)
+int liberer_ressources_colonne(COLONNE* colonne)
 {
     // Libérer les données de la colonne
     if (colonne->data != NULL)
@@ -169,6 +169,8 @@ int insert_value(COLUMN* col, void* value)
             return 0;
         }
         col->max_size = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+
+        // TODO: faire malloc pour index
     }
 
     // Vérifie si le tableau de données de la colonne est plein
@@ -182,13 +184,16 @@ int insert_value(COLUMN* col, void* value)
             printf("\nErreur de réallocation de mémoire lors de l'extension du tableau data de la colonne\n");
             return 0;
         }
+
+        // TODO: faire realloc pour index
+
     }
 
     // Allocation de mémoire pour stocker la nouvelle valeur dans la colonne
     switch (col->column_type)
     {
 
-        // Note: Ajoutez les autres types
+        // TODO: Ajoutez les autres types
 
         case INT:
 
@@ -199,10 +204,14 @@ int insert_value(COLUMN* col, void* value)
                 return 0;
             }
 
+            // Renseigner la valeur passée en param ou mettre NULL si inexistante
             if (value != NULL)
                 *((int*)col->data[col->size]) = *((int*)value);
             else
                 col->data[col->size] = NULL;
+
+            // TODO: renseigne l'index
+            // col->index[]...
 
             break;
 

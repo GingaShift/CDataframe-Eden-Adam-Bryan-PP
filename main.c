@@ -136,107 +136,132 @@ int main()
         // a mettre dans fonction "manager_choix_menu_general" et creer aussi une fonction "manager_choix_menu_gestion_des_donnees"
         switch (choix)
         {
-            case 0:
-                //system("cls");
-                go = 0;
+        case 0:
+            //system("cls");
+            go = 0;
+            break;
+
+        case 1:
+
+            if (CDataframe1_exists)
+            {
+                printf("\nLe CDataframe a deja ete cree\n");
                 break;
+            }
+
+            CDataframe1 = gestion_creation_cdataframe(&CDataframe1_exists);
+
+            break;
+
+        case 2:
+            printf("\nChoix 2 - Chargement du CDataframe:\n");
+            printf("\nLe chargement d'un CDataframe sera bientot disponible...\n\n");
+
+            break;
+
+        case 3:
+            printf("\nChoix 3 - Creation d'une colonne:\n");
+            printf("\nLa creation d'une colonne sera bientot disponible...\n\n");
+
+            break;
+
+        case 4:
+
+            printf("\nChoix 4 - Affichage du nom des colonnes:\n");
+            nombre_col = afficher_noms_colonnes(CDataframe1);
+            printf("\nLe(s) nom(s) de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
+            break;
+
+        case 5:
+
+            printf("\nChoix 5 - Gestion des donnees:\n");
+            if (!CDataframe1_exists)
+            {
+                printf("Veuillez d'abord creer un CDataframe\n\n");
+                break;
+            }
+
+            // Peupler le CDataframe artificiellement - Test seulement - 
+            res = populate_dataframe_artificially(CDataframe1);
+
+            break;
+
+        case 6:
+
+            // DEMO:
+            CDataframe1 = creer_cdataframe(&CDataframe1_exists, "CDataframe1");
+
+            // Peupler le CDataframe artificiellement - Test seulement - 
+            //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
+            res = populate_dataframe_artificially(CDataframe1);
+
+            printf("\nChoix 6 - Affichage du CDataframe:");
+
+            if (!CDataframe1_exists)
+            {
+                printf("\n Impossible d'afficher le CDataframe car il n'existe pas.");
+                printf("\n Veuillez le creer ou le charger a partir d'une source.");
+                break;
+            }
+
+            res = afficher_cdataframe(&CDataframe1, 0, 0);
+
+            choix = -1;
+
+            break;
+
+        case 7:
+
+            CDataframe2 = create_cdataframe(&CDataframe1_exists, "Dataframe 2");
+
+            // DEMO DF2:
+            //COLUMN* col = create_column(INT, "MyIntegerColumn");
+
+            add_column(CDataframe2, INT, "Col_1");
+
+            add_column(CDataframe2, INT, "Col_2");
+
+            add_column(CDataframe2, INT, "Col_3");
+
+            int value1 = 10;
+            if (insert_value(CDataframe2->columns[0], &value1))
+                printf("\nValeur col 0, cell 0: %d", *((int*)CDataframe2->columns[0]->data[0]));
+
+            int value2 = 11;
+            if (insert_value(CDataframe2->columns[0], &value2))
+                printf("\nValeur col 0, cell 1: %d", *((int*)CDataframe2->columns[0]->data[1]));
+
+            int value3 = 20;
+            if (insert_value(CDataframe2->columns[1], &value3))
+                printf("\nValeur col 1, cell 0: %d", *((int*)CDataframe2->columns[1]->data[0]));
+
+            int value4 = 21;
+            if (insert_value(CDataframe2->columns[1], &value4))
+                printf("\nValeur col 1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[1]));
+
+            int value5 = 30;
+            if (insert_value(CDataframe2->columns[2], &value5))
+                printf("\nValeur col 2, cell 0: %d", *((int*)CDataframe2->columns[2]->data[0]));
+
+            int value6 = 31;
+            if (insert_value(CDataframe2->columns[2], &value6))
+                if (CDataframe2->columns[2] != NULL)
+                    printf("\nValeur col 2, cell 1: %d", *((int*)CDataframe2->columns[2]->data[1]));
             
-            case 1:
-
-                if (CDataframe1_exists)
-                {
-                    printf("\nLe CDataframe a deja ete cree\n");
-                    break;
-                }
-
-                CDataframe1 = gestion_creation_cdataframe(&CDataframe1_exists);
+            delete_column(CDataframe2, 1);
                 
-                break;
+            add_column(CDataframe2, INT, "Col_New_3");
 
-            case 2:
-                printf("\nChoix 2 - Chargement du CDataframe:\n");
-                printf("\nLe chargement d'un CDataframe sera bientot disponible...\n\n");
-                
-                break;
+            int value7 = 100;
+            if (insert_value(CDataframe2->columns[2], &value7))
+                printf("\nValeur col r, cell 0: %d", *((int*)CDataframe2->columns[2]->data[0]));
 
-            case 3:
-                printf("\nChoix 3 - Creation d'une colonne:\n");
-                printf("\nLa creation d'une colonne sera bientot disponible...\n\n");
-            
-                break;
-            
-            case 4:
-                
-                printf("\nChoix 4 - Affichage du nom des colonnes:\n");
-                nombre_col = afficher_noms_colonnes(CDataframe1);
-                printf("\nLe(s) nom(s) de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
-                break;
+            int value8 = 101;
+            if (insert_value(CDataframe2->columns[2], &value8))
+                if (CDataframe2->columns[2] != NULL)
+                    printf("\nValeur r, cell 1: %d", *((int*)CDataframe2->columns[2]->data[1]));
 
-            case 5:
-                
-                printf("\nChoix 5 - Gestion des donnees:\n");
-                if (! CDataframe1_exists)
-                {
-                    printf("Veuillez d'abord creer un CDataframe\n\n");
-                    break;
-                }
-
-                // Peupler le CDataframe artificiellement - Test seulement - 
-                res = populate_dataframe_artificially(CDataframe1);
-                
-                break;
-
-            case 6:
-                
-                // DEMO:
-                CDataframe1 = creer_cdataframe(&CDataframe1_exists, "CDataframe1");
-                              
-                // Peupler le CDataframe artificiellement - Test seulement - 
-                //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
-                res = populate_dataframe_artificially(CDataframe1);
-
-                printf("\nChoix 6 - Affichage du CDataframe:");
-                
-                if (!CDataframe1_exists)
-                {
-                    printf("\n Impossible d'afficher le CDataframe car il n'existe pas.");
-                    printf("\n Veuillez le creer ou le charger a partir d'une source.");
-                    break;
-                }
-
-                res = afficher_cdataframe(&CDataframe1, 0, 0);
-
-                choix = -1;
-
-                break;
-            
-            case 7:
-
-                CDataframe2 = create_cdataframe(&CDataframe1_exists, "Dataframe 2");
-
-                // DEMO DF2:
-                //COLUMN* col = create_column(INT, "MyIntegerColumn");
-                
-                add_column(CDataframe2, INT, "Col_Un");
-
-                int value1 = 10;
-                if (insert_value(CDataframe2->columns[0], &value1))
-                    printf("\nValeur col 0, cell 0: %d", *((int*)CDataframe2->columns[0]->data[0]));
-                
-                int value2 = 11;
-                if (insert_value(CDataframe2->columns[0], &value2))
-                    printf("\nValeur col 0, cell 1: %d", *((int*)CDataframe2->columns[0]->data[1]));
-
-                add_column(CDataframe2, INT, "Col_Deux");
-
-                int value3 = 20;
-                if (insert_value(CDataframe2->columns[1], &value3))
-                    printf("\nValeur col 1, cell 0: %d", *((int*)CDataframe2->columns[1]->data[0]));
-
-                int value4 = 21;
-                if (insert_value(CDataframe2->columns[1], &value4))
-                    printf("\nValeur col1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[1]));
-                break;
+            break;
 
                 // FIN DEMO DF2:
 
