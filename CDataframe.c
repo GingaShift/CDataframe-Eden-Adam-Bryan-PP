@@ -479,7 +479,33 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
     return 1;
 }
 
-// Here: rename_column
+int rename_column(DATAFRAME2* dataframe, int column_num, const char* new_name)
+{
+    // Vérifier si le numéro de colonne est valide
+    if (column_num < 0 || column_num >= dataframe->size)
+    {
+        printf("\nLe numéro de colonne %d est invalide.\n", column_num);
+        return 0;
+    }
+
+    // Vérifier si le nouveau nom est déjà utilisé par une autre colonne
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        if (i != column_num && strcmp(dataframe->columns[i]->title, new_name) == 0)
+        {
+            printf("\nLe nom \"%s\" est déjà utilisé par la colonne %d.\n", new_name, i);
+            return 0;
+        }
+    }
+
+    // Mettre à jour le nom de la colonne
+    strncpy(dataframe->columns[column_num]->title, new_name, sizeof(dataframe->columns[column_num]->title) - 1);
+
+    // Ajouter le char terminal
+    dataframe->columns[column_num]->title[sizeof(dataframe->columns[column_num]->title) - 1] = '\0';
+
+    return 1;
+}
 
 int delete_column(DATAFRAME2* dataframe, int num_col)
 {

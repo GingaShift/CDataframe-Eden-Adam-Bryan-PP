@@ -59,7 +59,7 @@ DATAFRAME2* create_cdataframe(bool* dataframe_exists, char* dataframe_title);
 
 int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_title);
 
-// Ici: Add rename_col
+int rename_column(DATAFRAME2* dataframe, int column_num, const char* new_name);
 
 // TODO:
 //int supprimer_colonne(DATAFRAME1* dataframe, int num_col);
