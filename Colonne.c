@@ -312,6 +312,12 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
         return 0;
     }
 
+    if (col->data[num_ligne] == NULL)
+    {
+        snprintf(str, size, "%s", "NULL");
+        return 1;
+    }
+
     // Utilisation de sprintf pour convertir la valeur en chaîne de caractères
     switch (col->column_type)
     {
@@ -323,11 +329,7 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
 
         case INT:
 
-            if (col->data[num_ligne] != NULL)
-                snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
-            else
-                snprintf(str, size, "%s", "NULL");
-
+            snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
 
             // Autre version possible:
             //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
@@ -341,17 +343,16 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
 
         case FLOAT:
 
-            snprintf(str, size, "%f", col->data[num_ligne]->float_value);
+            snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
             break;
 
         case DOUBLE:
-
-            snprintf(str, size, "%lf", col->data[num_ligne]->double_value);
+            
+            snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
             break;
 
         case STRING:
-
-            snprintf(str, size, "%s", col->data[num_ligne]->string_value);
+            snprintf(str, size, "%s", (char*)col->data[num_ligne]);
             break;
 
         case STRUCTURE:
@@ -364,6 +365,8 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
             // Type de colonne non pris en charge
             snprintf(str, size, "Unsupported type");
         }
+    
+    return 1;
 }
 
 #pragma endregion Fin CDataframe 2
