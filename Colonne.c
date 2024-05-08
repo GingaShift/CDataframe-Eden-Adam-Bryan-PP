@@ -265,7 +265,6 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
     return 1;
 }
 
-
 // Convertir une valeur en chaîne de caractères
 void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
 {
@@ -291,52 +290,52 @@ void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int
     // Utilisation de sprintf pour convertir la valeur en chaîne de caractères
     switch (col->column_type)
     {
-    case UINT:
+        case UINT:
 
-        snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
+            snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
         
-        break;
+            break;
 
-    case INT:
+        case INT:
 
-        // Ori Efrei:
-        snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+            snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
 
-        // Autre version possible:
-        //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
+            // Autre version possible:
+            //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
 
-        break;
+            break;
 
-    case CHAR:
+        case CHAR:
+            snprintf(str, size, "%c", *((char*)col->data[num_ligne]));
+            snprintf(str, size, "%c", col->data[num_ligne]->char_value);
+            break;
 
-        snprintf(str, size, "%c", col->data[num_ligne]->char_value);
-        break;
+        case FLOAT:
+            snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
+            snprintf(str, size, "%f", col->data[num_ligne]->float_value);
+            break;
 
-    case FLOAT:
+        case DOUBLE:
+            snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
+            snprintf(str, size, "%lf", col->data[num_ligne]->double_value);
+            break;
 
-        snprintf(str, size, "%f", col->data[num_ligne]->float_value);
-        break;
+        case STRING:
+            snprintf(str, size, "%s", (char*)col->data[num_ligne]);
+            //snprintf(str, size, "%s", *((char*)col->data[num_ligne]));
+            //snprintf(str, size, "%s", col->data[num_ligne]->string_value);
+            break;
 
-    case DOUBLE:
+        case STRUCTURE:
+            //snprintf(str, size, "%p", *((struct*)col->data[num_ligne]));
+            // Adresse de la structure
+            snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
+            break;
 
-        snprintf(str, size, "%lf", col->data[num_ligne]->double_value);
-        break;
-
-    case STRING:
-
-        snprintf(str, size, "%s", col->data[num_ligne]->string_value);
-        break;
-
-    case STRUCTURE:
-
-        // Adresse de la structure
-        snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
-        break;
-
-    default:
-        // Type de colonne non pris en charge
-        snprintf(str, size, "Unsupported type");
-    }
+        default:
+            // Type de colonne non pris en charge
+            snprintf(str, size, "Unsupported type");
+        }
 }
 
 #pragma endregion Fin CDataframe 2

@@ -229,7 +229,6 @@ int main()
 
                 printf("\nValeur col 0, cell 0: %d", *((unsigned int*)CDataframe2->columns[0]->data[0]));
 
-
             unsigned int value2 = 11;
             if (insert_value(CDataframe2->columns[0], &value2, &nouveau_bloc_cellules_ajouté_a_colonne))
                 printf("\nValeur col 0, cell 1: %d", *((unsigned int*)CDataframe2->columns[0]->data[1]));
