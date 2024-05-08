@@ -106,9 +106,7 @@ int afficher_colonne(COLONNE* colonne)
     printf("\nVoici le contenu de la colonne \"%s\" :\n\n", colonne->titre);
     
     for (int i = 0; i < colonne->taille_logique; i++)
-    {
         printf("[%d] : %d\n", i, colonne->data[i]);
-    }
     
     return 1;
 }
@@ -207,38 +205,39 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
         (*bloc_lignes_ajoute_a_colonne) = true;
     }
 
-    // Allocation de mémoire pour stocker la nouvelle valeur dans la colonne
+    // Allocation de mémoire pour stocker le pointeur sur la nouvelle valeur dans la cell de la colonne
     switch (col->column_type)
     {
         // TODO: Ajoutez les autres cas des autres types:
-        // UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
+        // CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
 
-    case UINT:
+        case UINT:
 
-        col->data[col->size] = (int*)malloc(sizeof(int));
-        if (col->data[col->size] == NULL)
-        {
-            printf("\nErreur d'allocation memoire pour la cellule du tableau de donnees\n");
-            return 0;
-        }
+            // Allocation de mémoire pour un pointeur sur le type "unsigned int" dans la cell
+            col->data[col->size] = (unsigned int*)malloc(sizeof(unsigned int));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type UINT du tableau de donnees\n");
+                return 0;
+            }
 
-        // Renseigner la valeur passée en param et l'index ou mettre NULL si inexistante
-        if (value != NULL)
-            *((unsigned int*)col->data[col->size]) = *((unsigned int*)value);
-        else
-            col->data[col->size] = NULL;
+            // Renseigner la valeur passée en param et l'index ou mettre NULL si inexistante
+            if (value != NULL)
+                *((unsigned int*)col->data[col->size]) = *((unsigned int*)value);
+            else
+                col->data[col->size] = NULL;
 
-        // Renseigner l'index.
-        col->index[col->size] = col->size;
+            // Renseigner l'index.
+            col->index[col->size] = col->size;
 
-        break;
+            break;
 
         case INT:
 
             col->data[col->size] = (int*)malloc(sizeof(int));
             if (col->data[col->size] == NULL)
             {
-                printf("\nErreur d'allocation memoire pour la cellule du tableau de donnees\n");
+                printf("\nErreur d'allocation memoire pour la cellule de type INT du tableau de donnees\n");
                 return 0;
             }
 
@@ -265,8 +264,34 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
     return 1;
 }
 
+int print_col(COLUMN* col)
+{
+    // Retourne si le pointeur de colonne est NULL ou si la position est invalide
+    if (col == NULL)
+    {
+        printf("\nLa colonne n'existe pas\n");
+        return 0;
+    }
+
+    if (col->size == 0)
+    {
+        printf("\nLa colonne ne contient pas de données\n");
+        return 0;
+    }
+
+    char* str[256];
+
+    for (unsigned int i = 0; i < col->size; i++)
+    {
+        convert_value(col, i, str, sizeof(str));
+        printf("\n[%u] %s", i, str);
+    }
+
+    return 1;
+}
+
 // Convertir une valeur en chaîne de caractères
-void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
+int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
 {
     // Retourne si le pointeur de colonne est NULL ou si la position est invalide
     if (col == NULL)
@@ -298,7 +323,11 @@ void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int
 
         case INT:
 
-            snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+            if (col->data[num_ligne] != NULL)
+                snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+            else
+                snprintf(str, size, "%s", "NULL");
+
 
             // Autre version possible:
             //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
@@ -306,28 +335,27 @@ void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int
             break;
 
         case CHAR:
-            snprintf(str, size, "%c", *((char*)col->data[num_ligne]));
+
             snprintf(str, size, "%c", col->data[num_ligne]->char_value);
             break;
 
         case FLOAT:
-            snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
+
             snprintf(str, size, "%f", col->data[num_ligne]->float_value);
             break;
 
         case DOUBLE:
-            snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
+
             snprintf(str, size, "%lf", col->data[num_ligne]->double_value);
             break;
 
         case STRING:
-            snprintf(str, size, "%s", (char*)col->data[num_ligne]);
-            //snprintf(str, size, "%s", *((char*)col->data[num_ligne]));
-            //snprintf(str, size, "%s", col->data[num_ligne]->string_value);
+
+            snprintf(str, size, "%s", col->data[num_ligne]->string_value);
             break;
 
         case STRUCTURE:
-            //snprintf(str, size, "%p", *((struct*)col->data[num_ligne]));
+
             // Adresse de la structure
             snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
             break;

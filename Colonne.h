@@ -74,7 +74,8 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title);
 
 int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne);
 
+int print_col(COLUMN* col);
 
-void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size);
+int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size);
 
 #pragma endregion CDataframe 2

@@ -463,6 +463,8 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
     // Agrandissement du tableau CDataframe apres ajout de la nouvelle colonne
     dataframe->size++;
 
+    // Ne pas faire de malloc, meme s'il n'existe aucune colonne
+
     dataframe->columns = realloc(dataframe->columns, (dataframe->size) * sizeof(COLUMN*));
     if (dataframe == NULL)
     {
