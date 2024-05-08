@@ -44,31 +44,62 @@
 
    6) Lancer le projet en appuyant sur la touche F5
 
-   void ajouter_ligne_valeur(DATAFRAME1* dataframe, int nombre_de_ligne_de_valeurs, int valeur) {
-    for (int i = 0; i < nombre_de_ligne_de_valeurs; ++i) {
-        for (int j = 0; j < dataframe->taille; j++) {
-            printf("Element [%d][%d] : ", i, j);
-            scanf("%d", &dataframe[i * dataframe->taille + j]);
+  
+   void ajouterLigne(DATAFRAME *dataframe, int *valeurs) {
+    /* On suppose que toutes les colonnes ont la même taille */
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
+        int nouvelle_taille = dataframe->colonnes[0]->taille + 1;
+
+        /* Allouer de la mémoire pour la nouvelle ligne dans chaque colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->valeurs = realloc(dataframe->colonnes[i]->valeurs, nouvelle_taille * sizeof(int));
+            if (dataframe->colonnes[i]->valeurs == NULL) {
+                printf("Erreur : Échec de l'allocation de mémoire.\n");
+                exit(1);
+            }
         }
-    }
-    printf("Dataframe rempli :\n");
-    for (int i = 0; i < nombre_de_ligne_de_valeurs; i++) {
-        for (int j = 0; j < dataframe->taille; j++) {
-            printf("%d ", dataframe[i * dataframe->taille + j]);
+
+        /* Copier les valeurs dans la nouvelle ligne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->valeurs[nouvelle_taille - 1] = valeurs[i];
         }
-        printf("\n");
+
+        /* Mettre à jour la taille de la colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->taille = nouvelle_taille;
+        }
+    } else {
+        printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
     }
 }
 
-void supprimer_ligne_de_valeur(DATAFRAME* dataframe, int ligne_a_supprimer, int nombre_de_ligne_de_valeurs) {
-    if (ligne_a_supprimer < 0 || ligne_a_supprimer >= nombre_de_ligne_de_valeurs) {
-        printf("Erreur : L'indice de ligne à supprimer est invalide.\n");
-        return;
-    }
-    // Décalage des lignes vers le haut pour supprimer la ligne sélectionnée
-    for (int i = ligne_a_supprimer; i < nombre_de_ligne_de_valeurs - 1; i++) {
-        for (int j = 0; j < dataframe->taille; j++) {
-            dataframe[i * dataframe->taille + j] = dataframe[(i + 1) * dataframe->taille + j];
+
+void supprimerLigne(DATAFRAME *dataframe, int indiceLigne) {
+    /* On suppose que toutes les colonnes ont la même taille */
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
+        int nouvelle_taille = dataframe->colonnes[0]->taille - 1;
+
+        /* Supprimer la ligne de chaque colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            for (int j = indiceLigne; j < nouvelle_taille; j++) {
+                dataframe->colonnes[i]->valeurs[j] = dataframe->colonnes[i]->valeurs[j + 1];
+            }
         }
+
+        /* Mettre à jour la taille de la colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->taille = nouvelle_taille;
+        }
+    } else {
+        printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
+    }
+}
+
+int nombreDeLignes(DATAFRAME *dataframe) {
+    /* On suppose que toutes les colonnes ont la même taille */
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
+        return dataframe->colonnes[0]->taille;
+    } else {
+        return 0;
     }
 }
