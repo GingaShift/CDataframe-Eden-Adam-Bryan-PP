@@ -8,7 +8,8 @@
 #include "Analyses_et_stats.h"
 #include "Main.h"
 #include "String_manager.h"
-#include "Gestion_actions_utilisateur.h"
+
+#pragma region code_main
 
 int res = 0;
 
@@ -38,7 +39,7 @@ int free_all_ressources(DATAFRAME1* dataframe)
     return 1;
 }
 
-#pragma endregion Fin CDataframe 1
+#pragma endregion CDataframe 1
 
 #pragma region CDataframe 2
 
@@ -66,7 +67,7 @@ int free_ressources(DATAFRAME2* dataframe)
     return 1;
 }
 
-#pragma endregion Fin CDataframe 2
+#pragma endregion CDataframe 2
 
 
 void afficher_menu()
@@ -212,54 +213,39 @@ int main()
 
         case 7:
 
+            bool nouveau_bloc_cellules_ajouté_a_colonne = false;
+
             CDataframe2 = create_cdataframe(&CDataframe1_exists, "Dataframe 2");
 
             // DEMO DF2:
             //COLUMN* col = create_column(INT, "MyIntegerColumn");
 
-            add_column(CDataframe2, INT, "Col_1");
-
+            add_column(CDataframe2, UINT, "Col_1");
             add_column(CDataframe2, INT, "Col_2");
+           
+            unsigned int value1 = 10;
+            if (insert_value(CDataframe2->columns[0], &value1, &nouveau_bloc_cellules_ajouté_a_colonne))
+                printf("\nValeur col 0, cell 0: %d", *((unsigned int*)CDataframe2->columns[0]->data[0]));
 
-            add_column(CDataframe2, INT, "Col_3");
+                printf("\nValeur col 0, cell 0: %d", *((unsigned int*)CDataframe2->columns[0]->data[0]));
 
-            int value1 = 10;
-            if (insert_value(CDataframe2->columns[0], &value1))
-                printf("\nValeur col 0, cell 0: %d", *((int*)CDataframe2->columns[0]->data[0]));
 
-            int value2 = 11;
-            if (insert_value(CDataframe2->columns[0], &value2))
-                printf("\nValeur col 0, cell 1: %d", *((int*)CDataframe2->columns[0]->data[1]));
+            unsigned int value2 = 11;
+            if (insert_value(CDataframe2->columns[0], &value2, &nouveau_bloc_cellules_ajouté_a_colonne))
+                printf("\nValeur col 0, cell 1: %d", *((unsigned int*)CDataframe2->columns[0]->data[1]));
 
             int value3 = 20;
-            if (insert_value(CDataframe2->columns[1], &value3))
+            if (insert_value(CDataframe2->columns[1], &value3, &nouveau_bloc_cellules_ajouté_a_colonne))
                 printf("\nValeur col 1, cell 0: %d", *((int*)CDataframe2->columns[1]->data[0]));
 
             int value4 = 21;
-            if (insert_value(CDataframe2->columns[1], &value4))
+            if (insert_value(CDataframe2->columns[1], &value4, &nouveau_bloc_cellules_ajouté_a_colonne))
                 printf("\nValeur col 1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[1]));
-
-            int value5 = 30;
-            if (insert_value(CDataframe2->columns[2], &value5))
-                printf("\nValeur col 2, cell 0: %d", *((int*)CDataframe2->columns[2]->data[0]));
-
-            int value6 = 31;
-            if (insert_value(CDataframe2->columns[2], &value6))
-                if (CDataframe2->columns[2] != NULL)
-                    printf("\nValeur col 2, cell 1: %d", *((int*)CDataframe2->columns[2]->data[1]));
             
-            delete_column(CDataframe2, 1);
-                
-            add_column(CDataframe2, INT, "Col_New_3");
+            char str[50];
+            convert_value(CDataframe2->columns[1], 1, str, sizeof(str));
+            printf("\nConverted value: %s\n", str);
 
-            int value7 = 100;
-            if (insert_value(CDataframe2->columns[2], &value7))
-                printf("\nValeur col r, cell 0: %d", *((int*)CDataframe2->columns[2]->data[0]));
-
-            int value8 = 101;
-            if (insert_value(CDataframe2->columns[2], &value8))
-                if (CDataframe2->columns[2] != NULL)
-                    printf("\nValeur r, cell 1: %d", *((int*)CDataframe2->columns[2]->data[1]));
 
             break;
 
@@ -301,4 +287,36 @@ int main()
     free_all_ressources(&CDataframe1);
 
     return 1;
+
 }
+
+#pragma endregion code_main
+
+//////////////////////////////////////////////////////////////////////////
+
+#pragma region gestion_choix_menu
+
+#pragma region CDataframe 1
+
+DATAFRAME1* gestion_creation_cdataframe(bool* dataframe_exists)
+{
+    printf("\nChoix 1 - Creation du CDataframe:\n");
+
+    // Demander le nom du CDataframe
+    char* chaine = saisie_chaine("\nVeuillez saisir le nom du CDataframe:\n");
+
+    DATAFRAME1* dataframe = creer_cdataframe(dataframe_exists, chaine);
+
+    if (dataframe != NULL)
+        printf("\nLe CDataframe a ete cree avec succes\n\n");
+
+    return dataframe;
+}
+
+#pragma endregion CDataframe 1
+
+#pragma region CDataframe 2
+
+#pragma endregion CDataframe 2
+
+#pragma endregion gestion_choix_menu

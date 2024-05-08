@@ -134,13 +134,13 @@ int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDatafra
 
 int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME1* dataframe, int num_col, int valeur)
 {
-    bool nouveau_bloc_lignes_ajoute_a_colonne = false;
+    bool nouveau_bloc_cellules_ajoute_a_colonne = false;
 
     // Ajouter valeur à colonne
-    if (!inserer_valeur(dataframe->colonnes[num_col], valeur, &nouveau_bloc_lignes_ajoute_a_colonne))
+    if (!inserer_valeur(dataframe->colonnes[num_col], valeur, &nouveau_bloc_cellules_ajoute_a_colonne))
         printf("\nUne erreur est survenue lors de l'ajout de la valeur dans la colonne\n");
 
-    if (nouveau_bloc_lignes_ajoute_a_colonne == true)
+    if (nouveau_bloc_cellules_ajoute_a_colonne == true)
         egaliser_taille_des_tabs_data_des_colonnes(dataframe);
 
     return 1;
@@ -472,11 +472,12 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
     }
 
     // Ajout de la colonne au dataframe
-    // (*colonnes)[*taille_dataframe - 1] = nouvelle_colonne;
     dataframe->columns[dataframe->size - 1] = new_col;
 
     return 1;
 }
+
+// Here: rename_column
 
 int delete_column(DATAFRAME2* dataframe, int num_col)
 {

@@ -25,9 +25,9 @@ COLONNE* creer_colonne(const char* titre)
     return nouvelle_colonne;
 }
 
-int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colonne)
+int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_cellules_ajoute_a_colonne)
 {
-    (*bloc_lignes_ajoute_a_colonne) = false;
+    (*bloc_cellules_ajoute_a_colonne) = false;
     
     // Vérifier si le tableau data est vide
     if (colonne->data == NULL)
@@ -43,7 +43,7 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
 
         colonne->taille_physique = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
 
-        (*bloc_lignes_ajoute_a_colonne) = true;
+        (*bloc_cellules_ajoute_a_colonne) = true;
     }
     // Vérifier si le tableau data est plein
     else if (colonne->taille_logique == colonne->taille_physique)
@@ -66,7 +66,7 @@ int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colo
         colonne->taille_physique = nouvelle_taille;
 
         // Savoir qu'il faudra mettre à jour toutes les autres colonnes à la sortie de la fonction afin de preserver la matrice du dataframe
-        (*bloc_lignes_ajoute_a_colonne) = true;
+        (*bloc_cellules_ajoute_a_colonne) = true;
     }
 
     // Insérer la valeur dans le tableau data et mettre à jour la taille logique
@@ -151,26 +151,38 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
     return new_column;
 }
 
-int insert_value(COLUMN* col, void* value)
+int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
 {
+    (*bloc_lignes_ajoute_a_colonne) = false;
+    
     // Retourne 0 si le pointeur de colonne ou la valeur est NULL
     if (col == NULL)
     {
-        printf("\nLa colonne n'existe pas, impopssible d'y ajouter la valeur specifiee\n");
+        printf("\nLa colonne n'existe pas, impossible d'y ajouter la valeur specifiee\n");
         return 0;
     }
 
     if (col->data == NULL)
     {
+        // creation du tab de données (vide)
         col->data = malloc(NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE * sizeof(COL_TYPE*));
         if (col->data == NULL)
         {
-            printf("\nErreur d'allocation mémoire lors de la création du tableau data de la colonne\n");
+            printf("\nErreur d'allocation mémoire lors de la création du tab data de la colonne\n");
             return 0;
         }
+
+        // creation du tab d'index pour le tab de données (vide)
+        col->index = malloc(NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE * sizeof(unsigned long long int*));
+        if (col->index == NULL)
+        {
+            printf("\nErreur d'allocation mémoire lors de la création du tab d'index pour le tab data de la colonne\n");
+            return 0;
+        }
+
         col->max_size = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
 
-        // TODO: faire malloc pour index
+        (*bloc_lignes_ajoute_a_colonne) = true;
     }
 
     // Vérifie si le tableau de données de la colonne est plein
@@ -185,15 +197,41 @@ int insert_value(COLUMN* col, void* value)
             return 0;
         }
 
-        // TODO: faire realloc pour index
+        // Réallocation de mémoire afin d'augmenter la capacité du tab d'index pour le tab de données
+        col->index = realloc(col->index, col->max_size * sizeof(unsigned long long int*));
+        if (col->index == NULL) {
+            printf("\nErreur de réallocation de mémoire lors de l'extension du tab d'index pour le tab de données\n");
+            return 0;
+        }
 
+        (*bloc_lignes_ajoute_a_colonne) = true;
     }
 
     // Allocation de mémoire pour stocker la nouvelle valeur dans la colonne
     switch (col->column_type)
     {
+        // TODO: Ajoutez les autres cas des autres types:
+        // UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
 
-        // TODO: Ajoutez les autres types
+    case UINT:
+
+        col->data[col->size] = (int*)malloc(sizeof(int));
+        if (col->data[col->size] == NULL)
+        {
+            printf("\nErreur d'allocation memoire pour la cellule du tableau de donnees\n");
+            return 0;
+        }
+
+        // Renseigner la valeur passée en param et l'index ou mettre NULL si inexistante
+        if (value != NULL)
+            *((unsigned int*)col->data[col->size]) = *((unsigned int*)value);
+        else
+            col->data[col->size] = NULL;
+
+        // Renseigner l'index.
+        col->index[col->size] = col->size;
+
+        break;
 
         case INT:
 
@@ -204,14 +242,14 @@ int insert_value(COLUMN* col, void* value)
                 return 0;
             }
 
-            // Renseigner la valeur passée en param ou mettre NULL si inexistante
+            // Renseigner la valeur passée en param et l'index ou mettre NULL si inexistante
             if (value != NULL)
                 *((int*)col->data[col->size]) = *((int*)value);
             else
                 col->data[col->size] = NULL;
 
-            // TODO: renseigne l'index
-            // col->index[]...
+            // Renseigner l'index
+            col->index[col->size] = col->size;
 
             break;
 
@@ -225,6 +263,80 @@ int insert_value(COLUMN* col, void* value)
 
     // Retourne 1 pour indiquer que la valeur a été insérée avec succès
     return 1;
+}
+
+
+// Convertir une valeur en chaîne de caractères
+void convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
+{
+    // Retourne si le pointeur de colonne est NULL ou si la position est invalide
+    if (col == NULL)
+    {
+        printf("\nLa colonne n'existe pas, operation de conversion impossible\n");
+        return 0;
+    }
+
+    if (str == NULL)
+    {
+        printf("\nla string de destination passee en parametre n'existe pas, operation de conversion impossible\n");
+        return 0;
+    }
+
+    if (num_ligne >= col->size)
+    {
+        printf("\nLe numero de cellule est invalide car il ne contient pas de donnee, operation de conversion impossible\n");
+        return 0;
+    }
+
+    // Utilisation de sprintf pour convertir la valeur en chaîne de caractères
+    switch (col->column_type)
+    {
+    case UINT:
+
+        snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
+        
+        break;
+
+    case INT:
+
+        // Ori Efrei:
+        snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+
+        // Autre version possible:
+        //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
+
+        break;
+
+    case CHAR:
+
+        snprintf(str, size, "%c", col->data[num_ligne]->char_value);
+        break;
+
+    case FLOAT:
+
+        snprintf(str, size, "%f", col->data[num_ligne]->float_value);
+        break;
+
+    case DOUBLE:
+
+        snprintf(str, size, "%lf", col->data[num_ligne]->double_value);
+        break;
+
+    case STRING:
+
+        snprintf(str, size, "%s", col->data[num_ligne]->string_value);
+        break;
+
+    case STRUCTURE:
+
+        // Adresse de la structure
+        snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
+        break;
+
+    default:
+        // Type de colonne non pris en charge
+        snprintf(str, size, "Unsupported type");
+    }
 }
 
 #pragma endregion Fin CDataframe 2

@@ -61,4 +61,5 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
 
 int delete_column(DATAFRAME2* dataframe, int num_col);
 
+
 #pragma endregion Fin CDataframe 2
