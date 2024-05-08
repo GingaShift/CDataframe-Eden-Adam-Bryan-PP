@@ -44,4 +44,62 @@
 
    6) Lancer le projet en appuyant sur la touche F5
 
-   
+  
+   void ajouterLigne(DATAFRAME *dataframe, int *valeurs) {
+    /* On suppose que toutes les colonnes ont la même taille */
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille >= 0) {
+        int nouvelle_taille = dataframe->colonnes[0]->taille + 1;
+
+        /* Allouer de la mémoire pour la nouvelle ligne dans chaque colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->valeurs = realloc(dataframe->colonnes[i]->valeurs, nouvelle_taille * sizeof(int));
+            if (dataframe->colonnes[i]->valeurs == NULL) {
+                printf("Erreur : Échec de l'allocation de mémoire.\n");
+                return 1;
+            }
+        }
+
+        /* Copier les valeurs dans la nouvelle ligne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->valeurs[nouvelle_taille - 1] = valeurs[i];
+        }
+
+        /* Mettre à jour la taille de la colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->taille = nouvelle_taille;
+        }
+    } else {
+        printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
+    }
+}
+
+
+void supprimerLigne(DATAFRAME *dataframe, int indiceLigne) {
+    /* On suppose que toutes les colonnes ont la même taille */
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
+        int nouvelle_taille = dataframe->colonnes[0]->taille - 1;
+
+        /* Supprimer la ligne de chaque colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            for (int j = indiceLigne; j < nouvelle_taille; j++) {
+                dataframe->colonnes[i]->valeurs[j] = dataframe->colonnes[i]->valeurs[j + 1];
+            }
+        }
+
+        /* Mettre à jour la taille de la colonne */
+        for (int i = 0; i < dataframe->taille; i++) {
+            dataframe->colonnes[i]->taille = nouvelle_taille;
+        }
+    } else {
+        printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
+    }
+}
+
+int nombreDeLignes(DATAFRAME *dataframe) {
+    /* On suppose que toutes les colonnes ont la même taille */
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
+        return dataframe->colonnes[0]->taille;
+    } else {
+        return 0;
+    }
+}
