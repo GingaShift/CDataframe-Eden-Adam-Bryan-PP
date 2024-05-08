@@ -217,18 +217,13 @@ int main()
 
             CDataframe2 = create_cdataframe(&CDataframe1_exists, "Dataframe 2");
 
-            // DEMO DF2:
-            //COLUMN* col = create_column(INT, "MyIntegerColumn");
-
             add_column(CDataframe2, UINT, "Col_1");
             add_column(CDataframe2, INT, "Col_2");
-           
+            add_column(CDataframe2, INT, "Col_3");
+
             unsigned int value1 = 10;
             if (insert_value(CDataframe2->columns[0], &value1, &nouveau_bloc_cellules_ajouté_a_colonne))
                 printf("\nValeur col 0, cell 0: %d", *((unsigned int*)CDataframe2->columns[0]->data[0]));
-
-                printf("\nValeur col 0, cell 0: %d", *((unsigned int*)CDataframe2->columns[0]->data[0]));
-
 
             unsigned int value2 = 11;
             if (insert_value(CDataframe2->columns[0], &value2, &nouveau_bloc_cellules_ajouté_a_colonne))
@@ -238,13 +233,17 @@ int main()
             if (insert_value(CDataframe2->columns[1], &value3, &nouveau_bloc_cellules_ajouté_a_colonne))
                 printf("\nValeur col 1, cell 0: %d", *((int*)CDataframe2->columns[1]->data[0]));
 
+            if (insert_value(CDataframe2->columns[1], NULL, &nouveau_bloc_cellules_ajouté_a_colonne))
+                printf("\nValeur NULL");
+
             int value4 = 21;
             if (insert_value(CDataframe2->columns[1], &value4, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur col 1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[1]));
+                printf("\nValeur col 1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[2]));
             
-            char str[50];
-            convert_value(CDataframe2->columns[1], 1, str, sizeof(str));
-            printf("\nConverted value: %s\n", str);
+            print_col(CDataframe2->columns[1]);
+
+            // col vide
+            print_col(CDataframe2->columns[2]);
 
 
             break;

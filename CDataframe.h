@@ -59,7 +59,33 @@ DATAFRAME2* create_cdataframe(bool* dataframe_exists, char* dataframe_title);
 
 int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_title);
 
-int delete_column(DATAFRAME2* dataframe, int num_col);
+// Ici: Add rename_col
 
+// TODO:
+//int supprimer_colonne(DATAFRAME1* dataframe, int num_col);
+//
+//int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe);
+//
+//int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME1* dataframe, int num_col, int valeur);
+//
+//int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME1* dataframe);
+//
+//int afficher_nombre_colonnes(DATAFRAME1* dataframe);
+//
+//int afficher_noms_colonnes(DATAFRAME1* dataframe);
+//
+//int afficher_les_colonnes(DATAFRAME1* dataframe);
+//
+//int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
+//
+//int obtenir_nombre_lignes(DATAFRAME1* dataframe);
+//
+//int modifier_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne, int valeur);
+//
+//int afficher_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne);
+//
+//int ajouter_valeur_par_utilisateur(DATAFRAME1* dataframe, int num_col, int valeur);
+//
+//int delete_column(DATAFRAME2* dataframe, int num_col);
 
 #pragma endregion Fin CDataframe 2
