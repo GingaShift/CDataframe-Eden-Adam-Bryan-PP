@@ -47,7 +47,7 @@
   
    void ajouterLigne(DATAFRAME *dataframe, int *valeurs) {
     /* On suppose que toutes les colonnes ont la même taille */
-    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
+    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille >= 0) {
         int nouvelle_taille = dataframe->colonnes[0]->taille + 1;
 
         /* Allouer de la mémoire pour la nouvelle ligne dans chaque colonne */
@@ -55,7 +55,7 @@
             dataframe->colonnes[i]->valeurs = realloc(dataframe->colonnes[i]->valeurs, nouvelle_taille * sizeof(int));
             if (dataframe->colonnes[i]->valeurs == NULL) {
                 printf("Erreur : Échec de l'allocation de mémoire.\n");
-                exit(1);
+                return 1;
             }
         }
 
