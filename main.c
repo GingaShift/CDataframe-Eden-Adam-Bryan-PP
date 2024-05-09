@@ -106,7 +106,7 @@ void afficher_menu()
     printf(" *         trouvant dans une cellule du                                               *\n");
     printf(" *         CDataframe en utilisant son                                               *\n");
     printf(" *         numero de ligne et de colonne                                             *\n");
-    printf(" *      8. Afficher les noms des colonnes                                            *\n");
+    printf(" *      8. Afficher les noms des colonnes                                             *\n");
     printf(" *                                                                                    *\n");
 }
 

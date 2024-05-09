@@ -87,7 +87,7 @@ int get_number_of_lines(DATAFRAME2* dataframe);
 //
 //int modifier_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne, int valeur);
 //
-//int afficher_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne); à faire ( se servir de convert value)
+//int afficher_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne); DONEEENENENE
 //
 //int ajouter_valeur_par_utilisateur(DATAFRAME1* dataframe, int num_col, int valeur);
 //

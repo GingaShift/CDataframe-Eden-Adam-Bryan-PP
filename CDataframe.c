@@ -705,23 +705,74 @@ int get_number_of_lines(DATAFRAME2* dataframe)
     return 1;
 }
 
-int add_line(DATAFRAME2* dataframe)
-{
-    // On suppose que toutes les colonnes ont la même taille
-    //if (dataframe->size > 0 && dataframe->columns[0]->size >= 0)
-    //{
-    //    // Connaitre la taille T+1 de la new ligne pour les colonnes (new cell pr toutes les cols)
-    //    int nouvelle_taille = dataframe->columns[0]->size + 1;
+int get_num_row(DATAFRAME2* dataframe) {
+    if (dataframe == NULL || dataframe->size == 0) {
+        return 0;
+    }
 
-    //    // Allouer de la mémoire pour la nouvelle ligne dans chaque colonne
-    //    for (int i = 0; i < dataframe->size; i++)
-    //    {
-    //        dataframe->colonnes[i]->valeurs = realloc(dataframe->colonnes[i]->valeurs, nouvelle_taille * sizeof(int));
-    //        if (dataframe->colonnes[i]->valeurs == NULL) {
-    //            printf("Erreur : Échec de l'allocation de mémoire.\n");
-    //            return 1;
-    //        }
-    //    }
+    printf("\nVoici le nombre de ligne : %d", dataframe->columns[0]->max_size);
+    return 1;
+}
+
+int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas.\n");
+        return 0;
+    }
+
+    if (num_col < 0 || num_col >= dataframe->size)
+    {
+        printf("\nLe numéro de colonne entré est invalide.\n");
+        return 0;
+    }
+
+    COLUMN* column = dataframe->columns[num_col];
+
+    if (num_ligne < 0 || num_ligne >= column->size)
+    {
+        printf("\nLe numéro de ligne entré est invalide pour cette colonne.\n");
+        return 0;
+    }
+
+    char value_str[256]; // Taille de la chaîne de caractères pour stocker la valeur convertie
+    if (!convert_value(column, num_ligne, value_str, sizeof(value_str)))
+    {
+        printf("\nErreur lors de la conversion de la valeur.\n");
+        return 0;
+    }
+
+    switch (column->column_type)
+    {
+    case UINT:
+        printf("\nValeur à la colonne %d, ligne %d : %u\n", num_col, num_ligne, *((unsigned int*)column->data[num_ligne]));
+        break;
+    case INT:
+        printf("\nValeur à la colonne %d, ligne %d : %d\n", num_col, num_ligne, *((int*)column->data[num_ligne]));
+        break;
+    case CHAR:
+        printf("\nValeur à la colonne %d, ligne %d : %c\n", num_col, num_ligne, *((char*)column->data[num_ligne]));
+        break;
+    case STRING:
+        printf("\nValeur à la colonne %d, ligne %d : %s\n", num_col, num_ligne, (char*)column->data[num_ligne]);
+        break;
+    case FLOAT:
+        printf("\nValeur à la colonne %d, ligne %d : %f\n", num_col, num_ligne, *((float*)column->data[num_ligne]));
+        break;
+    case DOUBLE:
+        printf("\nValeur à la colonne %d, ligne %d : %lf\n", num_col, num_ligne, *((double*)column->data[num_ligne]));
+        break;
+    case STRUCTURE:
+        printf("\nValeur à la colonne %d, ligne %d : %p (structure)\n", num_col, num_ligne, column->data[num_ligne]->struct_value);
+        break;
+    default:
+        printf("\nType de colonne non pris en charge.\n");
+        break;
+    }
+
+    return 1;
+}
 
     //    /* Copier les valeurs dans la nouvelle ligne */
     //    for (int i = 0; i < dataframe->taille; i++) {
