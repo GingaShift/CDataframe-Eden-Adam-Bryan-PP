@@ -345,7 +345,7 @@ int obtenir_nombre_lignes_stockant_data(DATAFRAME1* dataframe)
     printf("\n La CDataframe ne contient %s lignes", dataframe->colonnes[0]->taille_logique);
 }
 
-int obtenir_nombre_de_lignes_total(DATAFRAME1* dataframe)
+int obtenir_nombre_lignes(DATAFRAME1* dataframe)
 {
     if (dataframe->taille == 0)
     {
@@ -655,7 +655,7 @@ int print_name_of_columns(DATAFRAME2* dataframe)
     return 1;
 }
 
-int print_column(DATAFRAME2* dataframe)
+int print_columns(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL || dataframe->size == 0)
     {
@@ -669,7 +669,7 @@ int print_column(DATAFRAME2* dataframe)
     return 1;
 }
 
-int obtenir_nombre_lignes_stockant_data(DATAFRAME2* dataframe)
+int get_number_of_lines_storing_data(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
     {
@@ -686,7 +686,7 @@ int obtenir_nombre_lignes_stockant_data(DATAFRAME2* dataframe)
     printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->size);
 }
 
-int obtenir_nombre_de_lignes_total(DATAFRAME2* dataframe)
+int get_number_of_lines(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
     {

@@ -77,11 +77,13 @@ int print_number_of_columns(DATAFRAME2* dataframe);
 
 int print_name_of_columns(DATAFRAME2* dataframe);
 
-//int afficher_les_colonnes(DATAFRAME1* dataframe); DONNNENENENENE
-//
+int print_columns(DATAFRAME2* dataframe);
+
+int get_number_of_lines_storing_data(DATAFRAME2* dataframe);
+
+int get_number_of_lines(DATAFRAME2* dataframe);
+
 //int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
-//
-//int obtenir_nombre_lignes(DATAFRAME1* dataframe); à faire
 //
 //int modifier_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne, int valeur);
 //
