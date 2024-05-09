@@ -193,7 +193,7 @@ int main()
             }
 
             // Peupler le CDataframe artificiellement - Test seulement - 
-            res = populate_dataframe_artificially(CDataframe1);
+            res = remplir_dataframe_automatiquement(CDataframe1);
 
             break;
 
@@ -204,7 +204,7 @@ int main()
 
             // Peupler le CDataframe artificiellement - Test seulement - 
             //populate_dataframe_artificially_old(&CDataframe_old, &taille_CDataframe_old);
-            res = populate_dataframe_artificially(CDataframe1);
+            res = remplir_dataframe_automatiquement(CDataframe1);
 
             printf("\nChoix 6 - Affichage du CDataframe:");
 
@@ -252,7 +252,7 @@ int main()
                 CDataframe1 = creer_cdataframe(&CDataframe1_exists, "Dataframe 1");
 
                 // Peupler le CDataframe artificiellement - Test seulement - 
-                res = populate_dataframe_artificially(CDataframe1);
+                res = remplir_dataframe_automatiquement(CDataframe1);
 
                 /////////////////////////////////////////////////////////////////////////////////
                 // Emplacement de la fonction à tester:
