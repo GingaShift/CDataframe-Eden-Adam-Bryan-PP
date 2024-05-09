@@ -22,7 +22,7 @@ int renommer_colonne(DATAFRAME1* dataframe, int num_colonne, const char* nouveau
 
 int supprimer_colonne(DATAFRAME1* dataframe, int num_col);
 
-int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe);
+int nom_colonne_existe(DATAFRAME1* dataframe, char* nom_colonne, int taille_CDataframe);
 
 int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME1* dataframe, int num_col, int valeur);
 
@@ -59,13 +59,13 @@ DATAFRAME2* create_cdataframe(bool* dataframe_exists, char* dataframe_title);
 
 int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_title);
 
-int rename_column(DATAFRAME2* dataframe, int column_num, const char* new_name);
+int rename_column(DATAFRAME2* dataframe, int column_num, char* new_name);
 
 // TODO:
 //int supprimer_colonne(DATAFRAME1* dataframe, int num_col);
-//
-//int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe);
-//
+
+int column_name_exists(DATAFRAME2* dataframe, char* column_name);
+
 //int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME1* dataframe, int num_col, int valeur);
 //
 //int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME1* dataframe);

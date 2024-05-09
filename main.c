@@ -215,30 +215,20 @@ int main()
 
             bool nouveau_bloc_cellules_ajouté_a_colonne = false;
 
-            CDataframe2 = create_cdataframe(&CDataframe1_exists, "Dataframe 2");
+            CDataframe2 = create_cdataframe(&CDataframe2_exists, "Dataframe 2");
 
-            add_column(CDataframe2, UINT, "Col_1");
-            add_column(CDataframe2, INT, "Col_2");
-            add_column(CDataframe2, INT, "Col_3");
+            add_column(CDataframe2, UINT, "Col0");
+            add_column(CDataframe2, CHAR, "Col1");
+            add_column(CDataframe2, INT, "Col2");
 
-            unsigned int value1 = 10;
-            if (insert_value(CDataframe2->columns[0], &value1, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur col 0, cell 0: %d", *((unsigned int*)CDataframe2->columns[0]->data[0]));
+            char a = 'A', c = 'C';
 
-            unsigned int value2 = 11;
-            if (insert_value(CDataframe2->columns[0], &value2, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur col 0, cell 1: %d", *((unsigned int*)CDataframe2->columns[0]->data[1]));
-
-            int value3 = 20;
-            if (insert_value(CDataframe2->columns[1], &value3, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur col 1, cell 0: %d", *((int*)CDataframe2->columns[1]->data[0]));
+            if (insert_value(CDataframe2->columns[1], &a, &nouveau_bloc_cellules_ajouté_a_colonne))
+                printf("\nValeur col 1, cell 0: %c", *((char*)CDataframe2->columns[1]->data[0]));
 
             if (insert_value(CDataframe2->columns[1], NULL, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur NULL");
 
-            int value4 = 21;
-            if (insert_value(CDataframe2->columns[1], &value4, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur col 1, cell 1: %d", *((int*)CDataframe2->columns[1]->data[2]));
+            if (insert_value(CDataframe2->columns[1], &c, &nouveau_bloc_cellules_ajouté_a_colonne))
             
             print_col(CDataframe2->columns[1]);
 

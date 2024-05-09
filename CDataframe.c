@@ -120,11 +120,11 @@ int supprimer_colonne(DATAFRAME1* dataframe, int num_col)
     return 1;
 }
 
-int nom_colonne_existe(COLONNE** colonne, char* nom_colonne, int taille_CDataframe)
+int nom_colonne_existe(DATAFRAME1* dataframe, char* nom_colonne, int taille_CDataframe)
 {
     for (int i = 0; i < taille_CDataframe; i++)
     {
-        const char* nom = colonne[i]->titre;
+        const char* nom = dataframe->colonnes[i]->titre;
 
         if (compare_chaines(nom, nom_colonne) == 0)
             return 1;
@@ -463,7 +463,7 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
     // Agrandissement du tableau CDataframe apres ajout de la nouvelle colonne
     dataframe->size++;
 
-    // Ne pas faire de malloc, meme s'il n'existe aucune colonne
+    // Note: Ne pas faire de malloc, meme s'il n'y a aucune colonne
 
     dataframe->columns = realloc(dataframe->columns, (dataframe->size) * sizeof(COLUMN*));
     if (dataframe == NULL)
@@ -479,30 +479,32 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
     return 1;
 }
 
-int rename_column(DATAFRAME2* dataframe, int column_num, const char* new_name)
+int rename_column(DATAFRAME2* dataframe, int column_num, char* new_name)
 {
     // Vérifier si le numéro de colonne est valide
     if (column_num < 0 || column_num >= dataframe->size)
     {
-        printf("\nLe numéro de colonne %d est invalide.\n", column_num);
+        printf("\nLe numero de colonne \"%d\" est invalide\n", column_num);
         return 0;
     }
 
-    // Vérifier si le nouveau nom est déjà utilisé par une autre colonne
+    int name_exists = 0;
+
+    // Vérifier si le nouveau nom est déjà pris par une autre colonne
     for (int i = 0; i < dataframe->size; i++)
     {
-        if (i != column_num && strcmp(dataframe->columns[i]->title, new_name) == 0)
+        if (i != column_num - 1)
         {
-            printf("\nLe nom \"%s\" est déjà utilisé par la colonne %d.\n", new_name, i);
-            return 0;
+            if (column_name_exists(dataframe, new_name))
+            {
+                printf("\nLe nom \"%s\" est deja utilise par la colonne %d.\n", new_name, i + 1);
+                return 0;
+            }
         }
     }
-
+    
     // Mettre à jour le nom de la colonne
-    strncpy(dataframe->columns[column_num]->title, new_name, sizeof(dataframe->columns[column_num]->title) - 1);
-
-    // Ajouter le char terminal
-    dataframe->columns[column_num]->title[sizeof(dataframe->columns[column_num]->title) - 1] = '\0';
+    strcpy(dataframe->columns[column_num]->title, new_name);
 
     return 1;
 }
@@ -560,4 +562,13 @@ int delete_column(DATAFRAME2* dataframe, int num_col)
     return 1;
 }
 
+int column_name_exists(DATAFRAME2* dataframe, char* column_name)
+{
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        if (compare_chaines(dataframe->columns[i]->title, column_name) == 0)
+            return 1;
+    }
+    return 0;
+}
 #pragma endregion Fin CDataframe 2

@@ -205,6 +205,20 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
         (*bloc_lignes_ajoute_a_colonne) = true;
     }
 
+    // TT valeur NULL
+    if (value == NULL)
+    {
+        col->data[col->size] = NULL;
+        
+        // Renseigner l'index.
+        col->index[col->size] = col->size;
+
+        // Incrémente la taille logique de la colonne
+        col->size++;
+        
+        return 1;
+    }
+
     // Allocation de mémoire pour stocker le pointeur sur la nouvelle valeur dans la cell de la colonne
     switch (col->column_type)
     {
@@ -221,14 +235,8 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
                 return 0;
             }
 
-            // Renseigner la valeur passée en param et l'index ou mettre NULL si inexistante
-            if (value != NULL)
-                *((unsigned int*)col->data[col->size]) = *((unsigned int*)value);
-            else
-                col->data[col->size] = NULL;
-
-            // Renseigner l'index.
-            col->index[col->size] = col->size;
+            // Renseigner la valeur passée en param et l'index
+            *((unsigned int*)col->data[col->size]) = *((unsigned int*)value);
 
             break;
 
@@ -241,21 +249,32 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
                 return 0;
             }
 
-            // Renseigner la valeur passée en param et l'index ou mettre NULL si inexistante
-            if (value != NULL)
-                *((int*)col->data[col->size]) = *((int*)value);
-            else
-                col->data[col->size] = NULL;
+            // Renseigner la valeur passée en param et l'index
+            *((int*)col->data[col->size]) = *((int*)value);
 
-            // Renseigner l'index
-            col->index[col->size] = col->size;
+            break;
 
+        case CHAR:
+
+            col->data[col->size] = (char*)malloc(sizeof(char));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type CHAR du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((char*)col->data[col->size]) = *((char*)value);
+            
             break;
 
     default:
         // Type de colonne non pris en charge
         return 0;
     }
+
+    // Renseigner l'index.
+    col->index[col->size] = col->size;
 
     // Incrémente la taille logique de la colonne
     col->size++;
@@ -285,6 +304,7 @@ int print_col(COLUMN* col)
     {
         convert_value(col, i, str, sizeof(str));
         printf("\n[%u] %s", i, str);
+        str[0] = "\0";
     }
 
     return 1;
