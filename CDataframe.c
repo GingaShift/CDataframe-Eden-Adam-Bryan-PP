@@ -669,7 +669,7 @@ int print_column(DATAFRAME2* dataframe)
     return 1;
 }
 
-int obtenir_nombre_lignes_stockant_data(DATAFRAME2* dataframe)
+int get_num_arrow_data_stocking(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
     {
@@ -686,7 +686,7 @@ int obtenir_nombre_lignes_stockant_data(DATAFRAME2* dataframe)
     printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->size);
 }
 
-int obtenir_nombre_de_lignes_total(DATAFRAME2* dataframe)
+int total_get_number_arrow(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
     {
@@ -787,6 +787,6 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
     //else {
     //    printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
     //}
-}
+
 
 #pragma endregion Fin CDataframe 2

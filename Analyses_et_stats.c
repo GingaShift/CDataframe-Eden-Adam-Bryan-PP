@@ -38,97 +38,97 @@ int stats_sur_valeur(DATAFRAME1* dataframe, int valeur, OPERATEURS_DE_COMPARAISO
     return total;
 }
 
-int stats_sur_valeur(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison)
-{
-    int total = 0;
-
-    for (int i = 0; i < dataframe->size; i++) {
-        COLUMN* colonne = dataframe->columns[i];
-
-        for (int j = 0; j < colonne->size; j++) {
-            COL_TYPE* data = colonne->data[j];
-
-            switch (colonne->column_type)
-            {
-            case UINT:
-                switch (operateur_de_comparaison)
-                {
-                case SUPERIEUR:
-                    if (data->uint_value > valeur)
-                        total++;
-                    break;
-                case EGAL:
-                    if (data->uint_value == valeur)
-                        total++;
-                    break;
-                case INFERIEUR:
-                    if (data->uint_value < valeur)
-                        total++;
-                    break;
-                default:
-                    break;
-                }
-                break;
-
-            case INT:
-                switch (operateur_de_comparaison)
-                {
-                case SUPERIEUR:
-                    if (data->int_value > valeur)
-                        total++;
-                    break;
-                case EGAL:
-                    if (data->int_value == valeur)
-                        total++;
-                    break;
-                case INFERIEUR:
-                    if (data->int_value < valeur)
-                        total++;
-                    break;
-                default:
-                    break;
-                }
-                break;
-
-            case CHAR:
-                switch (operateur_de_comparaison)
-                {
-                case EGAL:
-                    if (tolower(data->char_value) == tolower(valeur))
-                        total++;
-                    break;
-                default:
-                    break;
-                }
-                break;
-
-            case STRING:
-                switch (operateur_de_comparaison)
-                {
-                case SUPERIEUR:
-                    if (strlen(data->string_value) > strlen((char*)&valeur))
-                        total++;
-                    break;
-                case EGAL:
-                    if (strlen(data->string_value) == strlen((char*)&valeur))
-                        total++;
-                    break;
-                case INFERIEUR:
-                    if (strlen(data->string_value) < strlen((char*)&valeur))
-                        total++;
-                    break;
-                default:
-                    break;
-                }
-                break;
-
-            default:
-                break;
-            }
-        }
-    }
-
-    return total;
-}
+//int stats_sur_valeur(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison)
+//{
+//    int total = 0;
+//
+//    for (int i = 0; i < dataframe->size; i++) {
+//        COLUMN* colonne = dataframe->columns[i];
+//
+//        for (int j = 0; j < colonne->size; j++) {
+//            COL_TYPE* data = colonne->data[j];
+//
+//            switch (colonne->column_type)
+//            {
+//            case UINT:
+//                switch (operateur_de_comparaison)
+//                {
+//                case SUPERIEUR:
+//                    if (data->uint_value > valeur)
+//                        total++;
+//                    break;
+//                case EGAL:
+//                    if (data->uint_value == valeur)
+//                        total++;
+//                    break;
+//                case INFERIEUR:
+//                    if (data->uint_value < valeur)
+//                        total++;
+//                    break;
+//                default:
+//                    break;
+//                }
+//                break;
+//
+//            case INT:
+//                switch (operateur_de_comparaison)
+//                {
+//                case SUPERIEUR:
+//                    if (data->int_value > valeur)
+//                        total++;
+//                    break;
+//                case EGAL:
+//                    if (data->int_value == valeur)
+//                        total++;
+//                    break;
+//                case INFERIEUR:
+//                    if (data->int_value < valeur)
+//                        total++;
+//                    break;
+//                default:
+//                    break;
+//                }
+//                break;
+//
+//            case CHAR:
+//                switch (operateur_de_comparaison)
+//                {
+//                case EGAL:
+//                    if (tolower(data->char_value) == tolower(valeur))
+//                        total++;
+//                    break;
+//                default:
+//                    break;
+//                }
+//                break;
+//
+//            case STRING:
+//                switch (operateur_de_comparaison)
+//                {
+//                case SUPERIEUR:
+//                    if (strlen(data->string_value) > strlen((char*)&valeur))
+//                        total++;
+//                    break;
+//                case EGAL:
+//                    if (strlen(data->string_value) == strlen((char*)&valeur))
+//                        total++;
+//                    break;
+//                case INFERIEUR:
+//                    if (strlen(data->string_value) < strlen((char*)&valeur))
+//                        total++;
+//                    break;
+//                default:
+//                    break;
+//                }
+//                break;
+//
+//            default:
+//                break;
+//            }
+//        }
+//    }
+//
+//    return total;
+//}
 
 
