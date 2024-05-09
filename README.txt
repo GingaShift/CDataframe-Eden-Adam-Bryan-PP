@@ -94,12 +94,3 @@ void supprimerLigne(DATAFRAME *dataframe, int indiceLigne) {
         printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
     }
 }
-
-int nombreDeLignes(DATAFRAME *dataframe) {
-    /* On suppose que toutes les colonnes ont la même taille */
-    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
-        return dataframe->colonnes[0]->taille;
-    } else {
-        return 0;
-    }
-}

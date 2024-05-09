@@ -9,10 +9,6 @@
 #include "Main.h"
 #include "String_manager.h"
 
-#pragma region code_main
-
-int res = 0;
-
 #pragma region CDataframe 1
 
 // Declaration du CDataframe
@@ -69,6 +65,8 @@ int free_ressources(DATAFRAME2* dataframe)
 
 #pragma endregion CDataframe 2
 
+#pragma region code_main
+int res = 0;
 
 void afficher_menu()
 {

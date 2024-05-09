@@ -328,12 +328,40 @@ int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int num_ligne_ma
     return 1;
 }
 
-int obtenir_nombre_lignes(DATAFRAME1* dataframe)
+int obtenir_nombre_lignes_stockant_data(DATAFRAME1* dataframe)
 {
     if (dataframe->taille == 0)
+    {
+        printf("\n La CDataframe ne contient aucune colonne");
         return 0;
+    }
 
-    return dataframe->colonnes[0]->taille_physique;
+    if (dataframe->colonnes[0]->taille_logique == 0)
+    {
+        printf("\n La CDataframe ne contient aucune ligne avec des donnees");
+        return 0;
+    }
+
+    printf("\n La CDataframe ne contient %s lignes", dataframe->colonnes[0]->taille_logique);
+}
+
+int obtenir_nombre_de_lignes_total(DATAFRAME1* dataframe)
+{
+    if (dataframe->taille == 0)
+    {
+        printf("\n La CDataframe ne contient aucune colonne");
+        return 0;
+    }
+        
+    if(dataframe->colonnes[0]->taille_physique == 0)
+    {
+        printf("\n La CDataframe ne contient aucune ligne");
+        return 0;
+    }
+
+    printf("\n La CDataframe ne contient %s lignes", dataframe->colonnes[0]->taille_physique);
+
+    return 1;
 }
 
 int modifier_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne, int valeur)
@@ -414,6 +442,31 @@ int ajouter_valeur_par_utilisateur(DATAFRAME1* dataframe, int num_col, int valeu
     {
         printf("\nUne erreur est survenue\n");
         return 0;
+    }
+}
+
+void ajouter_ligne(DATAFRAME1* dataframe)
+{
+    // TODO:
+    //S'il n'y a plus de lignes dispo, ajouter un new bloc de lignes
+    
+
+    int nouvelle_taille = dataframe->colonnes[0]->taille_logique + 1;
+
+    // Remplissage des données:
+    for (int i = 0; i < dataframe->taille; i++)
+    {
+        ///////////////////////////////////////////////////////////////
+        // Copier les valeurs dans la nouvelle ligne
+        // dataframe->colonnes[i]->data[nouvelle_taille - 1] = valeur[i];
+        // REMPLACER PAR SAISIE UTILISATEUR (scanf)
+        //
+        // VERIFIER QUE L'UTILISATEUR A BIEN SAISIE LE TYPE ATTENDU POUR LA COLONNE EN COURS !
+        // 
+        ///////////////////////////////////////////////////////////////
+
+        // Mettre à jour la taille de la colonne */
+        dataframe->colonnes[i]->taille_logique = nouvelle_taille;
     }
 }
 
@@ -572,10 +625,10 @@ int column_name_exists(DATAFRAME2* dataframe, char* column_name)
     return 0;
 }
 
-int num_col_print(DATAFRAME2* dataframe)
+int print_number_of_columns(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL) {
-        printf("\n veuillez d'abord initialisé un dataframe\n");
+        printf("\n veuillez d'abord initialiser un dataframe\n");
         return 0;
     }
 
@@ -583,7 +636,8 @@ int num_col_print(DATAFRAME2* dataframe)
     return 1;
 }
 
-int name_col_print(DATAFRAME2* dataframe) {
+int print_name_of_columns(DATAFRAME2* dataframe)
+{
     if (dataframe == NULL || dataframe->size == 0) {
         printf("\nLe dataframe est vide ou non intialisé.\n");
         return 0;
@@ -601,20 +655,87 @@ int name_col_print(DATAFRAME2* dataframe) {
     return 1;
 }
 
-int print_column(DATAFRAME2* dataframe) {
-    if (dataframe == NULL || dataframe->size == 0) {
+int print_column(DATAFRAME2* dataframe)
+{
+    if (dataframe == NULL || dataframe->size == 0)
+    {
         printf("\nDataframe à initialisé.\n");
         return 0;
     }
 
-    for (int i = 0; i < dataframe->size; i++) {
+    for (int i = 0; i < dataframe->size; i++)
         afficher_colonne(dataframe->columns[i]);
 
-    }
-    return;
+    return 1;
 }
 
+int obtenir_nombre_lignes_stockant_data(DATAFRAME2* dataframe)
+{
+    if (dataframe->size == 0)
+    {
+        printf("\n La CDataframe ne contient aucune colonne");
+        return 0;
+    }
 
+    if (dataframe->columns[0]->size == 0)
+    {
+        printf("\n La CDataframe ne contient aucune ligne avec des donnees");
+        return 0;
+    }
 
+    printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->size);
+}
+
+int obtenir_nombre_de_lignes_total(DATAFRAME2* dataframe)
+{
+    if (dataframe->size == 0)
+    {
+        printf("\n La CDataframe ne contient aucune colonne");
+        return 0;
+    }
+
+    if (dataframe->columns[0]->max_size == 0)
+    {
+        printf("\n La CDataframe ne contient aucune ligne");
+        return 0;
+    }
+
+    printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->max_size);
+
+    return 1;
+}
+
+int add_line(DATAFRAME2* dataframe)
+{
+    // On suppose que toutes les colonnes ont la même taille
+    //if (dataframe->size > 0 && dataframe->columns[0]->size >= 0)
+    //{
+    //    // Connaitre la taille T+1 de la new ligne pour les colonnes (new cell pr toutes les cols)
+    //    int nouvelle_taille = dataframe->columns[0]->size + 1;
+
+    //    // Allouer de la mémoire pour la nouvelle ligne dans chaque colonne
+    //    for (int i = 0; i < dataframe->size; i++)
+    //    {
+    //        dataframe->colonnes[i]->valeurs = realloc(dataframe->colonnes[i]->valeurs, nouvelle_taille * sizeof(int));
+    //        if (dataframe->colonnes[i]->valeurs == NULL) {
+    //            printf("Erreur : Échec de l'allocation de mémoire.\n");
+    //            return 1;
+    //        }
+    //    }
+
+    //    /* Copier les valeurs dans la nouvelle ligne */
+    //    for (int i = 0; i < dataframe->taille; i++) {
+    //        dataframe->colonnes[i]->valeurs[nouvelle_taille - 1] = valeurs[i];
+    //    }
+
+    //    /* Mettre à jour la taille de la colonne */
+    //    for (int i = 0; i < dataframe->taille; i++) {
+    //        dataframe->colonnes[i]->taille = nouvelle_taille;
+    //    }
+    //}
+    //else {
+    //    printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
+    //}
+}
 
 #pragma endregion Fin CDataframe 2
