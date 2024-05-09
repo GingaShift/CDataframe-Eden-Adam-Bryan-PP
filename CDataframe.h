@@ -4,6 +4,7 @@
 #include "Divers.h"
 
 #define NOMBRE_CHAR_MAX_NOM_DATAFRAME 256
+#define TAILLE_MAX_STRING 256
 
 #pragma region CDataframe 1
 

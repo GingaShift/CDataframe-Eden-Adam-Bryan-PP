@@ -218,23 +218,20 @@ int main()
             CDataframe2 = create_cdataframe(&CDataframe2_exists, "Dataframe 2");
 
             add_column(CDataframe2, UINT, "Col0");
-            add_column(CDataframe2, CHAR, "Col1");
+            add_column(CDataframe2, STRING, "Col1");
             add_column(CDataframe2, INT, "Col2");
 
-            char a = 'A', c = 'C';
+            char* a = "aaaaaaaa";
+            char* c = "ccccccccccccccccc";
 
-            if (insert_value(CDataframe2->columns[1], &a, &nouveau_bloc_cellules_ajouté_a_colonne))
-                printf("\nValeur col 1, cell 0: %c", *((char*)CDataframe2->columns[1]->data[0]));
+            if (insert_value(CDataframe2->columns[1], a, &nouveau_bloc_cellules_ajouté_a_colonne))
+                //printf("\nValeur col 1, cell 0: %s", *((float*)CDataframe2->columns[1]->data[0]));
 
             if (insert_value(CDataframe2->columns[1], NULL, &nouveau_bloc_cellules_ajouté_a_colonne))
 
-            if (insert_value(CDataframe2->columns[1], &c, &nouveau_bloc_cellules_ajouté_a_colonne))
-            
+            if (insert_value(CDataframe2->columns[1], c, &nouveau_bloc_cellules_ajouté_a_colonne))
+
             print_col(CDataframe2->columns[1]);
-
-            // col vide
-            print_col(CDataframe2->columns[2]);
-
 
             break;
 
