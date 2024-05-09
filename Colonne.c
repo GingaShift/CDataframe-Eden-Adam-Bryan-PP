@@ -152,7 +152,7 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
 int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
 {
     (*bloc_lignes_ajoute_a_colonne) = false;
-    
+
     // Retourne 0 si le pointeur de colonne ou la valeur est NULL
     if (col == NULL)
     {
@@ -205,7 +205,7 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
         (*bloc_lignes_ajoute_a_colonne) = true;
     }
 
-    // TT valeur NULL
+    // Traitement si valeur NULL
     if (value == NULL)
     {
         col->data[col->size] = NULL;
@@ -222,9 +222,6 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
     // Allocation de mémoire pour stocker le pointeur sur la nouvelle valeur dans la cell de la colonne
     switch (col->column_type)
     {
-        // TODO: Ajoutez les autres cas des autres types:
-        // CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
-
         case UINT:
 
             // Allocation de mémoire pour un pointeur sur le type "unsigned int" dans la cell
@@ -249,7 +246,7 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
                 return 0;
             }
 
-            // Renseigner la valeur passée en param et l'index
+            // Renseigner la valeur passée en param
             *((int*)col->data[col->size]) = *((int*)value);
 
             break;
@@ -267,6 +264,64 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
             *((char*)col->data[col->size]) = *((char*)value);
             
             break;
+
+        case FLOAT:
+
+            col->data[col->size] = (float*)malloc(sizeof(float));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type FLOAT du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((float*)col->data[col->size]) = *((float*)value);
+
+            break;
+
+        case DOUBLE:
+
+            col->data[col->size] = (double*)malloc(sizeof(double));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type DOUBLE du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((double*)col->data[col->size]) = *((double*)value);
+
+            break;
+
+        case STRING:
+
+            // Allocation de mémoire pour une chaîne de caractères
+            col->data[col->size] = malloc(strlen((char*)value) + 1); // +1 pour le caractère de fin de chaîne nulle
+            
+            if (col->data[col->size] == NULL) {
+                printf("\nErreur d'allocation mémoire pour la cellule de type STRING du tableau de données\n");
+                return 0;
+            }
+
+            // Copie de la chaîne de caractères
+            strcpy((char*)col->data[col->size], (char*)value);
+
+            break;
+            
+        case STRUCTURE:
+        {
+            // Taille de la structure
+            size_t struct_size;
+            col->data[col->size] = malloc(struct_size);
+            if (col->data[col->size] == NULL) {
+                printf("\nErreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
+                return 0;
+            }
+
+            // Copie de la structure
+            memcpy(col->data[col->size], value, struct_size);
+        }
+        break;
 
     default:
         // Type de colonne non pris en charge
@@ -298,11 +353,12 @@ int print_col(COLUMN* col)
         return 0;
     }
 
-    char* str[256];
+    char* str[TAILLE_MAX_STRING];
 
     for (unsigned int i = 0; i < col->size; i++)
     {
         convert_value(col, i, str, sizeof(str));
+        printf("INDEX: %d", col->index[i]);
         printf("\n[%u] %s", i, str);
         str[0] = "\0";
     }
