@@ -774,19 +774,4 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
     return 1;
 }
 
-    //    /* Copier les valeurs dans la nouvelle ligne */
-    //    for (int i = 0; i < dataframe->taille; i++) {
-    //        dataframe->colonnes[i]->valeurs[nouvelle_taille - 1] = valeurs[i];
-    //    }
-
-    //    /* Mettre à jour la taille de la colonne */
-    //    for (int i = 0; i < dataframe->taille; i++) {
-    //        dataframe->colonnes[i]->taille = nouvelle_taille;
-    //    }
-    //}
-    //else {
-    //    printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
-    //}
-}
-
 #pragma endregion Fin CDataframe 2
