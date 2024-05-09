@@ -78,11 +78,11 @@ int column_name_exists(DATAFRAME2* dataframe, char* column_name);
 //
 //int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
 //
-//int obtenir_nombre_lignes(DATAFRAME1* dataframe); à faire
+//int obtenir_nombre_lignes(DATAFRAME1* dataframe); DONENENENNE
 //
 //int modifier_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne, int valeur);
 //
-//int afficher_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne); à faire ( se servir de convert value)
+//int afficher_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne); DONEEENENENE
 //
 //int ajouter_valeur_par_utilisateur(DATAFRAME1* dataframe, int num_col, int valeur);
 //
