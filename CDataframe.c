@@ -571,4 +571,50 @@ int column_name_exists(DATAFRAME2* dataframe, char* column_name)
     }
     return 0;
 }
+
+int num_col_print(DATAFRAME2* dataframe)
+{
+    if (dataframe == NULL) {
+        printf("\n veuillez d'abord initialisé un dataframe\n");
+        return 0;
+    }
+
+    printf("Nombre de colonnes présentent dans le CDataframe : %d\n", dataframe->size);
+    return 1;
+}
+
+int name_col_print(DATAFRAME2* dataframe) {
+    if (dataframe == NULL || dataframe->size == 0) {
+        printf("\nLe dataframe est vide ou non intialisé.\n");
+        return 0;
+    }
+
+    int col_number = 0;
+
+    printf("\noms des colonnes : \n\n");
+
+    for (int i = 0; i < dataframe->size; i++) {
+        COLUMN* column = dataframe->columns[i];
+        printf("[%d] = %s\n", col_number, column->title);
+        col_number += 1;
+    }
+    return 1;
+}
+
+int print_column(DATAFRAME2* dataframe) {
+    if (dataframe == NULL || dataframe->size == 0) {
+        printf("\nDataframe à initialisé.\n");
+        return 0;
+    }
+
+    for (int i = 0; i < dataframe->size; i++) {
+        afficher_colonne(dataframe->columns[i]);
+
+    }
+    return;
+}
+
+
+
+
 #pragma endregion Fin CDataframe 2
