@@ -65,16 +65,16 @@ int populate_dataframe_automatically(DATAFRAME2* dataframe)
     int add_block_lines_to_all_columns = 0;
 
     // Ajouter une colonne au dataframe
-    ajouter_colonne(dataframe, "Colonne 1");
-
-    // Ajouter une colonne au dataframe
-    ajouter_colonne(dataframe, "Colonne 2");
+    add_column(dataframe, INT,"Colonne 1");
 
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 0, 10);
 
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 0, 11);
 
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 0, 12);
+
+    // Ajouter une colonne au dataframe
+    add_column(dataframe, CHAR, "Colonne 2");
 
     // Ajouter une valeur à Colonne 2
     inserer_valeur_avec_gestion_memoire_data_colonnes(dataframe, 1, 20);

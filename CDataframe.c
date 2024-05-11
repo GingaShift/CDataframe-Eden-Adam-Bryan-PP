@@ -625,6 +625,113 @@ int column_name_exists(DATAFRAME2* dataframe, char* column_name)
     return 0;
 }
 
+int insert_value_with_memory_management_of_tabs_data_of_columns(DATAFRAME2* dataframe, int num_col, void* value)
+{
+    bool block_cells_added_to_column = false;
+
+    // Ajouter valeur à colonne
+    if (! insert_value(dataframe->columns[num_col], value, &block_cells_added_to_column))
+    {
+        printf("\nUne erreur est survenue lors de l'ajout de la valeur dans la colonne\n");
+        return 0;
+    }
+
+    // Si un nouveau bloc de cells à été ajouté à cette col, toutes les autres cols doivent être de la même taille
+    if (block_cells_added_to_column == true)
+        equalize_size_of_tabs_data_of_columns(dataframe);
+
+    return 1;
+}
+
+int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe)
+{
+    // Si une seule colonne présente, point besoin d'égaliser
+    if (dataframe->size == 1)
+        return 1;
+
+    int size_of_highest_tab_data = 0;
+    int number_of_blocks_to_add = 0;
+    int delta_size = 0;
+
+    // Parcourir toutes les colonnes et rechercher le tab data ayant la taille physique la + élevée
+    // Cette taille devra être allouée, si ce n'est pas déjà le cas, à tous les autres tab data des colonnes
+    for (int i = 0; i < dataframe->size; ++i)
+    {
+        if (dataframe->columns[i]->max_size > size_of_highest_tab_data)
+        {
+            size_of_highest_tab_data = dataframe->columns[i]->max_size;
+        }
+    }
+
+    int total_number_of_cells = 0;
+
+    // Examiner et ajuster eventuellement la taille des colonnes à cette taille max si besoin
+    for (int i = 0; i < dataframe->size; ++i)
+    {
+        COLUMN* col = dataframe->columns[i];
+
+        if (col->size == size_of_highest_tab_data)
+            continue;
+        
+        total_number_of_cells = 0;
+
+        if (col->size < size_of_highest_tab_data)
+        {
+            // Calculer le nombre de blocs à allouer. Il peut y avoir un ou plusieurs à allouer.
+            // Ex: Si on vient de créer une col alors qu'il en existe déjà possédant 512 lignes, cela fera 2 blocs à ajouter d'un coup
+            delta_size = size_of_highest_tab_data - col->size;
+            number_of_blocks_to_add = delta_size / NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+
+            // Allouer le ou les bloc(s) mémoire nécessaire(s)
+            total_number_of_cells = col->size + (number_of_blocks_to_add * NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE);
+
+            //TODO: faire fct "allocate_memory_to_data(col, total_number_of_cells)
+            // et y mettre le code ci-dessous. Ensuite utiliser cette fct au lieu du code suivant.
+            // Factoriser egalement de la m maniere le m type de code qui est dans "insert_value".
+            
+            // Si la col ne contient aucune données, allouer de l'espace pour les data et l'index
+            if (col->max_size == 0)
+            {
+                // creation du tab de données (vide)
+                col->data = malloc(total_number_of_cells * sizeof(COL_TYPE*));
+                if (col->data == NULL)
+                {
+                    printf("\nErreur d'allocation mémoire lors de la création du tab data de la colonne\n");
+                    return 0;
+                }
+
+                // creation du tab d'index pour le tab de données (vide)
+                col->index = malloc(total_number_of_cells * sizeof(unsigned long long int*));
+                if (col->index == NULL)
+                {
+                    printf("\nErreur d'allocation mémoire lors de la création du tab d'index pour le tab data de la colonne\n");
+                    return 0;
+                }
+                col->max_size = total_number_of_cells;
+                continue;
+            }
+
+            // Si la col contient déjà des blocs, ajouter le nombre de blocs manquant
+            if(col->max_size < size_of_highest_tab_data)
+            {
+                col->data = realloc(col->data, total_number_of_cells * sizeof(COL_TYPE*));
+                if (col->data == NULL) {
+                    printf("\nErreur de réallocation de mémoire lors de l'extension du tableau data de la colonne\n");
+                    return 0;
+                }
+
+                // Réallocation de mémoire afin d'augmenter la capacité du tab d'index pour le tab de données
+                col->index = realloc(col->index, total_number_of_cells * sizeof(unsigned long long int*));
+                if (col->index == NULL) {
+                    printf("\nErreur de réallocation de mémoire lors de l'extension du tab d'index pour le tab de données\n");
+                    return 0;
+                }
+                col->max_size = total_number_of_cells;
+            }
+        }
+    }
+}
+
 int print_number_of_columns(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL) {
@@ -669,7 +776,7 @@ int print_columns(DATAFRAME2* dataframe)
     return 1;
 }
 
-int get_number_of_lines_storing_data(DATAFRAME2* dataframe)
+int get_number_of_rows_storing_data(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
     {
@@ -686,7 +793,7 @@ int get_number_of_lines_storing_data(DATAFRAME2* dataframe)
     printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->size);
 }
 
-int get_number_of_lines(DATAFRAME2* dataframe)
+int get_number_of_rows(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
     {
@@ -702,15 +809,6 @@ int get_number_of_lines(DATAFRAME2* dataframe)
 
     printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->max_size);
 
-    return 1;
-}
-
-int get_num_row(DATAFRAME2* dataframe) {
-    if (dataframe == NULL || dataframe->size == 0) {
-        return 0;
-    }
-
-    printf("\nVoici le nombre de ligne : %d", dataframe->columns[0]->max_size);
     return 1;
 }
 
@@ -736,42 +834,108 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
         return 0;
     }
 
-    char value_str[256]; // Taille de la chaîne de caractères pour stocker la valeur convertie
-    if (!convert_value(column, num_ligne, value_str, sizeof(value_str)))
+    char value_str[TAILLE_MAX_DATA_STRING];
+    if (! convert_value(column, num_ligne, value_str, sizeof(value_str)))
     {
-        printf("\nErreur lors de la conversion de la valeur.\n");
+        printf("\nErreur dans print_value lors de la conversion de la valeur a afficher\n");
         return 0;
-    }
-
-    switch (column->column_type)
-    {
-    case UINT:
-        printf("\nValeur à la colonne %d, ligne %d : %u\n", num_col, num_ligne, *((unsigned int*)column->data[num_ligne]));
-        break;
-    case INT:
-        printf("\nValeur à la colonne %d, ligne %d : %d\n", num_col, num_ligne, *((int*)column->data[num_ligne]));
-        break;
-    case CHAR:
-        printf("\nValeur à la colonne %d, ligne %d : %c\n", num_col, num_ligne, *((char*)column->data[num_ligne]));
-        break;
-    case STRING:
-        printf("\nValeur à la colonne %d, ligne %d : %s\n", num_col, num_ligne, (char*)column->data[num_ligne]);
-        break;
-    case FLOAT:
-        printf("\nValeur à la colonne %d, ligne %d : %f\n", num_col, num_ligne, *((float*)column->data[num_ligne]));
-        break;
-    case DOUBLE:
-        printf("\nValeur à la colonne %d, ligne %d : %lf\n", num_col, num_ligne, *((double*)column->data[num_ligne]));
-        break;
-    case STRUCTURE:
-        printf("\nValeur à la colonne %d, ligne %d : %p (structure)\n", num_col, num_ligne, column->data[num_ligne]->struct_value);
-        break;
-    default:
-        printf("\nType de colonne non pris en charge.\n");
-        break;
     }
 
     return 1;
 }
+
+int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
+{
+    if (dataframe == NULL)
+    {
+        printf("\nLe dataframe n'existe pas\n");
+        return 0;
+    }
+
+    if (num_col > dataframe->size - 1)
+    {
+        printf("La colonne num %d n'existe pas", num_col);
+        return 0;
+    }
+
+    if (num_row > dataframe->columns[num_col]->size)
+    {
+        printf("La colonne num %d ne possede pas de ligne %d, on ne peut donc pas la modifier", num_col, num_row);
+        return 0;
+    }
+
+    if (value == NULL)
+    {
+        printf("La valeur à modifier n'est pas valide");
+        return 0;
+    }
+
+    // Modification de la valeur
+    //dataframe->columns[num_col]->data[num_row] = value;
+    //*((int*)dataframe->columns[0]->data[0]) = value;
+
+    switch (dataframe->columns[num_col]->column_type)
+    {
+        // modifier par la valeur passée en param en fonction du putain de type
+        case UINT:
+            *((unsigned int*)dataframe->columns[num_col]->data[num_row]) = *((unsigned int*)value);
+            break;
+
+        case INT:
+            *((int*)dataframe->columns[num_col]->data[num_row]) = *((int*)value);
+            break;
+
+        case CHAR:
+            *((char*)dataframe->columns[num_col]->data[num_row]) = *((char*)value);
+            break;
+
+        case FLOAT:
+            *((float*)dataframe->columns[num_col]->data[num_row]) = *((float*)value);
+            break;
+
+        case DOUBLE:
+            *((double*)dataframe->columns[num_col]->data[num_row]) = *((double*)value);
+            break;
+
+        case STRING:
+
+            // Allocation de mémoire pour une chaîne de caractères
+            dataframe->columns[num_col]->data[num_row] = malloc(strlen((char*)value) + 1); // +1 pour le caractère de fin de chaîne nulle
+
+            if (dataframe->columns[num_col]->data[num_row] == NULL)
+            {
+                printf("\nErreur d'allocation mémoire pour la cellule de type STRING du tableau de données\n");
+                return 0;
+            }
+
+            // Copie de la chaîne de caractères
+            strcpy((char*)dataframe->columns[num_col]->data[num_row], (char*)value);
+
+            break;
+
+    case STRUCTURE:
+    {
+        // Taille de la structure
+        size_t struct_size;
+        dataframe->columns[num_col]->data[num_row] = malloc(struct_size);
+        if (dataframe->columns[num_col]->data[num_row] == NULL) {
+            printf("\nErreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
+            return 0;
+        }
+
+        // Copie de la structure
+        memcpy(dataframe->columns[num_col]->data[num_row], value, struct_size);
+
+        break;
+    }
+
+    default:
+
+        // Type de colonne non pris en charge
+        printf("\nErreur: Ce type de colonne n'est pas reconnu\n");
+        return 0;
+    }
+}
+
 
 #pragma endregion Fin CDataframe 2

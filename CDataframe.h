@@ -4,7 +4,7 @@
 #include "Divers.h"
 
 #define NOMBRE_CHAR_MAX_NOM_DATAFRAME 256
-#define TAILLE_MAX_STRING 256
+#define TAILLE_MAX_DATA_STRING 256
 
 #pragma region CDataframe 1
 
@@ -64,14 +64,13 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
 
 int rename_column(DATAFRAME2* dataframe, int column_num, char* new_name);
 
-// TODO:
 //int supprimer_colonne(DATAFRAME1* dataframe, int num_col);
 
-//int inserer_valeur_avec_gestion_memoire_data_colonnes(DATAFRAME1* dataframe, int num_col, int valeur);
-//
-//int egaliser_taille_des_tabs_data_des_colonnes(DATAFRAME1* dataframe);
-
 int column_name_exists(DATAFRAME2* dataframe, char* column_name);
+
+int insert_value_with_memory_management_of_tabs_data_of_columns(DATAFRAME2* dataframe, int num_col, void* value);
+
+int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe);
 
 int print_number_of_columns(DATAFRAME2* dataframe);
 
@@ -79,20 +78,20 @@ int print_name_of_columns(DATAFRAME2* dataframe);
 
 int print_columns(DATAFRAME2* dataframe);
 
-int get_number_of_lines_storing_data(DATAFRAME2* dataframe);
+int get_number_of_rows_storing_data(DATAFRAME2* dataframe);
 
-int get_number_of_lines(DATAFRAME2* dataframe);
+int get_number_of_rows(DATAFRAME2* dataframe);
 
-//int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
-//
-//int modifier_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne, int valeur);
-//
-//int afficher_valeur(DATAFRAME1* dataframe, int num_col, int num_ligne); DONEEENENENE
-//
+int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne);
+
+int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value);
+
 //int ajouter_valeur_par_utilisateur(DATAFRAME1* dataframe, int num_col, int valeur);
-//
+
 //int delete_column(DATAFRAME2* dataframe, int num_col);
 
-int add_line(DATAFRAME2* dataframe);
+//int add_line_by_user(DATAFRAME2* dataframe);
+
+//int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
 
 #pragma endregion Fin CDataframe 2

@@ -20,7 +20,7 @@ typedef struct Colonne
 
 COLONNE* creer_colonne(const char* nom);
 
-int inserer_valeur(COLONNE* colonne, int valeur, bool* bloc_lignes_ajoute_a_colonne);
+int inserer_valeur(COLONNE* colonne, int valeur, bool* block_cells_added_to_column);
 
 int liberer_ressources_colonne(COLONNE* colonne);
 
@@ -72,9 +72,9 @@ typedef struct Column COLUMN;
 
 COLUMN* create_column(ENUM_TYPE column_type, char* column_title);
 
-int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne);
+int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column);
 
-int print_col(COLUMN* col);
+int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show);
 
 int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size);
 

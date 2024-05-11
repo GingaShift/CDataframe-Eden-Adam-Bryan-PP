@@ -149,9 +149,9 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
     return new_column;
 }
 
-int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
+int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
 {
-    (*bloc_lignes_ajoute_a_colonne) = false;
+    (*block_cells_added_to_column) = false;
 
     // Retourne 0 si le pointeur de colonne ou la valeur est NULL
     if (col == NULL)
@@ -160,10 +160,20 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
         return 0;
     }
 
-    if (col->data == NULL)
+    if (value == NULL)
     {
+        printf("\nLa valeur n'existe pas, ajout impossible.\n");
+        return 0;
+    }
+
+    int total_number_of_cells = 0;
+
+    if (col->max_size == 0)
+    {
+        total_number_of_cells = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+
         // creation du tab de données (vide)
-        col->data = malloc(NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE * sizeof(COL_TYPE*));
+        col->data = malloc(total_number_of_cells * sizeof(COL_TYPE*));
         if (col->data == NULL)
         {
             printf("\nErreur d'allocation mémoire lors de la création du tab data de la colonne\n");
@@ -171,38 +181,40 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
         }
 
         // creation du tab d'index pour le tab de données (vide)
-        col->index = malloc(NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE * sizeof(unsigned long long int*));
+        col->index = malloc(total_number_of_cells * sizeof(unsigned long long int*));
         if (col->index == NULL)
         {
             printf("\nErreur d'allocation mémoire lors de la création du tab d'index pour le tab data de la colonne\n");
             return 0;
         }
 
-        col->max_size = NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+        col->max_size = total_number_of_cells;
 
-        (*bloc_lignes_ajoute_a_colonne) = true;
+        (*block_cells_added_to_column) = true;
     }
 
-    // Vérifie si le tableau de données de la colonne est plein
+    // Vérifie si le tableau de données de la colonne est plein.
+    // Si oui, réallocation de mémoire pour augmenter la capacité de la colonne en y ajoutant un bloc de données
     if (col->size == col->max_size)
     {
-        // Si oui, réallocation de mémoire pour augmenter la capacité de la colonne en y ajoutant un bloc de données
-        col->max_size += NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
+        total_number_of_cells += col->max_size + NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
         
-        col->data = realloc(col->data, col->max_size * sizeof(COL_TYPE*));
+        col->data = realloc(col->data, total_number_of_cells * sizeof(COL_TYPE*));
         if (col->data == NULL) {
             printf("\nErreur de réallocation de mémoire lors de l'extension du tableau data de la colonne\n");
             return 0;
         }
 
         // Réallocation de mémoire afin d'augmenter la capacité du tab d'index pour le tab de données
-        col->index = realloc(col->index, col->max_size * sizeof(unsigned long long int*));
+        col->index = realloc(col->index, total_number_of_cells * sizeof(unsigned long long int*));
         if (col->index == NULL) {
             printf("\nErreur de réallocation de mémoire lors de l'extension du tab d'index pour le tab de données\n");
             return 0;
         }
+    
+        col->max_size = total_number_of_cells;
 
-        (*bloc_lignes_ajoute_a_colonne) = true;
+        (*block_cells_added_to_column) = true;
     }
 
     // Traitement si valeur NULL
@@ -224,7 +236,7 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
     {
         case UINT:
 
-            // Allocation de mémoire pour un pointeur sur le type "unsigned int" dans la cell
+            // Allocation de mémoire pour la cell qui va contenir un pointeur sur un type "unsigned int"
             col->data[col->size] = (unsigned int*)malloc(sizeof(unsigned int));
             if (col->data[col->size] == NULL)
             {
@@ -232,7 +244,7 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
                 return 0;
             }
 
-            // Renseigner la valeur passée en param et l'index
+            // Renseigner la valeur passée en param
             *((unsigned int*)col->data[col->size]) = *((unsigned int*)value);
 
             break;
@@ -298,7 +310,8 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
             // Allocation de mémoire pour une chaîne de caractères
             col->data[col->size] = malloc(strlen((char*)value) + 1); // +1 pour le caractère de fin de chaîne nulle
             
-            if (col->data[col->size] == NULL) {
+            if (col->data[col->size] == NULL)
+            {
                 printf("\nErreur d'allocation mémoire pour la cellule de type STRING du tableau de données\n");
                 return 0;
             }
@@ -310,25 +323,25 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
             
         case STRUCTURE:
         {
-            // Taille de la structure
-            size_t struct_size;
-            col->data[col->size] = malloc(struct_size);
-            if (col->data[col->size] == NULL) {
+            col->data[col->size] = (void*)malloc(sizeof(value));
+            if (col->data[col->size] == NULL)
+            {
                 printf("\nErreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
                 return 0;
             }
 
-            // Copie de la structure
-            memcpy(col->data[col->size], value, struct_size);
-        }
-        break;
+            // Renseigner la valeur passée en param
+            col->data[col->size] = value;
+        
+            break;
+         }
 
     default:
         // Type de colonne non pris en charge
         return 0;
     }
 
-    // Renseigner l'index.
+    // Renseigner l'index associé à cette valeur
     col->index[col->size] = col->size;
 
     // Incrémente la taille logique de la colonne
@@ -338,7 +351,7 @@ int insert_value(COLUMN* col, void* value, bool* bloc_lignes_ajoute_a_colonne)
     return 1;
 }
 
-int print_col(COLUMN* col)
+int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show)
 {
     // Retourne si le pointeur de colonne est NULL ou si la position est invalide
     if (col == NULL)
@@ -353,13 +366,27 @@ int print_col(COLUMN* col)
         return 0;
     }
 
-    char* str[TAILLE_MAX_STRING];
+    if (number_of_rows_to_show == NO_LIMIT)
+        number_of_rows_to_show = col->size;
+    
+    if (number_of_rows_to_show > col->size)
+    {
+        printf("\nImpossible de mener a bien votre requete car le nombre de cellules que vous souhaitez afficher pour la colonne \"%s\" est %d or le nombre de cellules disponibles est plus petit: %d\n", col->title, number_of_rows_to_show, col->size);
+        return 0;
+    }
 
-    for (unsigned int i = 0; i < col->size; i++)
+    if (show_column_title)
+    {
+        printf("\nContenu de la colonne \"%s\" :", col->title);
+    }
+    
+    char* str[TAILLE_MAX_DATA_STRING];
+
+    for (int i = 0; i < number_of_rows_to_show; i++)
     {
         convert_value(col, i, str, sizeof(str));
-        printf("INDEX: %d", col->index[i]);
-        printf("\n[%u] %s", i, str);
+        // Ne jamais afficher l'index, seulement le num sequentiel de la boucle for, tout simplement
+        printf("\n[%d] %s", i, str);
         str[0] = "\0";
     }
 
