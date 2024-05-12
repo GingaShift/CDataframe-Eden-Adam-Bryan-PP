@@ -937,5 +937,97 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
     }
 }
 
+void add_row(DATAFRAME2* dataframe)
+{
+    int new_size = dataframe->columns[0]->size + 1;
+
+    // Allocation de mémoire pour la nouvelle ligne dans chaque colonne
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        COLUMN* colonne = dataframe->columns[i];
+
+        // Réallocation de la mémoire pour les données de la colonne
+        COL_TYPE** new_data = realloc(colonne->data, new_size * sizeof(COL_TYPE*));
+        if (new_data == NULL)
+        {
+            printf("Erreur d'allocation de mémoire pour la colonne %s lors de l'ajout d'une nouvelle ligne.\n", colonne->title);
+            return;
+        }
+
+        // Mise à jour de la taille de la colonne et du tab data
+        colonne->size = new_size;
+        colonne->data = new_data;
+
+        // Allocation de mémoire pour la nouvelle valeur dans la colonne
+        COL_TYPE* new_value = malloc(sizeof(COL_TYPE));
+        if (new_value == NULL)
+        {
+            printf("Erreur d'allocation de mémoire pour la nouvelle valeur dans la colonne %s.\n", colonne->title);
+            return;
+        }
+
+        // Demander à l'utilisateur de saisir la valeur en fonction du type de la colonne
+        switch (colonne->column_type)
+        {
+        case UINT:
+            printf("Saisissez une valeur entière non signée pour la colonne %s : ", colonne->title);
+            scanf("%u", &(new_value->uint_value));
+            break;
+        case INT:
+            printf("Saisissez une valeur entière pour la colonne %s : ", colonne->title);
+            scanf("%d", &(new_value->int_value));
+            break;
+        case CHAR:
+            printf("Saisissez un caractère pour la colonne %s : ", colonne->title);
+            scanf(" %c", &(new_value->char_value)); // Utilisez " %c" pour ignorer les espaces vides et les retours chariot résiduels
+            break;
+        case STRING:
+            printf("Saisissez une chaîne de caractères pour la colonne %s : ", colonne->title);
+            new_value->string_value = malloc((256) * sizeof(char)); // Vous devrez définir MAX_STRING_LENGTH
+            if (new_value->string_value == NULL)
+            {
+                printf("Erreur d'allocation de mémoire pour la chaîne de caractères dans la colonne %s.\n", colonne->title);
+                return;
+            }
+            scanf("%s", new_value->string_value);
+            break;
+            // Ajoutez ici d'autres cas pour les autres types de colonnes (FLOAT, DOUBLE, STRUCTURE, etc.) si nécessaire
+        default:
+            printf("Type de colonne non pris en charge pour la saisie de valeur.\n");
+            return;
+        }
+
+        // Assigner la nouvelle valeur à la colonne
+        colonne->data[new_size - 1] = new_value;
+    }
+}
+
+void delete_row(DATAFRAME2* dataframe, int index_ligne)
+{
+    if (index_ligne < 0 || index_ligne >= dataframe->columns[0]->size)
+    {
+        printf("Indice de ligne invalide.\n");
+        return;
+    }
+
+    // Parcours de chaque colonne pour libérer la mémoire de la ligne à l'index donné
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        COLUMN* colonne = dataframe->columns[i];
+
+        // Libération de la mémoire de la ligne à l'index donné dans la colonne actuelle
+        free(colonne->data[index_ligne]);
+
+        // Déplacement des éléments suivants vers le haut pour remplir le trou laissé par la suppression de la ligne
+        for (int j = index_ligne + 1; j < colonne->size; j++)
+        {
+            colonne->data[j - 1] = colonne->data[j];
+        }
+
+        // Réduction de la taille de la colonne
+        colonne->size--;
+    }
+}
+
 
 #pragma endregion Fin CDataframe 2

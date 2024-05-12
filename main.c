@@ -89,7 +89,7 @@ void afficher_menu()
     printf("    *      2. Remplissage du CDataframe a partir                 2. Afficher une partie des lignes               *\n");
     printf("    *         de saisies utilisateurs                               du CDataframe selon une limite               *\n");
     printf("    *      3. Remplissage en dur du CDataframe                      fournie par l'utilisateur                    *\n");
-    printf("    *                                                                                                            *\n");
+    printf("    *                                                                                                            *\n    ");
     printf("    *                                                  3. Afficher une partie des                                *\n");
     printf("    *                                                     colonnes du CDataframe selon                           *\n");
     printf("    *                                                     une limite fournie par                                 *\n");
