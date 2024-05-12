@@ -6,6 +6,8 @@
 
 int quick_sort_column(COLUMN* colonne, int gauche, int droite, int sort_dir);
 
+int quick_sort_column_int(COLUMN* colonne, int gauche, int droite, int sort_dir);
+
 int partition(COLUMN* colonne, int gauche, int droite, int sort_dir);
 
 #pragma endregion Tri QuickSort

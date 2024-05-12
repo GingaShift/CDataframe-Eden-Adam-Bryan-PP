@@ -3,27 +3,11 @@
 
 #pragma endregion Tri QuickSort
 
-// Tri "QuickSort": A utiliser si le tableau n'a pas encore été trié
-// sort_dir = 0: Tri du plus petit au plus grand
-// sort_dir = 1: Tri du plus grand au plus petit
-// Lors de l'appel de la fonction: gauche = 0 et droite = (taille logique de la col - 1)
-void quick_sort_column(COLUMN* colonne, int gauche, int droite, int sort_dir)
-{
-    if (gauche < droite)
-    {
-        // Effectuer le partitionnement
-        int pi = partition(colonne, gauche, droite, sort_dir);
-
-        // Trier les sous-tableaux avant et après le pivot
-        quick_sort_column(colonne, gauche, pi - 1, sort_dir);
-        quick_sort_column(colonne, pi + 1, droite, sort_dir);
-    }
-}
-
 // Utilisé conjointement avec quick_sort_column
 int partition(COLUMN* colonne, int gauche, int droite, int sort_dir)
 {
     int pivot = colonne->data[colonne->index[droite]]->int_value;
+    
     int i = gauche - 1;
 
     for (int j = gauche; j <= droite - 1; j++)
@@ -43,11 +27,63 @@ int partition(COLUMN* colonne, int gauche, int droite, int sort_dir)
     }
 
     // Échanger tab[i + 1] et tab[droite]
-    int temp = colonne->index[i + 1];
+    unsigned long long int temp = colonne->index[i + 1];
     colonne->index[i + 1] = colonne->index[droite];
     colonne->index[droite] = temp;
 
     return i + 1;
+}
+
+// Tri "QuickSort": A utiliser si le tableau n'a pas encore été trié
+// sort_dir = 0: Tri du plus petit au plus grand
+// sort_dir = 1: Tri du plus grand au plus petit
+// Lors de l'appel de la fonction: gauche = 0 et droite = (taille logique de la col - 1)
+int quick_sort_column(COLUMN* colonne, int gauche, int droite, int sort_dir)
+{
+    switch (colonne->column_type)
+    {
+        case NULLVAL:
+            printf("\nLe type n'est pas valide\n");
+            break;
+        case UINT:
+            //quick_sort_column_uint(colonne, gauche, droite, sort_dir);
+            break;
+        case INT:
+            quick_sort_column_int(colonne, gauche, droite, sort_dir);
+            break;
+        case CHAR:
+            //quick_sort_column_char(colonne, gauche, droite, sort_dir);
+            break;
+        case FLOAT:
+            //quick_sort_column_float(colonne, gauche, droite, sort_dir);
+            break;
+        case DOUBLE:
+            //quick_sort_column_double(colonne, gauche, droite, sort_dir);
+            break;
+        case STRING:
+            //quick_sort_column_string(colonne, gauche, droite, sort_dir);
+            break;
+        case STRUCTURE:
+            //quick_sort_column_structure(colonne, gauche, droite, sort_dir);
+            break;
+        default:
+            printf("\nCe type n'est pas reconnu\n");
+            return 0;
+    }
+    return 1;
+}
+
+int quick_sort_column_int(COLUMN* colonne, int gauche, int droite, int sort_dir)
+{
+    if (gauche < droite)
+    {
+        // Effectuer le partitionnement
+        int pi = partition(colonne, gauche, droite, sort_dir);
+
+        // Trier les sous-tableaux avant et après le pivot
+        quick_sort_column_int(colonne, gauche, pi - 1, sort_dir);
+        quick_sort_column_int(colonne, pi + 1, droite, sort_dir);
+    }
 }
 
 #pragma endregion Tri QuickSort
