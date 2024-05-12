@@ -474,7 +474,7 @@ void ajouter_ligne(DATAFRAME1* dataframe)
 
 #pragma region CDataframe 2
 
-DATAFRAME2* create_cdataframe(bool* dataframe_exists, char* dataframe_title)
+DATAFRAME2* create_cdataframe(char* dataframe_title)
 {
     DATAFRAME2* new_dataframe = (DATAFRAME2*)malloc(sizeof(DATAFRAME2));
 
@@ -497,8 +497,6 @@ DATAFRAME2* create_cdataframe(bool* dataframe_exists, char* dataframe_title)
 
     // Initialiser le tableau de pointeurs de colonnes à NULL
     new_dataframe->columns = NULL;
-
-    (*dataframe_exists) = true;
 
     return new_dataframe;
 }
@@ -937,6 +935,38 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
     }
 }
 
+int delete_cdataframe(DATAFRAME2* dataframe)
+// Supprimer completement un dataframe et récuperer tout l'espace mémoire alloué
+{
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        for (int j = 0; j < dataframe->columns[0]->size; j++)
+        { 
+            // Liberer le contenu de la cell
+            free(dataframe->columns[i]->data[j]);
+
+            // Liberer le contenu de l'index
+            free(dataframe->columns[i]->index[j]);
+        }
+
+        // Liberer le tab data
+        free(dataframe->columns[i]->data);
+
+        // Liberer l'index
+        dataframe->columns[i]->index;
+
+        // Liberer l'espace alloué à la colonne
+        free(dataframe->columns[i]);
+    }
+
+    // Libèrer l'espace alloué pour le tableau de pointeurs de colonnes
+    free(dataframe->columns);
+
+    // Libèrer l'espace alloué au dataframe
+    free(dataframe);
+
+    return 1;
+}
 void add_row(DATAFRAME2* dataframe)
 {
     int new_size = dataframe->columns[0]->size + 1;

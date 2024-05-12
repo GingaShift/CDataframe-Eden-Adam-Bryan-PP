@@ -58,7 +58,7 @@ typedef struct Dataframe2
     COLUMN** columns;
 } DATAFRAME2;
 
-DATAFRAME2* create_cdataframe(bool* dataframe_exists, char* dataframe_title);
+DATAFRAME2* create_cdataframe(char* dataframe_title);
 
 int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_title);
 

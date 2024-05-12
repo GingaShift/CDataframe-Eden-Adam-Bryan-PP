@@ -76,53 +76,50 @@ int res = 0;
 void afficher_menu()
 {
     printf("\n");
-    printf("    **************************************************************************************************************\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *                                         =-    MENU GENERAL    -=                                           *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    **************************************************************************************************************\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *  \033[4m1. Alimentation\033[0m                                          \033[4m2. Affichage\033[0m                                     *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      1. Creation d'un CDataframe vide                      1. Afficher tout le CDataframe                  *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      2. Remplissage du CDataframe a partir                 2. Afficher une partie des lignes               *\n");
-    printf("    *         de saisies utilisateurs                               du CDataframe selon une limite               *\n");
-    printf("    *      3. Remplissage en dur du CDataframe                      fournie par l'utilisateur                    *\n");
-    printf("    *                                                                                                            *\n    ");
-    printf("    *                                                  3. Afficher une partie des                                *\n");
-    printf("    *                                                     colonnes du CDataframe selon                           *\n");
-    printf("    *                                                     une limite fournie par                                 *\n");
-    printf("    *                                                     l'utilisateur                                          *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *  \033[4m3. Operations usuelles\033[0m                          \033[4m4. Analyse et statistiques\033[0m                                *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      1. Ajouter une ligne de valeurs au           1. Afficher le nombre de lignes                          *\n");
-    printf("    *         CDataframe                                2. Afficher le nombre de colonnes                        *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      2. Supprimer une ligne de valeurs du         3. Nombre de cellules contenant une                      *\n");
-    printf("    *         CDataframe                                   valeur egale a x                                      *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      3. Ajouter une colonne au CDataframe         4. Nombre de cellules contenant une                      *\n");
-    printf("    *      4. Supprimer une colonne du CDataframe          valeur superieure a x                                 *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      5. Renommer le titre d'une colonne du        5. Nombre de cellules contenant une                      *\n");
-    printf("    *         CDataframe                                   valeur inferieure a x                                 *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      6. Verifier l'existence d'une valeur         6. Quitter le programme                                  *\n");
-    printf("    *         (recherche) dans le CDataframe                                                                     *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      7. Acceder/remplacer la valeur se                                                                     *\n");
-    printf("    *         trouvant dans une cellule du                                                                       *\n");
-    printf("    *         CDataframe en utilisant son                                                                        *\n");
-    printf("    *         numero de ligne et de colonne                                                                      *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *      8. Afficher les noms des colonnes                                                                     *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    *                                                                                                            *\n");
-    printf("    **************************************************************************************************************\n");
+    printf("    ************************************************************************************************************* *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *                                          =-    MENU GENERAL    -=                                           *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    ***************************************************************************************************************\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *  \033[4m1. Alimentation\033[0m                                          \033[4m2. Affichage\033[0m                                      *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      11. Creation d'un CDataframe vide                     1. Afficher tout le CDataframe                   *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      12. Remplissage du CDataframe a partir                2. Afficher les lignes du CDataframe selon une   *\n");
+    printf("    *         de saisies utilisateurs                               eventuelle limite de l'utilisateur            *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      3. Remplissage en dur du CDataframe                   3. Afficher les colonnes du CDataframe selon     *\n");
+    printf("    *                                                               une eventuelle limite de l'utilisateur        *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *  \033[4m3. Operations usuelles\033[0m                          \033[4m4. Analyse et statistiques\033[0m                                 *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      1. Ajouter une ligne de valeurs au                    1. Afficher le nombre de lignes                  *\n");
+    printf("    *         CDataframe                                                                                          *\n");
+    printf("    *                                                            2. Afficher le nombre de colonnes                *\n");
+    printf("    *      2. Supprimer une ligne de valeurs du                                                                   *\n");
+    printf("    *         CDataframe                                         3. Nombre de cellules contenant une              *\n");
+    printf("    *                                                               valeur egale a \"x\"                            *\n");
+    printf("    *      3. Ajouter une colonne au CDataframe                                                                   *\n");
+    printf("    *                                                            4. Nombre de cellules contenant une              *\n");
+    printf("    *      4. Supprimer une colonne du CDataframe                   valeur superieure a \"x\"                       *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      5. Renommer le titre d'une colonne du                 5. Nombre de cellules contenant une              *\n");
+    printf("    *         CDataframe                                            valeur inferieure a \"x\"                       *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      6. Verifier l'existence d'une valeur                                                                   *\n");
+    printf("    *         (recherche) dans le CDataframe                                                                      *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      7. Acceder/remplacer la valeur se           \033[4m5. Divers\033[0m                                                  *\n");
+    printf("    *         trouvant dans une cellule du                                                                        *\n");
+    printf("    *         CDataframe en utilisant son                        6. Quitter le programme                          *\n");
+    printf("    *         numero de ligne et de colonne                                                                       *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *      8. Afficher les noms des colonnes                                                                      *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    *                                                                                                             *\n");
+    printf("    ***************************************************************************************************************\n");
 }
 
 void process_user_menu_choice(int sub_section_number)
@@ -138,13 +135,14 @@ void process_user_menu_choice(int sub_section_number)
             process_user_menu_choice_main_section_1(sub_section_number);
             break;
         case 2:
+            process_user_menu_choice_main_section_2(sub_section_number);
 
             break;
         case 3:
-
+            process_user_menu_choice_main_section_3(sub_section_number);
             break;
         case 4:
-
+            process_user_menu_choice_main_section_4(sub_section_number);
             break;
         case 5:
             process_user_menu_choice_main_section_5(sub_section_number);
@@ -156,7 +154,30 @@ void process_user_menu_choice(int sub_section_number)
 
 int process_user_menu_choice_main_section_1(int sub_section_number)
 {
+    switch (sub_section_number)
+    {
+        case 11:
+            printf("\nChoix 11 - Creation d'un CDataframe :\n");
+            CDataframe2 = manage_creation_of_cdataframe(&CDataframe2_exists);
+            break;
 
+        case 12:
+            printf("\nChoix 12 - Remplissage manuel du CDataframe :\n");
+            // ... TODO
+            //manual_filling_of_cdataframe
+            break;
+
+        case 13:
+            printf("\nChoix 13 - Remplissage automatique du CDataframe :\n");
+
+            if (! populate_dataframe_automatically(CDataframe2))
+                printf("\n Un probleme est survenue lors du remplissage automatique du CDataframe\n");
+
+            break;
+
+        default:
+            break;
+    }
 }
 
 int process_user_menu_choice_main_section_2(int sub_section_number)
@@ -194,7 +215,7 @@ int process_user_menu_choice_main_section_5(int sub_section_number)
 
 int main()
 {
-    int choix_menu = 7; //7; // -1 = Choix manu, sinon indiquer la valeur choisit pr choix auto
+    int choix_menu = -1; //7; // -1 = Choix manu, sinon indiquer la valeur choisit pr choix auto
     int go = 1;
     int nombre_col = 0;
     int res_choix_menu = -1; // 0 = Choix manu; -1 = Choix auto;
@@ -202,50 +223,19 @@ int main()
     afficher_menu();
     
     printf("\n\n");
-    printf("INSTRUCTIONS:");
-    printf("\n");
-    printf("Choisissez un des numeros du menu puis validez en appuyant sur la touche Entree\n\n");
-    printf("NOTE IMPORTANTE:");
-    printf("\n");
-    printf("Pour une demo rapide, choisissez dans l'ordre l'entree 1, puis 5,\nensuite 4 et enfin 6\n\n");
+    printf("Choisissez un nombre puis validez par la touche Entree\n\n");
 
     // Boucle jusqu'à ce que la saisie soit valide
     while (go == 1)
     {
-        printf("\n");
-        printf(" - Choisissez une des entrees du menu puis validez par la touche Entree:\n\n");
-
         if (choix_menu == -1)
+        {
             res_choix_menu = scanf("%d", &choix_menu);
-
-        //process_user_menu_choice(choix_menu);
+            process_user_menu_choice(choix_menu);
+        }
 
         switch (choix_menu)
         {
-            case 1:
-
-                if (CDataframe1_exists)
-                {
-                    printf("\nLe CDataframe a deja ete cree\n");
-                    break;
-                }
-
-            CDataframe1 = gestion_creation_cdataframe(&CDataframe1_exists);
-
-            break;
-
-        case 2:
-            printf("\nChoix 2 - Chargement du CDataframe:\n");
-            printf("\nLe chargement d'un CDataframe sera bientot disponible...\n\n");
-
-            break;
-
-        case 3:
-            printf("\nChoix 3 - Creation d'une colonne:\n");
-            printf("\nLa creation d'une colonne sera bientot disponible...\n\n");
-
-            break;
-
         case 4:
 
             printf("\nChoix 4 - Affichage du nom des colonnes:\n");
@@ -271,52 +261,23 @@ int main()
 
         case 7:
 
-            printf("\nChoix 7 : [Lib du titre]\n");
-
-            bool block_cells_added_to_column = false;
-
             CDataframe2 = create_cdataframe(&CDataframe2_exists, "Dataframe 2");
 
-            // TODO: res = populate_dataframe_automatically(CDataframe2);
-
-            add_column(CDataframe2, INT, "Col_INT");
-            add_column(CDataframe2, STRING, "Col_STRING");
-            add_column(CDataframe2, DOUBLE, "Col_DOUBLE");
-            add_column(CDataframe2, STRUCTURE, "Col_STRUCTURE");
-
-            int i1 = 52;
-            int i2 = 44;
-            int i3 = 15;
-            int i4 = 18;
-            int i5 = 0;
-            int i6 = 0;
-
-            i1 = 5;
-            i2 = 3;
-            i3 = 7;
-            i4 = 1;
-            i5 = 9;
-            i6 = 2;
-
-            insert_value(CDataframe2->columns[0], &i1, &block_cells_added_to_column);
-            insert_value(CDataframe2->columns[0], &i2, &block_cells_added_to_column);
-            insert_value(CDataframe2->columns[0], &i3, &block_cells_added_to_column);
-            insert_value(CDataframe2->columns[0], &i4, &block_cells_added_to_column);
-            insert_value(CDataframe2->columns[0], &i5, &block_cells_added_to_column);
-            insert_value(CDataframe2->columns[0], &i6, &block_cells_added_to_column);
+            populate_dataframe_automatically(CDataframe2);
 
             /////////////////////////////////////////////////////////////////////////////////////////
             // Tri de la colonne par quicksort
             printf("\nContenu de la colonne \"%s\" AVANT trie :\n", CDataframe2->columns[0]->title);
             print_column(CDataframe2->columns[0], false, NO_LIMIT);
 
-            quick_sort_column(CDataframe2->columns[0], 0, CDataframe2->columns[0]->size - 1, 0);
+            quick_sort_column_int(CDataframe2->columns[0], 0, CDataframe2->columns[0]->size - 1, 0);
 
             printf("\nContenu de la colonne \"%s\" APRES trie :\n", CDataframe2->columns[0]->title);
             print_col_by_index(CDataframe2->columns[0]);
             /////////////////////////////////////////////////////////////////////////////////////////
 
-            sauvegarder_types_colonnes_dans_fichier_csv(CDataframe2, NOMBRE_FICHIER_CSV);
+
+            sauvegarder_types_colonnes_dans_fichier(CDataframe2, NOMBRE_FICHIER_CSV);
 
             break;
 
@@ -372,6 +333,36 @@ DATAFRAME1* gestion_creation_cdataframe(bool* dataframe_exists)
 #pragma endregion CDataframe 1
 
 #pragma region CDataframe 2
+
+DATAFRAME2* manage_creation_of_cdataframe(bool* dataframe_exists)
+{
+    printf("\nChoix 11 - Creation du CDataframe:\n");
+
+    // Demander le nom du CDataframe
+    char* dataframe_title = saisie_chaine("\n Veuillez saisir le nom du CDataframe:\n");
+
+    if (dataframe_title[0] == '\0')
+    {
+        printf("\nLe nom que vous avez saisie pour le CDataframe n'est pas valide\n");
+        return NULL;
+    }
+
+    DATAFRAME2* dataframe = create_cdataframe(dataframe_title);
+
+    if (dataframe != NULL)
+    {
+        (*dataframe_exists) = true;
+        printf("\n Le CDataframe \"%s\" a ete cree avec succes\n", CDataframe2->title);
+        return dataframe;
+    }
+    else
+    {
+        printf("\n Une erreur est survenue lors de la creation du CDataframe \"%s\"\n", CDataframe2->title);
+        return NULL;
+    }
+}
+
+
 
 #pragma endregion CDataframe 2
 

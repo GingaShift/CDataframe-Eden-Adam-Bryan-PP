@@ -382,50 +382,50 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
     // Utilisation de sprintf pour convertir la valeur en chaîne de caractères
     switch (col->column_type)
     {
-    case UINT:
+        case UINT:
 
-        snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
+            snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
 
-        break;
+            break;
 
-    case INT:
+        case INT:
 
-        snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+            snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
 
-        // Autre version possible:
-        //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
+            // Autre version possible:
+            //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
 
-        break;
+            break;
 
-    case CHAR:
+        case CHAR:
 
-        snprintf(str, size, "%c", col->data[num_ligne]->char_value);
-        break;
+            snprintf(str, size, "%c", col->data[num_ligne]->char_value);
+            break;
 
-    case FLOAT:
+        case FLOAT:
 
-        snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
-        break;
+            snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
+            break;
 
-    case DOUBLE:
+        case DOUBLE:
 
-        snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
-        break;
+            snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
+            break;
 
-    case STRING:
-        snprintf(str, size, "%s", (char*)col->data[num_ligne]);
-        break;
+        case STRING:
+            snprintf(str, size, "%s", (char*)col->data[num_ligne]);
+            break;
 
-    case STRUCTURE:
+        case STRUCTURE:
 
-        // Adresse de la structure
-        snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
-        break;
+            // Adresse de la structure
+            snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
+            break;
 
-    default:
-        // Type de colonne non pris en charge
-        snprintf(str, size, "Unsupported type");
-    }
+        default:
+            // Type de colonne non pris en charge
+            snprintf(str, size, "Unsupported type");
+        }
 
     return 1;
 }
@@ -520,6 +520,22 @@ int print_col_by_index(COLUMN* col)
     }
 
     return 1;
+}
+
+const char* enum_to_string(ENUM_TYPE value)
+{
+    switch (value)
+    {
+        case NULLVAL: return "NULLVAL";
+        case UINT: return "UINT";
+        case INT: return "INT";
+        case CHAR: return "CHAR";
+        case FLOAT: return "FLOAT";
+        case DOUBLE: return "DOUBLE";
+        case STRING: return "STRING";
+        case STRUCTURE: return "STRUCTURE";
+        default: return "Unknown";
+    }
 }
 
 #pragma endregion Fin CDataframe 2

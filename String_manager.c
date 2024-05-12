@@ -19,7 +19,7 @@ int compare_chaines(const char* str1, const char* str2)
 
 char* saisie_chaine(char* invite_saisie)
 {
-    char chaine[255];
+    char* chaine[255];
 
     // Demander à l'utilisateur de saisir une chaine
     printf(invite_saisie);
