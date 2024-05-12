@@ -967,6 +967,7 @@ int delete_cdataframe(DATAFRAME2* dataframe)
 
     return 1;
 }
+
 void add_row(DATAFRAME2* dataframe)
 {
     int new_size = dataframe->columns[0]->size + 1;
