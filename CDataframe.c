@@ -1059,6 +1059,5 @@ void delete_row(DATAFRAME2* dataframe, int index_ligne)
         colonne->size--;
     }
 }
-
-
+ 
 #pragma endregion Fin CDataframe 2
