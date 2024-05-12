@@ -949,10 +949,10 @@ int delete_cdataframe(DATAFRAME2* dataframe)
             free(dataframe->columns[i]->index[j]);
         }
 
-        // Liberer le tab data
+        // Liberer la memoire du tab data
         free(dataframe->columns[i]->data);
 
-        // Liberer l'index
+        // Liberer la memoire de l'index
         dataframe->columns[i]->index;
 
         // Liberer l'espace alloué à la colonne
@@ -975,7 +975,7 @@ void add_row(DATAFRAME2* dataframe)
     for (int i = 0; i < dataframe->size; i++)
     {
         COLUMN* colonne = dataframe->columns[i];
-
+         
         // Réallocation de la mémoire pour les données de la colonne
         COL_TYPE** new_data = realloc(colonne->data, new_size * sizeof(COL_TYPE*));
         if (new_data == NULL)
