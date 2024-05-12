@@ -32,7 +32,7 @@ int afficher_colonne(COLONNE* colonne);
 
 enum enum_type
 {
-    NULLVAL = 1, UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
+    NULLVAL = 0, UINT, INT, CHAR, FLOAT, DOUBLE, STRING, STRUCTURE
 };
 typedef enum enum_type ENUM_TYPE;
 
@@ -74,8 +74,10 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title);
 
 int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column);
 
+int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size);
+
 int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show);
 
-int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size);
+int print_col_by_index(COLUMN* colonne);
 
 #pragma endregion CDataframe 2

@@ -4,3 +4,5 @@
 
 // Définition d'une énumération pour représenter un type booléen
 typedef enum { false, true } bool;
+
+int obtenir_premier_chiffre(int nombre);

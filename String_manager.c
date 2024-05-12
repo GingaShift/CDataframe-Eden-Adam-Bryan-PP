@@ -31,3 +31,16 @@ char* saisie_chaine(char* invite_saisie)
 
     return chaine;
 }
+
+char obtenir_premiere_lettre_de_chaine(char* chaine)
+{
+    
+    // Vérifier si la chaîne est vide
+    if (chaine == NULL || *chaine == '\0') {
+        // Retourner un caractère nul si la chaîne est vide
+        return '\0';
+    }
+
+    // Retourner le premier caractère de la chaîne
+    return *chaine;
+}

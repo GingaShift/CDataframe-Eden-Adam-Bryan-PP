@@ -318,7 +318,7 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
 
             // Copie de la chaîne de caractères
             strcpy((char*)col->data[col->size], (char*)value);
-
+             
             break;
             
         case STRUCTURE:
@@ -348,6 +348,85 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
     col->size++;
 
     // Retourne 1 pour indiquer que la valeur a été insérée avec succès
+    return 1;
+}
+
+// Convertir une valeur en chaîne de caractères
+int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
+{
+    // Retourne si le pointeur de colonne est NULL ou si la position est invalide
+    if (col == NULL)
+    {
+        printf("\nLa colonne n'existe pas, operation de conversion impossible\n");
+        return 0;
+    }
+
+    if (str == NULL)
+    {
+        printf("\nla string de destination passee en parametre n'existe pas, operation de conversion impossible\n");
+        return 0;
+    }
+
+    if (num_ligne >= col->size)
+    {
+        printf("\nLe numero de cellule est invalide car il ne contient pas de donnee, operation de conversion impossible\n");
+        return 0;
+    }
+
+    if (col->data[num_ligne] == NULL)
+    {
+        snprintf(str, size, "%s", "NULL");
+        return 1;
+    }
+
+    // Utilisation de sprintf pour convertir la valeur en chaîne de caractères
+    switch (col->column_type)
+    {
+    case UINT:
+
+        snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
+
+        break;
+
+    case INT:
+
+        snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+
+        // Autre version possible:
+        //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
+
+        break;
+
+    case CHAR:
+
+        snprintf(str, size, "%c", col->data[num_ligne]->char_value);
+        break;
+
+    case FLOAT:
+
+        snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
+        break;
+
+    case DOUBLE:
+
+        snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
+        break;
+
+    case STRING:
+        snprintf(str, size, "%s", (char*)col->data[num_ligne]);
+        break;
+
+    case STRUCTURE:
+
+        // Adresse de la structure
+        snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
+        break;
+
+    default:
+        // Type de colonne non pris en charge
+        snprintf(str, size, "Unsupported type");
+    }
+
     return 1;
 }
 
@@ -386,89 +465,60 @@ int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show
     {
         convert_value(col, i, str, sizeof(str));
         // Ne jamais afficher l'index, seulement le num sequentiel de la boucle for, tout simplement
-        printf("\n[%d] %s", i, str);
+        printf("[%d] %s", i, str);
+        printf("\n");
         str[0] = "\0";
     }
 
     return 1;
 }
 
-// Convertir une valeur en chaîne de caractères
-int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
+int print_col_by_index(COLUMN* col)
 {
-    // Retourne si le pointeur de colonne est NULL ou si la position est invalide
-    if (col == NULL)
+    // Vérifier si la colonne est vide
+    if (col->size == 0)
     {
-        printf("\nLa colonne n'existe pas, operation de conversion impossible\n");
+        printf("La colonne est vide.\n");
         return 0;
     }
 
-    if (str == NULL)
+    // Parcourir le tableau index et afficher les valeurs correspondantes dans l'ordre
+    for (int i = 0; i < col->size; i++)
     {
-        printf("\nla string de destination passee en parametre n'existe pas, operation de conversion impossible\n");
-        return 0;
-    }
+        // Récupérer l'index de la valeur actuelle
+        unsigned long long int idx = col->index[i];
 
-    if (num_ligne >= col->size)
-    {
-        printf("\nLe numero de cellule est invalide car il ne contient pas de donnee, operation de conversion impossible\n");
-        return 0;
-    }
-
-    if (col->data[num_ligne] == NULL)
-    {
-        snprintf(str, size, "%s", "NULL");
-        return 1;
-    }
-
-    // Utilisation de sprintf pour convertir la valeur en chaîne de caractères
-    switch (col->column_type)
-    {
-        case UINT:
-
-            snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
-        
-            break;
-
-        case INT:
-
-            snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
-
-            // Autre version possible:
-            //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
-
-            break;
-
-        case CHAR:
-
-            snprintf(str, size, "%c", col->data[num_ligne]->char_value);
-            break;
-
-        case FLOAT:
-
-            snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
-            break;
-
-        case DOUBLE:
-            
-            snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
-            break;
-
-        case STRING:
-            snprintf(str, size, "%s", (char*)col->data[num_ligne]);
-            break;
-
-        case STRUCTURE:
-
-            // Adresse de la structure
-            snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
-            break;
-
-        default:
-            // Type de colonne non pris en charge
-            snprintf(str, size, "Unsupported type");
+        // Afficher la valeur correspondante dans le tableau data
+        switch (col->column_type)
+        {
+            case INT:
+                printf("[%d] %d ", i, col->data[idx]->int_value);
+                break;
+            case UINT:
+                printf("%u ", col->data[idx]->uint_value);
+                break;
+            case CHAR:
+                printf("%c ", col->data[idx]->char_value);
+                break;
+            case FLOAT:
+                printf("%f ", col->data[idx]->float_value);
+                break;
+            case DOUBLE:
+                printf("%lf ", col->data[idx]->double_value);
+                break;
+            case STRING:
+                printf("%s ", col->data[idx]->string_value);
+                break;
+            case STRUCTURE:
+                printf("Structure ");
+                break;
+            default:
+                printf("Type de donnees non gere ");
         }
     
+        printf("\n");
+    }
+
     return 1;
 }
 

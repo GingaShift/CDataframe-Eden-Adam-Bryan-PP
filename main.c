@@ -8,6 +8,8 @@
 #include "Analyses_et_stats.h"
 #include "Main.h"
 #include "String_manager.h"
+#include "SaveLoadCSV.h"
+#include "Sort.h"
 
 #pragma region CDataframe 1
 
@@ -66,7 +68,10 @@ int free_ressources(DATAFRAME2* dataframe)
 #pragma endregion CDataframe 2
 
 #pragma region code_main
+
 int res = 0;
+
+#pragma region menu_management
 
 void afficher_menu()
 {
@@ -77,13 +82,13 @@ void afficher_menu()
     printf("    *                                                                                                            *\n");
     printf("    **************************************************************************************************************\n");
     printf("    *                                                                                                            *\n");
-    printf("    *  \033[4m1. Alimentation\033[0m                                \033[4m2. Affichage\033[0m                                               *\n");
+    printf("    *  \033[4m1. Alimentation\033[0m                                          \033[4m2. Affichage\033[0m                                     *\n");
     printf("    *                                                                                                            *\n");
-    printf("    *      1. Creation d'un CDataframe vide            1. Afficher tout le CDataframe                            *\n");
+    printf("    *      1. Creation d'un CDataframe vide                      1. Afficher tout le CDataframe                  *\n");
     printf("    *                                                                                                            *\n");
-    printf("    *      2. Remplissage du CDataframe a partir       2. Afficher une partie des lignes                         *\n");
-    printf("    *         de saisies utilisateurs                     du CDataframe selon une limite                         *\n");
-    printf("    *      3. Remplissage en dur du CDataframe            fournie par l'utilisateur                              *\n");
+    printf("    *      2. Remplissage du CDataframe a partir                 2. Afficher une partie des lignes               *\n");
+    printf("    *         de saisies utilisateurs                               du CDataframe selon une limite               *\n");
+    printf("    *      3. Remplissage en dur du CDataframe                      fournie par l'utilisateur                    *\n");
     printf("    *                                                                                                            *\n");
     printf("    *                                                  3. Afficher une partie des                                *\n");
     printf("    *                                                     colonnes du CDataframe selon                           *\n");
@@ -120,9 +125,76 @@ void afficher_menu()
     printf("    **************************************************************************************************************\n");
 }
 
+void process_user_menu_choice(int sub_section_number)
+{
+    // Controler le fait que user ait entre un choix compris dans une certaine plage seulement
+
+    // Extraire le num de section principale choisie (toujours le premier num)
+    int main_section_number = obtenir_premier_chiffre(sub_section_number);
+    
+    switch (main_section_number)
+    {
+        case 1:
+            process_user_menu_choice_main_section_1(sub_section_number);
+            break;
+        case 2:
+
+            break;
+        case 3:
+
+            break;
+        case 4:
+
+            break;
+        case 5:
+            process_user_menu_choice_main_section_5(sub_section_number);
+            break;
+        default:
+            break;
+    }
+}
+
+int process_user_menu_choice_main_section_1(int sub_section_number)
+{
+
+}
+
+int process_user_menu_choice_main_section_2(int sub_section_number)
+{
+
+}
+
+int process_user_menu_choice_main_section_3(int sub_section_number)
+{
+
+}
+
+int process_user_menu_choice_main_section_4(int sub_section_number)
+{
+
+}
+
+int process_user_menu_choice_main_section_5(int sub_section_number)
+{
+    switch (sub_section_number)
+    {
+        case 51:
+
+            // Effacer l'écran et aficher le menu
+            system("cls");
+            afficher_menu();
+            break;
+        
+        default:
+            break;
+    }
+}
+
+#pragma endregion menu_management
+
 int main()
 {
-    int choix = 7; // -1 = Choix manu, sinon indiquer la valeur choisit pr choix auto
+    int choix_menu = 7; //7; // -1 = Choix manu, sinon indiquer la valeur choisit pr choix auto
     int go = 1;
     int nombre_col = 0;
     int res_choix_menu = -1; // 0 = Choix manu; -1 = Choix auto;
@@ -141,26 +213,22 @@ int main()
     while (go == 1)
     {
         printf("\n");
-        printf(" - Choisissez une des entrees du menu puis validez :\n\n");
+        printf(" - Choisissez une des entrees du menu puis validez par la touche Entree:\n\n");
 
-        if (choix == -1)
-            res_choix_menu = scanf("%d", &choix);
+        if (choix_menu == -1)
+            res_choix_menu = scanf("%d", &choix_menu);
 
-        // a mettre dans fonction "manager_choix_menu_general" et creer aussi une fonction "manager_choix_menu_gestion_des_donnees"
-        switch (choix)
+        //process_user_menu_choice(choix_menu);
+
+        switch (choix_menu)
         {
-        case 0:
-            //system("cls");
-            go = 0;
-            break;
+            case 1:
 
-        case 1:
-
-            if (CDataframe1_exists)
-            {
-                printf("\nLe CDataframe a deja ete cree\n");
-                break;
-            }
+                if (CDataframe1_exists)
+                {
+                    printf("\nLe CDataframe a deja ete cree\n");
+                    break;
+                }
 
             CDataframe1 = gestion_creation_cdataframe(&CDataframe1_exists);
 
@@ -185,20 +253,6 @@ int main()
             printf("\nLe(s) nom(s) de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
             break;
 
-        case 5:
-
-            printf("\nChoix 5 - Gestion des donnees:\n");
-            if (!CDataframe1_exists)
-            {
-                printf("Veuillez d'abord creer un CDataframe\n\n");
-                break;
-            }
-
-            // Peupler le CDataframe artificiellement - Test seulement - 
-            res = remplir_dataframe_automatiquement(CDataframe1);
-
-            break;
-
         case 6:
 
             printf("\nChoix 6 : [Lib du titre]\n");
@@ -211,7 +265,7 @@ int main()
 
             res = afficher_cdataframe(&CDataframe1, 0, 0);
 
-            choix = -1;
+            choix_menu = -1;
 
             break;
 
@@ -230,20 +284,39 @@ int main()
             add_column(CDataframe2, DOUBLE, "Col_DOUBLE");
             add_column(CDataframe2, STRUCTURE, "Col_STRUCTURE");
 
-            int i1 = 10;
-            int i2 = 38;
-            int i3 = 24;
-            int i4 = 7;
+            int i1 = 52;
+            int i2 = 44;
+            int i3 = 15;
+            int i4 = 18;
+            int i5 = 0;
+            int i6 = 0;
+
+            i1 = 5;
+            i2 = 3;
+            i3 = 7;
+            i4 = 1;
+            i5 = 9;
+            i6 = 2;
 
             insert_value(CDataframe2->columns[0], &i1, &block_cells_added_to_column);
             insert_value(CDataframe2->columns[0], &i2, &block_cells_added_to_column);
             insert_value(CDataframe2->columns[0], &i3, &block_cells_added_to_column);
             insert_value(CDataframe2->columns[0], &i4, &block_cells_added_to_column);
+            insert_value(CDataframe2->columns[0], &i5, &block_cells_added_to_column);
+            insert_value(CDataframe2->columns[0], &i6, &block_cells_added_to_column);
 
-            void* p1 = NULL;
-            insert_value(CDataframe2->columns[3], &p1, &block_cells_added_to_column);
+            /////////////////////////////////////////////////////////////////////////////////////////
+            // Tri de la colonne par quicksort
+            printf("\nContenu de la colonne \"%s\" AVANT trie :\n", CDataframe2->columns[0]->title);
+            print_column(CDataframe2->columns[0], false, NO_LIMIT);
 
-            print_column(CDataframe2->columns[3], true, NO_LIMIT);
+            quick_sort_column(CDataframe2->columns[0], 0, CDataframe2->columns[0]->size - 1, 0);
+
+            printf("\nContenu de la colonne \"%s\" APRES trie :\n", CDataframe2->columns[0]->title);
+            print_col_by_index(CDataframe2->columns[0]);
+            /////////////////////////////////////////////////////////////////////////////////////////
+
+            sauvegarder_types_colonnes_dans_fichier_csv(CDataframe2, NOMBRE_FICHIER_CSV);
 
             break;
 
@@ -257,7 +330,7 @@ int main()
 
                 res = afficher_cdataframe(CDataframe1, NO_LIMIT, 20);
 
-                choix = -1;
+                choix_menu = -1;
 
                 break;
 

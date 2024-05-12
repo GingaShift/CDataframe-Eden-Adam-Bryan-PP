@@ -135,6 +135,8 @@
     <ClCompile Include="Divers.c" />
     <ClCompile Include="Main.c" />
     <ClCompile Include="Colonne.c" />
+    <ClCompile Include="SaveLoadCSV.c" />
+    <ClCompile Include="Sort.c" />
     <ClCompile Include="String_manager.c" />
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +146,8 @@
     <ClInclude Include="Colonne.h" />
     <ClInclude Include="Divers.h" />
     <ClInclude Include="Main.h" />
+    <ClInclude Include="SaveLoadCSV.h" />
+    <ClInclude Include="Sort.h" />
     <ClInclude Include="String_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
