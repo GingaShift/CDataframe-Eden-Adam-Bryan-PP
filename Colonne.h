@@ -80,4 +80,6 @@ int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show
 
 int print_col_by_index(COLUMN* colonne);
 
+const char* enum_to_string(ENUM_TYPE value);
+
 #pragma endregion CDataframe 2

@@ -522,4 +522,20 @@ int print_col_by_index(COLUMN* col)
     return 1;
 }
 
+const char* enum_to_string(ENUM_TYPE value)
+{
+    switch (value)
+    {
+        case NULLVAL: return "NULLVAL";
+        case UINT: return "UINT";
+        case INT: return "INT";
+        case CHAR: return "CHAR";
+        case FLOAT: return "FLOAT";
+        case DOUBLE: return "DOUBLE";
+        case STRING: return "STRING";
+        case STRUCTURE: return "STRUCTURE";
+        default: return "Unknown";
+    }
+}
+
 #pragma endregion Fin CDataframe 2

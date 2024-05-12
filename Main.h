@@ -29,6 +29,8 @@ DATAFRAME1* gestion_creation_cdataframe(bool* dataframe_exists);
 
 #pragma region CDataframe 2
 
+DATAFRAME2* manage_creation_of_cdataframe(bool* dataframe_exists);
+
 #pragma endregion CDataframe 2
 
 #pragma region menu_management
