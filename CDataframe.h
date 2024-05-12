@@ -64,7 +64,7 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
 
 int rename_column(DATAFRAME2* dataframe, int column_num, char* new_name);
 
-//int supprimer_colonne(DATAFRAME1* dataframe, int num_col);
+int delete_column(DATAFRAME2* dataframe, int num_col);
 
 int column_name_exists(DATAFRAME2* dataframe, char* column_name);
 
@@ -86,11 +86,11 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne);
 
 int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value);
 
-//int ajouter_valeur_par_utilisateur(DATAFRAME1* dataframe, int num_col, int valeur);
+int delete_cdataframe(DATAFRAME2* dataframe);
 
-//int delete_column(DATAFRAME2* dataframe, int num_col);
+void add_row_manually(DATAFRAME2* dataframe);
 
-//int add_line_by_user(DATAFRAME2* dataframe);
+void delete_row(DATAFRAME2* dataframe, int index_ligne);
 
 //int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
 

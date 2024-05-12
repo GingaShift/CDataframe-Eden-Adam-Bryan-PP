@@ -757,7 +757,7 @@ int print_name_of_columns(DATAFRAME2* dataframe)
         printf("[%d] = %s\n", col_number, column->title);
         col_number += 1;
     }
-    return 1;
+    return col_number;
 }
 
 int print_columns(DATAFRAME2* dataframe)
@@ -968,68 +968,174 @@ int delete_cdataframe(DATAFRAME2* dataframe)
     return 1;
 }
 
-void add_row(DATAFRAME2* dataframe)
+void add_row_manually(DATAFRAME2* dataframe)
 {
+    if (dataframe == NULL || dataframe->size == 0) {
+        printf("\nLe dataframe est vide ou non intialisé.\n");
+        return 0;
+    }
+
     int new_size = dataframe->columns[0]->size + 1;
 
     // Allocation de mémoire pour la nouvelle ligne dans chaque colonne
     for (int i = 0; i < dataframe->size; i++)
     {
-        COLUMN* colonne = dataframe->columns[i];
+        COLUMN* col = dataframe->columns[i];
          
         // Réallocation de la mémoire pour les données de la colonne
-        COL_TYPE** new_data = realloc(colonne->data, new_size * sizeof(COL_TYPE*));
+        COL_TYPE* new_data = realloc(col->data, new_size * sizeof(COL_TYPE*));
         if (new_data == NULL)
         {
-            printf("Erreur d'allocation de mémoire pour la colonne %s lors de l'ajout d'une nouvelle ligne.\n", colonne->title);
+            printf("Erreur d'allocation de mémoire pour la colonne %s lors de l'ajout d'une nouvelle ligne.\n", col->title);
             return;
         }
 
         // Mise à jour de la taille de la colonne et du tab data
-        colonne->size = new_size;
-        colonne->data = new_data;
-
-        // Allocation de mémoire pour la nouvelle valeur dans la colonne
-        COL_TYPE* new_value = malloc(sizeof(COL_TYPE));
-        if (new_value == NULL)
-        {
-            printf("Erreur d'allocation de mémoire pour la nouvelle valeur dans la colonne %s.\n", colonne->title);
-            return;
-        }
+        col->size = new_size;
+        col->data = new_data;
 
         // Demander à l'utilisateur de saisir la valeur en fonction du type de la colonne
-        switch (colonne->column_type)
+        switch (col->column_type)
         {
         case UINT:
-            printf("Saisissez une valeur entière non signée pour la colonne %s : ", colonne->title);
-            scanf("%u", &(new_value->uint_value));
-            break;
-        case INT:
-            printf("Saisissez une valeur entière pour la colonne %s : ", colonne->title);
-            scanf("%d", &(new_value->int_value));
-            break;
-        case CHAR:
-            printf("Saisissez un caractère pour la colonne %s : ", colonne->title);
-            scanf(" %c", &(new_value->char_value)); // Utilisez " %c" pour ignorer les espaces vides et les retours chariot résiduels
-            break;
-        case STRING:
-            printf("Saisissez une chaîne de caractères pour la colonne %s : ", colonne->title);
-            new_value->string_value = malloc((256) * sizeof(char)); // Vous devrez définir MAX_STRING_LENGTH
-            if (new_value->string_value == NULL)
+            unsigned uivalue = 0;
+            printf("Saisissez une valeur entière non signée pour la colonne %s : ", col->title);
+            scanf("%u", &(uivalue));
+            
+            // Allocation de mémoire pour la cell qui va contenir un pointeur sur un type "unsigned int"
+            col->data[col->size] = (unsigned int*)malloc(sizeof(unsigned int));
+            if (col->data[col->size] == NULL)
             {
-                printf("Erreur d'allocation de mémoire pour la chaîne de caractères dans la colonne %s.\n", colonne->title);
-                return;
+                printf("\nErreur d'allocation memoire pour la cellule de type UINT du tableau de donnees\n");
+                return 0;
             }
-            scanf("%s", new_value->string_value);
+
+            // Renseigner la valeur passée en param
+            *((unsigned int*)col->data[col->size]) = uivalue;
+
             break;
-            // Ajoutez ici d'autres cas pour les autres types de colonnes (FLOAT, DOUBLE, STRUCTURE, etc.) si nécessaire
+        
+        case INT:
+
+            int ivalue = 0;
+            printf("Saisissez une valeur entière pour la colonne %s : ", col->title);
+            scanf("%d", &(i));
+
+            col->data[col->size] = (int*)malloc(sizeof(int));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type INT du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((int*)col->data[col->size]) = ivalue;
+
+            break;
+
+        case CHAR:
+            
+            char cvalue;
+
+            printf("Saisissez un caractère pour la colonne %s : ", col->title);
+            scanf(" %c", &(cvalue));
+            
+            col->data[col->size] = (char*)malloc(sizeof(char));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type CHAR du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((char*)col->data[col->size]) = cvalue;
+
+            break;
+        
+        case FLOAT:
+
+            float fvalue = 0;
+            printf("Saisissez une valeur entière pour la colonne %s : ", col->title);
+            scanf("%d", &(i));
+
+            col->data[col->size] = (float*)malloc(sizeof(float));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type FLOAT du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((float*)col->data[col->size]) = fvalue;
+
+            break;
+
+        case DOUBLE:
+
+            double dvalue = 0;
+            printf("Saisissez une valeur entière pour la colonne %s : ", col->title);
+            scanf("%d", &(i));
+
+            col->data[col->size] = (double*)malloc(sizeof(double));
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation memoire pour la cellule de type DOUBLE du tableau de donnees\n");
+                return 0;
+            }
+
+            // Renseigner la valeur passée en param
+            *((int*)col->data[col->size]) = dvalue;
+
+            break;
+
+        case STRING:
+            
+            char* svalue[TAILLE_MAX_DATA_STRING];
+            printf("Saisissez des caractère pour la colonne %s : ", col->title);
+            scanf(" %c", &(svalue));
+
+            // Allocation de mémoire pour une chaîne de caractères
+            col->data[col->size] = malloc(strlen((char*)svalue) + 1); // +1 pour le caractère de fin de chaîne nulle
+            if (col->data[col->size] == NULL)
+            {
+                printf("\nErreur d'allocation mémoire pour la cellule de type STRING du tableau de données\n");
+                return 0;
+            }
+
+            // Copie de la chaîne de caractères
+            strcpy((char*)col->data[col->size], (char*)svalue);
+                    
+            break;
+        
+            case STRUCTURE:
+            {
+                void* pstructure;
+                //printf("Saisissez des caractère pour la colonne %s : ", col->title);
+                //scanf(" %c", &(svalue));
+
+                col->data[col->size] = (void*)malloc(sizeof(pstructure));
+                if (col->data[col->size] == NULL)
+                {
+                    printf("\nErreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
+                    return 0;
+                }
+
+                // Renseigner la valeur passée en param
+                col->data[col->size] = pstructure;
+
+                break;
+            }
+
         default:
             printf("Type de colonne non pris en charge pour la saisie de valeur.\n");
             return;
         }
 
-        // Assigner la nouvelle valeur à la colonne
-        colonne->data[new_size - 1] = new_value;
+        // Renseigner l'index associé à cette valeur
+        col->index[col->size] = col->size;
+
+        // Incrémente la taille logique de la colonne
+        col->size++;
     }
 }
 

@@ -145,6 +145,10 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
     new_column->data = NULL;
     new_column->index = NULL;
 
+    new_column->valid_index = 0;
+    new_column->index_size = 0;
+    new_column->sort_dir = 0;
+
     // Retourne le pointeur vers la colonne créée
     return new_column;
 }
@@ -486,28 +490,28 @@ int print_col_by_index(COLUMN* col)
     for (int i = 0; i < col->size; i++)
     {
         // Récupérer l'index de la valeur actuelle
-        unsigned long long int idx = col->index[i];
+        unsigned long long int index = col->index[i];
 
         // Afficher la valeur correspondante dans le tableau data
         switch (col->column_type)
         {
             case INT:
-                printf("[%d] %d ", i, col->data[idx]->int_value);
+                printf("[%d] %d ", i, col->data[index]->int_value);
                 break;
             case UINT:
-                printf("%u ", col->data[idx]->uint_value);
+                printf("%u ", col->data[index]->uint_value);
                 break;
             case CHAR:
-                printf("%c ", col->data[idx]->char_value);
+                printf("%c ", col->data[index]->char_value);
                 break;
             case FLOAT:
-                printf("%f ", col->data[idx]->float_value);
+                printf("%f ", col->data[index]->float_value);
                 break;
             case DOUBLE:
-                printf("%lf ", col->data[idx]->double_value);
+                printf("%lf ", col->data[index]->double_value);
                 break;
             case STRING:
-                printf("%s ", col->data[idx]->string_value);
+                printf("%s ", col->data[index]->string_value);
                 break;
             case STRUCTURE:
                 printf("Structure ");

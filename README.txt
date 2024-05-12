@@ -44,53 +44,54 @@
 
    6) Lancer le projet en appuyant sur la touche F5
 
-  
-   void ajouterLigne(DATAFRAME *dataframe, int *valeurs) {
-    /* On suppose que toutes les colonnes ont la même taille */
-    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille >= 0) {
-        int nouvelle_taille = dataframe->colonnes[0]->taille + 1;
 
-        /* Allouer de la mémoire pour la nouvelle ligne dans chaque colonne */
-        for (int i = 0; i < dataframe->taille; i++) {
-            dataframe->colonnes[i]->valeurs = realloc(dataframe->colonnes[i]->valeurs, nouvelle_taille * sizeof(int));
-            if (dataframe->colonnes[i]->valeurs == NULL) {
-                printf("Erreur : Échec de l'allocation de mémoire.\n");
-                return 1;
-            }
-        }
+- Reglages à effectuer impérativement pour pouvoir tester le code sous Visual Studio 2022:
 
-        /* Copier les valeurs dans la nouvelle ligne */
-        for (int i = 0; i < dataframe->taille; i++) {
-            dataframe->colonnes[i]->valeurs[nouvelle_taille - 1] = valeurs[i];
-        }
+   1) Remplacer scanf_s par scanf:
 
-        /* Mettre à jour la taille de la colonne */
-        for (int i = 0; i < dataframe->taille; i++) {
-            dataframe->colonnes[i]->taille = nouvelle_taille;
-        }
-    } else {
-        printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
-    }
-}
+      1.1) Ouvrez votre projet dans Visual Studio 2022.
 
+      1.2) Cliquez avec le bouton droit sur votre projet dans l'Explorateur de solutions.
 
-void supprimerLigne(DATAFRAME *dataframe, int indiceLigne) {
-    /* On suppose que toutes les colonnes ont la même taille */
-    if (dataframe->taille > 0 && dataframe->colonnes[0]->taille > 0) {
-        int nouvelle_taille = dataframe->colonnes[0]->taille - 1;
+      1.3) Sélectionnez "Propriétés" dans le menu contextuel.
 
-        /* Supprimer la ligne de chaque colonne */
-        for (int i = 0; i < dataframe->taille; i++) {
-            for (int j = indiceLigne; j < nouvelle_taille; j++) {
-                dataframe->colonnes[i]->valeurs[j] = dataframe->colonnes[i]->valeurs[j + 1];
-            }
-        }
+      1.4) Dans les propriétés du projet, accédez à "Configuration Properties" > "C/C++" > "General".
 
-        /* Mettre à jour la taille de la colonne */
-        for (int i = 0; i < dataframe->taille; i++) {
-            dataframe->colonnes[i]->taille = nouvelle_taille;
-        }
-    } else {
-        printf("Erreur : Le dataframe est vide ou mal initialisé.\n");
-    }
-}
+      1.5) Dans la section "Use of Specific Functions", définissez "Security Development Lifecycle (SDL) checks" sur "No (/GS-)".
+
+      1.6) Cliquez sur "Appliquer" puis sur "OK" pour enregistrer les modifications.
+
+   2) Correction de l'erreur E1072 "une déclaration ne peut pas avoir d'étiquette":
+
+      Modifier la norme ISO retenu pour le langage C dans les paramètres de projet de Visual Studio.
+      Dans la barre de menu, choisir Projet -> Propriétés du projet -> Propriétés de configuration -> C/C++ ->
+      Langage -> Norme du langage C.
+   
+      Choisir "Norme ISO C17 (2018) (/std:c17)".
+
+      Notes:
+        Par défaut c'est "Valeur par défaut (MSVC hérité)" qui est utilisé.
+        La "Norme ISO C11 (/std:c11)" fonctionne aussi... 
+      
+                                                 =======
+    DATAFRAME v.2:
+
+       Toutes les fonctions seront anglicisées afin de les differencier facilement de celles du chap 1, entierement en français.
+
+       Pour chaque fichier .h et .c du projet, les lignes de codes concernant chap 1 et chap 2 sont délimitées par des balises
+       nommées comme suit: 
+
+           #pragma region CDataframe 1
+
+               ...Code CDataframe1 du chap 1
+
+           #pragma endregion Fin CDataframe 1
+
+           #pragma region CDataframe 2
+
+               ...Code CDataframe2 du chap 2 et suivant
+
+           #pragma endregion Fin CDataframe 2
+
+                                                =======
+     

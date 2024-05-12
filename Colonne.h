@@ -67,6 +67,22 @@ typedef struct Column
 
     // Tableau d'entiers permettant le trie de la colonne
     unsigned long long int* index;
+
+    // Explications sur les valeurs possibles de valid_index:
+    //  0 = aucun trie effectué
+    // -1 = col partiellement trié (trie effectué, puis valeur ajoutée apres ce trie et qu'il va donc falloir trier) 
+    //  1 = col correctement triée
+    int valid_index;
+    
+    // Taille de l'index
+    unsigned int index_size;
+
+    // Direction du tri:
+    // 0 = ASC
+    // 1 = DESC
+    int sort_dir;
+
+
 };
 typedef struct Column COLUMN;
 
