@@ -81,8 +81,6 @@ typedef struct Column
     // 0 = ASC
     // 1 = DESC
     int sort_dir;
-
-
 };
 typedef struct Column COLUMN;
 

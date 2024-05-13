@@ -4,7 +4,7 @@
 #include "CDataframe.h"
 
 // Fonction destinée à sauvegarder les types de chaque colonne dans un fichier CSV
-void sauvegarder_types_colonnes_dans_fichier(DATAFRAME2* dataframe, const char* filename, char* separateur)
+int sauvegarder_types_colonnes_dans_fichier(DATAFRAME2* dataframe, const char* filename, char* separateur)
 {
     FILE* fichier = fopen(filename, "w");
     if (fichier == NULL) {
@@ -28,7 +28,7 @@ void sauvegarder_types_colonnes_dans_fichier(DATAFRAME2* dataframe, const char* 
 }
 
 // Fonction servant à sauvegarder un DataFrame dans un fichier CSV
-void save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char* separateur)
+int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char* separateur)
 {
     FILE* file = fopen(filename, "w"); // Ouvre le fichier en mode écriture
 
@@ -54,9 +54,7 @@ void save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char* se
             
             // Tant que la derniere col n'est pas atteinte, ajouter un séparateur, sinon aller se faire voir
             if (j < dataframe->size - 1)
-            {
                 fprintf(file, separateur);
-            }
         }
         fprintf(file, "\n");
     }

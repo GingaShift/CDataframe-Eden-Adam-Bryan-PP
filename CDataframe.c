@@ -634,7 +634,7 @@ int insert_value_with_memory_management_of_tabs_data_of_columns(DATAFRAME2* data
         return 0;
     }
 
-    // Si un nouveau bloc de cells à été ajouté à cette col, toutes les autres cols doivent être de la même taille
+    // Si un nouveau bloc de cells à été ajouté à cette col, egaliser la taille de toutes les autres cols si besoin
     if (block_cells_added_to_column == true)
         equalize_size_of_tabs_data_of_columns(dataframe);
 
@@ -656,9 +656,7 @@ int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe)
     for (int i = 0; i < dataframe->size; ++i)
     {
         if (dataframe->columns[i]->max_size > size_of_highest_tab_data)
-        {
             size_of_highest_tab_data = dataframe->columns[i]->max_size;
-        }
     }
 
     int total_number_of_cells = 0;
@@ -668,20 +666,20 @@ int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe)
     {
         COLUMN* col = dataframe->columns[i];
 
-        if (col->size == size_of_highest_tab_data)
+        if (col->max_size == size_of_highest_tab_data)
             continue;
         
         total_number_of_cells = 0;
 
-        if (col->size < size_of_highest_tab_data)
+        if (col->max_size < size_of_highest_tab_data)
         {
             // Calculer le nombre de blocs à allouer. Il peut y avoir un ou plusieurs à allouer.
-            // Ex: Si on vient de créer une col alors qu'il en existe déjà possédant 512 lignes, cela fera 2 blocs à ajouter d'un coup
-            delta_size = size_of_highest_tab_data - col->size;
+            // Ex: Si on vient de créer une col alors qu'il en existe déjà d'autres possédant 512 lignes, cela fera 2 blocs à ajouter d'un coup
+            delta_size = size_of_highest_tab_data - col->max_size;
             number_of_blocks_to_add = delta_size / NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE;
 
             // Allouer le ou les bloc(s) mémoire nécessaire(s)
-            total_number_of_cells = col->size + (number_of_blocks_to_add * NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE);
+            total_number_of_cells = col->max_size + (number_of_blocks_to_add * NOMBRE_CELLULES_PAR_BLOC_DATA_COLONNE);
 
             //TODO: faire fct "allocate_memory_to_data(col, total_number_of_cells)
             // et y mettre le code ci-dessous. Ensuite utiliser cette fct au lieu du code suivant.
@@ -744,7 +742,7 @@ int print_number_of_columns(DATAFRAME2* dataframe)
 int print_name_of_columns(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL || dataframe->size == 0) {
-        printf("\nLe dataframe est vide ou non intialisé.\n");
+        printf("\nLe dataframe est vide ou non initialisé.\n");
         return 0;
     }
 
@@ -770,6 +768,104 @@ int print_columns(DATAFRAME2* dataframe)
 
     for (int i = 0; i < dataframe->size; i++)
         afficher_colonne(dataframe->columns[i]);
+
+    return 1;
+}
+
+int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_ligne_max_to_show)
+{
+    // TODO: Idée d'optimisation:
+    // Chercher ici la colonne qui contient le plus de données, et limiter l'affichage des données
+    // à cette valeur de ligne au lieu d'afficher toutes les lignes inconditionnellement.
+    
+    if (dataframe == NULL || dataframe->size == 0) {
+        printf("Veuillez d'abord creer ET remplir le CDataframe\n\n");
+        return 0;
+    }
+
+    int largeur_colonne_nombre_col = 10;
+
+    printf("\n\n");
+
+    // Si aucune limites de cols précisée, alors afficher toutes les colonnes
+    if (num_col_max_to_show == NO_LIMIT)
+        num_col_max_to_show = dataframe->size;
+
+    // Si aucune limites de lignes précisée, alors afficher toutes les lignes
+    if (num_ligne_max_to_show == NO_LIMIT)
+        num_ligne_max_to_show = dataframe->columns[0]->max_size;
+
+    // affichage de la ligne des noms et du type de toutes les colonnes à afficher
+    for (int i = 0; i < num_col_max_to_show; i++)
+    {
+        if (i == 0)
+            printf("Num:");
+
+        // Afficher le nom de la col et le type de donnée qu'elle heberge (enum_to_string convertie la valeur de l'enum en son type en string)
+        printf("      \"%s\" (%s)   ", dataframe->columns[i]->title, enum_to_string(dataframe->columns[i]->column_type));
+    }
+                                                 
+    printf("\n");
+
+    // Traiter toutes les lignes de toutes les colonnes du dataframe en respectant d'eventuelles limites spécifiées
+    for (int ligne_courante = 0; ligne_courante <= num_ligne_max_to_show; ligne_courante++)
+    {
+        if (ligne_courante == 0)
+            printf("\n");
+        else
+            printf("\n\n");
+
+        // Parcourir toues les cols de cette ligne et afficher les données au fur et à mesure
+        for (int col_courante = 0; col_courante < num_col_max_to_show; col_courante++)
+        {
+            // Affichage du num de ligne en début de ligne une seule et unique fois
+            if (col_courante == 0)
+            {
+                printf("[%02d]", ligne_courante);
+                printf("    ");
+            }
+            else
+                printf("               ");
+
+            char str[TAILLE_MAX_DATA_STRING];
+
+            // Si la colonne contient des données pour cette ligne, les afficher
+            if (ligne_courante <= dataframe->columns[col_courante]->size - 1 && dataframe->columns[col_courante]->size > 0)
+            {
+                // Rappel: ligne_courante = val pr parcourir le tab index
+                //col->data[ligne_courante]->int_value
+                
+                convert_value(dataframe->columns[col_courante], ligne_courante, str, sizeof(str));
+                
+                printf("  %*s", largeur_colonne_nombre_col, str);
+            }
+            // Sinon afficher une val par défaut (à la place d'une valeur quelconque incohérente de la cellule lorsque celle-ci ne contient rien) 
+            else
+                printf("  %*s", largeur_colonne_nombre_col, "-");
+            
+            // ini de la str
+            str[0] = '\0';
+        }
+    }
+
+    printf("\n\n\n");
+    printf(" ");
+
+    // Commentaire final apres affichage de toutes les lignes
+    switch (dataframe->size)
+    {
+    case 0:
+        printf("Il n'y a aucune colonne a afficher dans le CDataframe");
+        break;
+    case 1:
+        printf("Les valeurs d'une colonne ont ete affichee pour ce CDataframe");
+        break;
+    default:
+        printf("Les valeurs de %d colonnes ont ete affiches pour ce CDataframe", num_col_max_to_show);
+        break;
+    }
+
+    printf("\n\n");
 
     return 1;
 }

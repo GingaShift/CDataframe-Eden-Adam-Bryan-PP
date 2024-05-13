@@ -144,7 +144,6 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
     new_column->column_type = column_type;
     new_column->data = NULL;
     new_column->index = NULL;
-
     new_column->valid_index = 0;
     new_column->index_size = 0;
     new_column->sort_dir = 0;

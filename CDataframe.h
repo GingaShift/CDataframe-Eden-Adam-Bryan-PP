@@ -78,6 +78,8 @@ int print_name_of_columns(DATAFRAME2* dataframe);
 
 int print_columns(DATAFRAME2* dataframe);
 
+int show_cdataframe(DATAFRAME2* dataframe, int num_col_max, int num_ligne_max);
+
 int get_number_of_rows_storing_data(DATAFRAME2* dataframe);
 
 int get_number_of_rows(DATAFRAME2* dataframe);
