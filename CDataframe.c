@@ -730,32 +730,51 @@ int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe)
 
 int print_number_of_columns(DATAFRAME2* dataframe)
 {
-    if (dataframe == NULL) {
-        printf("\n veuillez d'abord initialiser un dataframe\n");
+    if (dataframe == NULL)
+    {
+        printf("\n Veuillez d'abord creer ET remplir un CDataframe\n\n");
         return 0;
     }
 
-    printf("Nombre de colonnes présentent dans le CDataframe : %d\n", dataframe->size);
+    if (dataframe->size == 0)
+    {
+        printf("\n Il n'y a aucune colonne dans le CDataframe \"%s\"\n", dataframe->title);
+        return 1;
+    }
+
+    if (dataframe->size == 1)
+        printf("\n Il y a une seule et unique colonne dans le CDataframe \"%s\"\n", dataframe->title);
+    else if (dataframe->size > 1)
+        printf("\n Il y a %d colonnes dans le CDataframe \"%s\"\n", dataframe->size, dataframe->title);
+    
     return 1;
 }
 
-int print_name_of_columns(DATAFRAME2* dataframe)
+int print_name_and_type_of_columns(DATAFRAME2* dataframe)
 {
-    if (dataframe == NULL || dataframe->size == 0) {
-        printf("\nLe dataframe est vide ou non initialisé.\n");
+    if (dataframe == NULL)
+    {
+        printf("\nVeuillez d'abord creer le CDataframe\n");
         return 0;
     }
 
-    int col_number = 0;
-
-    printf("\noms des colonnes : \n\n");
-
-    for (int i = 0; i < dataframe->size; i++) {
-        COLUMN* column = dataframe->columns[i];
-        printf("[%d] = %s\n", col_number, column->title);
-        col_number += 1;
+    if (dataframe->size == 0)
+    {
+        printf("\nVeuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe->title);
+        return 0;
     }
-    return col_number;
+
+    printf("\n Nom et type des colonnes du CDataframe \"%s\" :\n", dataframe->title);
+
+    int col_num = 0;
+
+    for (int i = 0; i < dataframe->size; i++)
+    {
+        COLUMN* column = dataframe->columns[i];
+        printf("\n Col Num [%d] : \"%s\" (%s)", i, column->title, enum_to_string(column->column_type));
+        col_num += 1;
+    }
+    return col_num;
 }
 
 int print_columns(DATAFRAME2* dataframe)
@@ -839,9 +858,9 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
                 
                 printf("  %*s", largeur_colonne_nombre_col, str);
             }
-            // Sinon afficher une val par défaut (à la place d'une valeur quelconque incohérente de la cellule lorsque celle-ci ne contient rien) 
+            // Sinon afficher une val par défaut (à la place d'une valeur quelconque incohérente de la cellule presente lorsque celle-ci ne contient rien) 
             else
-                printf("  %*s", largeur_colonne_nombre_col, "-");
+                printf("  %*s", largeur_colonne_nombre_col, "NULL");
             
             // ini de la str
             str[0] = '\0';
@@ -901,9 +920,7 @@ int get_number_of_rows(DATAFRAME2* dataframe)
         return 0;
     }
 
-    printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->max_size);
-
-    return 1;
+    return dataframe->columns[0]->max_size;
 }
 
 int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)

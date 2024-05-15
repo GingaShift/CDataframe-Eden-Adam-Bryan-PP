@@ -100,9 +100,9 @@ int partition_double(COLUMN* colonne, int gauche, int droite, int sort_dir)
 // sort_dir = 1: Tri du plus grand au plus petit
 // Lors de l'appel de la fonction: gauche = 0 et droite = (taille logique de la col - 1)
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int quick_sort_column(COLUMN* colonne, int gauche, int droite, int sort_dir)
+int quick_sort_column(COLUMN* col, int left, int right, int sort_dir)
 {
-    switch (colonne->column_type)
+    switch (col->column_type)
     {
         case NULLVAL:
             printf("\nLe type n'est pas valide, impossible d'effectuer le tri quicksort\n");
@@ -111,13 +111,13 @@ int quick_sort_column(COLUMN* colonne, int gauche, int droite, int sort_dir)
             //quick_sort_column_uint(colonne, gauche, droite, sort_dir);
             break;
         case INT:
-            quick_sort_column_int(colonne, gauche, droite, sort_dir);
+            quick_sort_column_int(col, left, right, sort_dir);
             break;
         case CHAR:
             //quick_sort_column_char(colonne, gauche, droite, sort_dir);
             break;
         case FLOAT:
-            quick_sort_column_float(colonne, gauche, droite, sort_dir);
+            quick_sort_column_float(col, left, right, sort_dir);
             break;
         case DOUBLE:
             //quick_sort_column_double(colonne, gauche, droite, sort_dir);
@@ -215,7 +215,7 @@ int sort_column_after_insertion(COLUMN* colonne, int sort_dir)
 
 }
 
-int sort_column_after_insertion_int(COLUMN* column)
+int sort_column_after_insertion_int(COLUMN* column, int sort_dir)
 {
     unsigned int taille = column->size;
     unsigned long long int* index = column->index;

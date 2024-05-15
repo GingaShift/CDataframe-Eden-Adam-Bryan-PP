@@ -74,11 +74,11 @@ int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe);
 
 int print_number_of_columns(DATAFRAME2* dataframe);
 
-int print_name_of_columns(DATAFRAME2* dataframe);
+int print_name_and_type_of_columns(DATAFRAME2* dataframe);
 
 int print_columns(DATAFRAME2* dataframe);
 
-int show_cdataframe(DATAFRAME2* dataframe, int num_col_max, int num_ligne_max);
+int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_ligne_max_to_show);
 
 int get_number_of_rows_storing_data(DATAFRAME2* dataframe);
 

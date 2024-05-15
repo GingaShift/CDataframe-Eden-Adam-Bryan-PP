@@ -393,7 +393,10 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
 
         case INT:
 
-            snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+            // ori non trié: snprintf(str, size, "%d", *((int*)col->data[num_ligne]));
+            
+            // col trié sur index:
+            snprintf(str, size, "%d", *((int*)col->data[col->index[num_ligne]]));
 
             // Autre version possible:
             //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
