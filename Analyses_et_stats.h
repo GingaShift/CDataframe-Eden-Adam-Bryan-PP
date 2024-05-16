@@ -21,6 +21,6 @@ int stats_sur_valeur(DATAFRAME1* dataframe, int valeur, OPERATEURS_DE_COMPARAISO
 
 #pragma region CDataframe 2
 
-int stats_on_value(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON* operateur_de_comparaison);
+int stats_on_value(DATAFRAME2* dataframe, void* valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison);
 
 #pragma endregion Fin CDataframe 2

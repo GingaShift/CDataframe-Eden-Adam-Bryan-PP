@@ -23,6 +23,8 @@ int process_user_menu_choice(int sub_section_number);
 
 int process_user_menu_choice_main_section_1(int sub_section_number);
 
+int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe);
+
 #pragma endregion menu_management_sub_menu_1
 
 #pragma region menu_management_sub_menu_2
@@ -31,9 +33,15 @@ int process_user_menu_choice_main_section_2(int sub_section_number);
 
 int cmd_afficher_cdataframe();
 
-int cmd_afficher_lignes_selon_limites_utilisateurs(DATAFRAME2* dataframe);
+int cmd_afficher_lignes_et_colonnes_selon_limites_utilisateurs(DATAFRAME2* dataframe);
 
 int cmd_afficher_nombre_de_colonnes(DATAFRAME2* dataframe);
+
+int cmd_afficher_nom_et_type_des_colonnes(DATAFRAME2* dataframe);
+
+int cmd_afficher_contenu_de_colonne(DATAFRAME2* dataframe);
+
+int cmd_afficher_nombre_lignes(DATAFRAME2* dataframe);
 
 #pragma endregion menu_management_sub_menu_2
 

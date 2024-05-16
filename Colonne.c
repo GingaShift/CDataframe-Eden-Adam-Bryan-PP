@@ -387,8 +387,8 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
     {
         case UINT:
 
-            snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
-
+            //snprintf(str, size, "%u", *((unsigned int*)col->data[num_ligne]));
+            snprintf(str, size, "%u", *((unsigned int*)col->data[col->index[num_ligne]]));
             break;
 
         case INT:
@@ -399,33 +399,32 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
             snprintf(str, size, "%d", *((int*)col->data[col->index[num_ligne]]));
 
             // Autre version possible:
-            //snprintf(str, size, "%d", col->data[num_ligne]->int_value);
+            //snprintf(str, size, "%d", col->data[col->index[num_ligne]]->int_value);
 
             break;
 
         case CHAR:
-
-            snprintf(str, size, "%c", col->data[num_ligne]->char_value);
+            //snprintf(str, size, "%c", col->data[num_ligne]->char_value);
+            snprintf(str, size, "%c", col->data[col->index[num_ligne]]->char_value);
             break;
 
         case FLOAT:
-
-            snprintf(str, size, "%f", *((float*)col->data[num_ligne]));
+            snprintf(str, size, "%.5f", *((float*)col->data[col->index[num_ligne]]));
             break;
 
         case DOUBLE:
-
-            snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
+            //snprintf(str, size, "%lf", *((double*)col->data[num_ligne]));
+            snprintf(str, size, "%.3lf", *((double*)col->data[col->index[num_ligne]]));
             break;
 
         case STRING:
-            snprintf(str, size, "%s", (char*)col->data[num_ligne]);
+            snprintf(str, size, "%s", (char*)col->data[col->index[num_ligne]]);
             break;
 
         case STRUCTURE:
 
             // Adresse de la structure
-            snprintf(str, size, "%p", col->data[num_ligne]->struct_value);
+            snprintf(str, size, "%p", col->data[col->index[num_ligne]]->struct_value);
             break;
 
         default:
@@ -441,13 +440,13 @@ int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show
     // Retourne si le pointeur de colonne est NULL ou si la position est invalide
     if (col == NULL)
     {
-        printf("\nLa colonne n'existe pas\n");
+        printf("\n La colonne n'existe pas\n");
         return 0;
     }
 
     if (col->size == 0)
     {
-        printf("\nLa colonne ne contient pas de données\n");
+        printf("\n La colonne ne contient pas de données\n");
         return 0;
     }
 
@@ -456,13 +455,13 @@ int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show
     
     if (number_of_rows_to_show > col->size)
     {
-        printf("\nImpossible de mener a bien votre requete car le nombre de cellules que vous souhaitez afficher pour la colonne \"%s\" est %d or le nombre de cellules disponibles est plus petit: %d\n", col->title, number_of_rows_to_show, col->size);
+        printf("\n Impossible de mener a bien votre requete car le nombre de cellules que vous souhaitez afficher pour la colonne \"%s\" est %d or le nombre de cellules disponibles est plus petit: %d\n", col->title, number_of_rows_to_show, col->size);
         return 0;
     }
 
     if (show_column_title)
     {
-        printf("\nContenu de la colonne \"%s\" :", col->title);
+        printf("\n Contenu de la colonne \"%s\" :\n", col->title);
     }
     
     char* str[TAILLE_MAX_DATA_STRING];
@@ -471,10 +470,14 @@ int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show
     {
         convert_value(col, i, str, sizeof(str));
         // Ne jamais afficher l'index, seulement le num sequentiel de la boucle for, tout simplement
-        printf("[%d] %s", i, str);
-        printf("\n");
+        printf("\n   [%d] %s", i, str);
         str[0] = "\0";
     }
+
+    if (number_of_rows_to_show == 1)
+        printf("\n\n Une cellule a ete affichee pour la colonne \"%s\"", col->title);
+    else if (number_of_rows_to_show > 1)
+        printf("\n\n %d cellules ont ete affichees pour la colonne \"%s\"", number_of_rows_to_show, col->title);
 
     return 1;
 }
@@ -487,7 +490,7 @@ int print_col_by_index(COLUMN* col)
         printf("La colonne est vide.\n");
         return 0;
     }
-
+    
     // Parcourir le tableau index et afficher les valeurs correspondantes dans l'ordre
     for (int i = 0; i < col->size; i++)
     {
@@ -498,28 +501,28 @@ int print_col_by_index(COLUMN* col)
         switch (col->column_type)
         {
             case INT:
-                printf("[%d] %d ", i, col->data[index]->int_value);
+                printf("   [%d] %d ", i, col->data[index]->int_value);
                 break;
             case UINT:
-                printf("%u ", col->data[index]->uint_value);
+                printf("   [%d] %u ", i, col->data[index]->uint_value);
                 break;
             case CHAR:
-                printf("%c ", col->data[index]->char_value);
+                printf("   [%d] %c ", i, col->data[index]->char_value);
                 break;
             case FLOAT:
-                printf("%f ", col->data[index]->float_value);
+                printf("   [%d] %f ", i, col->data[index]->float_value);
                 break;
             case DOUBLE:
-                printf("%lf ", col->data[index]->double_value);
+                printf("   [%d] %lf ", i, col->data[index]->double_value);
                 break;
             case STRING:
-                printf("%s ", col->data[index]->string_value);
+                printf("   [%d] %s ", i, col->data[index]->string_value);
                 break;
             case STRUCTURE:
-                printf("Structure ");
+                printf("   [%d] %s ", i, col->data[index]->struct_value);
                 break;
             default:
-                printf("Type de donnees non gere ");
+                printf("Type de donnees non geree");
         }
     
         printf("\n");

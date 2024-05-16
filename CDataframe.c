@@ -754,13 +754,13 @@ int print_name_and_type_of_columns(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL)
     {
-        printf("\nVeuillez d'abord creer le CDataframe\n");
+        printf("\n Veuillez d'abord creer le CDataframe\n");
         return 0;
     }
 
     if (dataframe->size == 0)
     {
-        printf("\nVeuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe->title);
+        printf("\n Veuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe->title);
         return 0;
     }
 
@@ -772,21 +772,32 @@ int print_name_and_type_of_columns(DATAFRAME2* dataframe)
     {
         COLUMN* column = dataframe->columns[i];
         printf("\n Col Num [%d] : \"%s\" (%s)", i, column->title, enum_to_string(column->column_type));
-        col_num += 1;
     }
-    return col_num;
+
+    if (dataframe->size == 0)
+        printf("\n\n Il existe une colonne dans le CDataframe \"%s\" :\n", dataframe->title);
+    else if (dataframe->size > 0)
+        printf("\n\n Il existe %d colonnes dans le CDataframe \"%s\" :\n", dataframe->size, dataframe->title);
+
+    return 1;
 }
 
 int print_columns(DATAFRAME2* dataframe)
 {
-    if (dataframe == NULL || dataframe->size == 0)
+    if (dataframe == NULL)
     {
-        printf("\nDataframe à initialisé.\n");
+        printf("\n Veuillez d'abord creer le CDataframe\n");
+        return 0;
+    }
+
+    if (dataframe->size == 0)
+    {
+        printf("\n Veuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe->title);
         return 0;
     }
 
     for (int i = 0; i < dataframe->size; i++)
-        afficher_colonne(dataframe->columns[i]);
+        print_column(dataframe->columns[i], true, NO_LIMIT);
 
     return 1;
 }
@@ -1081,7 +1092,7 @@ int delete_cdataframe(DATAFRAME2* dataframe)
     return 1;
 }
 
-void add_row_manually(DATAFRAME2* dataframe)
+void add_a_row_manually(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL || dataframe->size == 0) {
         printf("\nLe dataframe est vide ou non intialisé.\n");

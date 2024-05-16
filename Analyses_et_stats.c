@@ -44,21 +44,27 @@ int stats_sur_valeur(DATAFRAME1* dataframe, int valeur, OPERATEURS_DE_COMPARAISO
 
 #pragma region CDataframe 2
 
-int stats_on_value(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON* operateur_de_comparaison)
+int stats_on_value(DATAFRAME2* dataframe, void* valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison)
 {
+    // Déduire tout d'abord le type de la valeur sur lequel pointe le pointeur
+
+    ENUM_TYPE type_valeur;
+    type_valeur = INT;
+
     int total = 0;
 
-    for (int i = 0; i < dataframe->size; i++) {
+    for (int i = 0; i < dataframe->size; i++)
+    {
         COLUMN* colonne = dataframe->columns[i];
 
-        for (int j = 0; j < colonne->size; j++) {
-            
+        for (int j = 0; j < colonne->size; j++)
+        {
             COL_TYPE* data = colonne->data[j];
 
             switch (colonne->column_type)
             {
                 case UINT:
-                    switch (operateur_de_comparaison->Operateur)
+                    switch (operateur_de_comparaison.Operateur)
                     {
                         case SUPERIEUR:
                             if (data->uint_value > valeur)
@@ -78,7 +84,7 @@ int stats_on_value(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON*
                 break;
 
             case INT:
-                switch (operateur_de_comparaison->Operateur)
+                switch (operateur_de_comparaison.Operateur)
                 {
                     case SUPERIEUR:
                         if (data->int_value > valeur)
@@ -98,7 +104,7 @@ int stats_on_value(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON*
                 break;
 
             case CHAR:
-                switch (operateur_de_comparaison->Operateur)
+                switch (operateur_de_comparaison.Operateur)
                 {
                     case EGAL:
                         if (tolower(data->char_value) == tolower(valeur))
@@ -110,7 +116,7 @@ int stats_on_value(DATAFRAME2* dataframe, int valeur, OPERATEURS_DE_COMPARAISON*
                 break;
 
             case STRING:
-                switch (operateur_de_comparaison->Operateur)
+                switch (operateur_de_comparaison.Operateur)
                 {
                     case SUPERIEUR:
                         if (strlen(data->string_value) > strlen((char*)&valeur))
