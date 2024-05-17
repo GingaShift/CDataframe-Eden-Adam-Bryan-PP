@@ -23,7 +23,19 @@ int process_user_menu_choice(int sub_section_number);
 
 int process_user_menu_choice_main_section_1(int sub_section_number);
 
+int cmd_creation_cdataframe(DATAFRAME2* dataframe);
+
 int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe);
+
+int cmd_remplir_une_colonne_du_cdataframe(DATAFRAME2* dataframe);
+
+int cmd_ajouter_une_ligne_au_cdataframe(DATAFRAME2* dataframe);
+
+int cmd_remplissage_automatique_du_cdataframe(DATAFRAME2* dataframe);
+
+int cmd_sauvegarder_cdataframe_dans_fichier(DATAFRAME2* dataframe);
+
+int cmd_charger_cdataframe_depuis_fichier(DATAFRAME2* dataframe);
 
 #pragma endregion menu_management_sub_menu_1
 
@@ -37,7 +49,7 @@ int cmd_afficher_lignes_et_colonnes_selon_limites_utilisateurs(DATAFRAME2* dataf
 
 int cmd_afficher_nombre_de_colonnes(DATAFRAME2* dataframe);
 
-int cmd_afficher_nom_et_type_des_colonnes(DATAFRAME2* dataframe);
+int cmd_afficher_noms_et_types_des_colonnes(DATAFRAME2* dataframe);
 
 int cmd_afficher_contenu_de_colonne(DATAFRAME2* dataframe);
 
@@ -48,6 +60,12 @@ int cmd_afficher_nombre_lignes(DATAFRAME2* dataframe);
 #pragma region menu_management_sub_menu_3
 
 int process_user_menu_choice_main_section_3(int sub_section_number);
+
+int cmd_trier_une_colonne(DATAFRAME2* dataframe);
+
+int cmd_lire_valeur_cellule(DATAFRAME2* dataframe);
+
+int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe);
 
 #pragma endregion menu_management_sub_menu_3
 
@@ -61,9 +79,9 @@ int process_user_menu_choice_main_section_4(int sub_section_number);
 
 int process_user_menu_choice_main_section_5(int sub_section_number);
 
-int cmd_reini_ecran();
+int cmd_reini_ecran_et_afficher_menu();
 
-int cmd_afficher_informations_sur_programme();
+int cmd_afficher_informations_legales();
 
 int cmd_quitter_programme();
 

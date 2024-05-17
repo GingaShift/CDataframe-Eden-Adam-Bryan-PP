@@ -505,12 +505,18 @@ int sort_column(COLUMN* column, int sort_dir)
         Lors  d'ajout d'une valeur, appeler "quicksort"
         valid_index passe alors à 1 (colonne correctement triée)
 
+        quick_sort_column
+
         Si colonne correctement triée : valid_index = 1
         On ajoute une new valeur alors valid_index passe à - 1 (col partiellement trié)
         On doit donc de nouveau effectuer un tri mais par insertion, cette fois
         On effectue un tri tri "insertion"
         ceci fait, set valid_index à 1 (colonne correctement triée)
+
+        sort_column_after_insertion
+
         */
-        
+    
+
 }
 

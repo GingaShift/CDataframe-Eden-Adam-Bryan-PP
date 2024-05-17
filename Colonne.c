@@ -228,6 +228,9 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
         // Renseigner l'index.
         col->index[col->size] = col->size;
 
+        // Augmenter la taille de l'index
+        col->index_size += 1;
+
         // Incrémente la taille logique de la colonne
         col->size++;
         
@@ -346,6 +349,9 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
 
     // Renseigner l'index associé à cette valeur
     col->index[col->size] = col->size;
+
+    // Augmenter la taille de l'index
+    col->index_size += 1;
 
     // Incrémente la taille logique de la colonne
     col->size++;

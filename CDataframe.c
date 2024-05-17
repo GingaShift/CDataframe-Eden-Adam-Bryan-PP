@@ -835,13 +835,11 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
         printf("      \"%s\" (%s)   ", dataframe->columns[i]->title, enum_to_string(dataframe->columns[i]->column_type));
     }
                                                  
-    printf("\n");
-
     // Traiter toutes les lignes de toutes les colonnes du dataframe en respectant d'eventuelles limites spécifiées
     for (int ligne_courante = 0; ligne_courante <= num_ligne_max_to_show; ligne_courante++)
     {
         if (ligne_courante == 0)
-            printf("\n");
+           printf("\n");
         else
             printf("\n\n");
 
@@ -963,6 +961,8 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
         return 0;
     }
 
+    printf("La valeur de la cellule %d de la colonne %d est : \"%s\"", num_ligne, num_col, value_str);
+
     return 1;
 }
 
@@ -998,7 +998,7 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
 
     switch (dataframe->columns[num_col]->column_type)
     {
-        // modifier par la valeur passée en param en fonction du putain de type
+        // modifier par la valeur passée en param en fonction du type
         case UINT:
             *((unsigned int*)dataframe->columns[num_col]->data[num_row]) = *((unsigned int*)value);
             break;
@@ -1092,7 +1092,7 @@ int delete_cdataframe(DATAFRAME2* dataframe)
     return 1;
 }
 
-void add_a_row_manually(DATAFRAME2* dataframe)
+int add_a_row_manually(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL || dataframe->size == 0) {
         printf("\nLe dataframe est vide ou non intialisé.\n");
@@ -1105,40 +1105,19 @@ void add_a_row_manually(DATAFRAME2* dataframe)
     for (int i = 0; i < dataframe->size; i++)
     {
         COLUMN* col = dataframe->columns[i];
-         
-        // Réallocation de la mémoire pour les données de la colonne
-        COL_TYPE* new_data = realloc(col->data, new_size * sizeof(COL_TYPE*));
-        if (new_data == NULL)
-        {
-            printf("Erreur d'allocation de mémoire pour la colonne %s lors de l'ajout d'une nouvelle ligne.\n", col->title);
-            return;
-        }
-
-        // Mise à jour de la taille de la colonne et du tab data
-        col->size = new_size;
-        col->data = new_data;
-
+        
         // Demander à l'utilisateur de saisir la valeur en fonction du type de la colonne
         switch (col->column_type)
         {
         case UINT:
-            unsigned uivalue = 0;
+            unsigned ui = 0;
             printf("Saisissez une valeur entière non signée pour la colonne %s : ", col->title);
-            scanf("%u", &(uivalue));
-            
-            // Allocation de mémoire pour la cell qui va contenir un pointeur sur un type "unsigned int"
-            col->data[col->size] = (unsigned int*)malloc(sizeof(unsigned int));
-            if (col->data[col->size] == NULL)
-            {
-                printf("\nErreur d'allocation memoire pour la cellule de type UINT du tableau de donnees\n");
-                return 0;
-            }
-
-            // Renseigner la valeur passée en param
-            *((unsigned int*)col->data[col->size]) = uivalue;
-
+            scanf("%u", &(ui));
+            insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, i, &ui);
             break;
-        
+
+        // FAIRE LES AUTRES CAS EN SE BASANT SUR UINT CI DESSUS
+
         case INT:
 
             int ivalue = 0;
