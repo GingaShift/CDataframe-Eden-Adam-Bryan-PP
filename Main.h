@@ -67,6 +67,16 @@ int cmd_lire_valeur_cellule(DATAFRAME2* dataframe);
 
 int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe);
 
+int cmd_renommer_une_colonne(DATAFRAME2* dataframe);
+
+int cmd_verifier_existence_valeur(DATAFRAME2* dataframe);
+
+int cmd_supprimer_colonne_du_cdataframe(DATAFRAME2* dataframe);
+
+int cmd_supprimer_ligne_du_cdataframe(DATAFRAME2* dataframe);
+
+int cmd_supprimer_cdataframe(DATAFRAME2** dataframe);
+
 #pragma endregion menu_management_sub_menu_3
 
 #pragma region menu_management_sub_menu_4
@@ -90,5 +100,7 @@ int cmd_quitter_programme();
 #pragma endregion menu_management
 
 void test();
+
+int check_if_valid_value(void* value, ENUM_TYPE type);
 
 #pragma endregion Fin CDataframe 2

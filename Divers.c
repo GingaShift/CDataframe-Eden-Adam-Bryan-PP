@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "Divers.h"
 
 int obtenir_premier_chiffre(int nombre)
@@ -16,4 +17,10 @@ int obtenir_premier_chiffre(int nombre)
 
     // Le chiffre restant est le premier chiffre
     return nombre;
+}
+
+void vider_tampon()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
 }

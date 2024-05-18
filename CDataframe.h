@@ -5,6 +5,7 @@
 
 #define NOMBRE_CHAR_MAX_NOM_DATAFRAME 256
 #define TAILLE_MAX_DATA_STRING 256
+#define NOMBRE_TYPE_COL 8
 
 #pragma region CDataframe 1
 
@@ -88,7 +89,7 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne);
 
 int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value);
 
-int delete_cdataframe(DATAFRAME2* dataframe);
+int delete_cdataframe(DATAFRAME2** dataframe);
 
 int add_a_row_manually(DATAFRAME2* dataframe);
 

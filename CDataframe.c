@@ -775,9 +775,9 @@ int print_name_and_type_of_columns(DATAFRAME2* dataframe)
     }
 
     if (dataframe->size == 0)
-        printf("\n\n Il existe une colonne dans le CDataframe \"%s\" :\n", dataframe->title);
+        printf("\n\n Il existe une colonne dans le CDataframe \"%s\"\n", dataframe->title);
     else if (dataframe->size > 0)
-        printf("\n\n Il existe %d colonnes dans le CDataframe \"%s\" :\n", dataframe->size, dataframe->title);
+        printf("\n\n Il existe %d colonnes dans le CDataframe \"%s\"\n", dataframe->size, dataframe->title);
 
     return 1;
 }
@@ -808,8 +808,9 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
     // Chercher ici la colonne qui contient le plus de données, et limiter l'affichage des données
     // à cette valeur de ligne au lieu d'afficher toutes les lignes inconditionnellement.
     
-    if (dataframe == NULL || dataframe->size == 0) {
-        printf("Veuillez d'abord creer ET remplir le CDataframe\n\n");
+    if (dataframe == NULL || dataframe->size == 0)
+    {
+        printf("\n\n Veuillez d'abord creer ET remplir le CDataframe\n\n");
         return 0;
     }
 
@@ -846,10 +847,10 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
         // Parcourir toues les cols de cette ligne et afficher les données au fur et à mesure
         for (int col_courante = 0; col_courante < num_col_max_to_show; col_courante++)
         {
-            // Affichage du num de ligne en début de ligne une seule et unique fois
+            // Affichage du num de la ligne (en début de ligne et une seule et unique fois)
             if (col_courante == 0)
             {
-                printf("[%02d]", ligne_courante);
+                printf("[%03d]", ligne_courante);
                 printf("    ");
             }
             else
@@ -1059,25 +1060,33 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
     }
 }
 
-int delete_cdataframe(DATAFRAME2* dataframe)
+int delete_cdataframe(DATAFRAME2** dataframe_ptr)
+
 // Supprimer completement un dataframe et récuperer tout l'espace mémoire alloué
 {
+    if (dataframe_ptr == NULL)
+        return 1;
+
+    DATAFRAME2* dataframe = *dataframe_ptr;
+
+    if (dataframe == NULL)
+        return 1;
+
+    int nombre_lignes = dataframe->columns[0]->size;
+
     for (int i = 0; i < dataframe->size; i++)
     {
-        for (int j = 0; j < dataframe->columns[0]->size; j++)
+        for (int j = 0; j < nombre_lignes; j++)
         { 
             // Liberer le contenu de la cell
             free(dataframe->columns[i]->data[j]);
-
-            // Liberer le contenu de l'index
-            free(dataframe->columns[i]->index[j]);
         }
 
         // Liberer la memoire du tab data
         free(dataframe->columns[i]->data);
 
         // Liberer la memoire de l'index
-        dataframe->columns[i]->index;
+        free(dataframe->columns[i]->index);
 
         // Liberer l'espace alloué à la colonne
         free(dataframe->columns[i]);
@@ -1088,6 +1097,8 @@ int delete_cdataframe(DATAFRAME2* dataframe)
 
     // Libèrer l'espace alloué au dataframe
     free(dataframe);
+
+    dataframe = NULL;
 
     return 1;
 }

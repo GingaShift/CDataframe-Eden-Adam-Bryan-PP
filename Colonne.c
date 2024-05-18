@@ -234,6 +234,10 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
         // Incrémente la taille logique de la colonne
         col->size++;
         
+        if (col->valid_index == 1)
+            // On ajoute une new valeur alors valid_index passe à - 1 (col partiellement trié)
+            col->valid_index = -1;
+
         return 1;
     }
 
@@ -355,6 +359,10 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
 
     // Incrémente la taille logique de la colonne
     col->size++;
+    
+    if (col->valid_index == 1)
+        // On ajoute une new valeur alors valid_index passe à - 1 (col partiellement trié)
+        col->valid_index = -1;
 
     // Retourne 1 pour indiquer que la valeur a été insérée avec succès
     return 1;
@@ -506,26 +514,27 @@ int print_col_by_index(COLUMN* col)
         // Afficher la valeur correspondante dans le tableau data
         switch (col->column_type)
         {
-            case INT:
-                printf("   [%d] %d ", i, col->data[index]->int_value);
-                break;
             case UINT:
-                printf("   [%d] %u ", i, col->data[index]->uint_value);
+                printf("   [%03d] %u ", i, col->data[index]->uint_value);
+                break;
+            case INT:
+                printf("   [%03d] %d ", i, col->data[index]->int_value);
                 break;
             case CHAR:
-                printf("   [%d] %c ", i, col->data[index]->char_value);
+                printf("   [%03d] %c ", i, col->data[index]->char_value);
                 break;
             case FLOAT:
-                printf("   [%d] %f ", i, col->data[index]->float_value);
+                printf("   [%03d] %f ", i, col->data[index]->float_value);
                 break;
             case DOUBLE:
-                printf("   [%d] %lf ", i, col->data[index]->double_value);
+                printf("   [%03d] %lf ", i, col->data[index]->double_value);
                 break;
             case STRING:
-                printf("   [%d] %s ", i, col->data[index]->string_value);
+                printf("   [%03d] %s ", i, (char*)col->data[index]);
+                // printf("   [%d] %s ", i, col->data[index]->string_value);
                 break;
             case STRUCTURE:
-                printf("   [%d] %s ", i, col->data[index]->struct_value);
+                printf("   [%03d] %s ", i, col->data[index]->struct_value);
                 break;
             default:
                 printf("Type de donnees non geree");

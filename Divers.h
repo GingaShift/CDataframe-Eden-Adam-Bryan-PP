@@ -6,3 +6,5 @@
 typedef enum { false, true } bool;
 
 int obtenir_premier_chiffre(int nombre);
+
+void vider_tampon();
