@@ -85,9 +85,6 @@ int stats_on_value(DATAFRAME2* dataframe, void* pointer_on_value, ENUM_TYPE valu
     char* string_val = NULL;
     //MyStruct val_structure = { 0 }; // Initialisez avec des valeurs par défaut appropriées
 
-    // Déduire le type de la valeur sur lequel pointe le pointeur generique "void* valptr"
-    // ENUM_TYPE val_type = get_value_type(pointer_on_value);
-
     // En fonction de cela, convertir la valeur sur laquelle on souhaite faire des stats dans son type
     // Caster la variable dans le type correspondant
     switch (value_type)
@@ -233,7 +230,8 @@ int stats_on_value(DATAFRAME2* dataframe, void* pointer_on_value, ENUM_TYPE valu
                         break;
                     case EGAL:
                         if (strlen(data->string_value) == strlen((char*)&pointer_on_value))
-                            total_occ++;
+                            if(strcmp(data->string_value, (char*)&pointer_on_value) == 0)
+                                total_occ++;
                         break;
                     case INFERIEUR:
                         if (strlen(data->string_value) < strlen((char*)&pointer_on_value))

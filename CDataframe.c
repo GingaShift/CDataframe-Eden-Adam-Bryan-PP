@@ -962,7 +962,7 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
         return 0;
     }
 
-    printf("La valeur de la cellule %d de la colonne %d est : \"%s\"", num_ligne, num_col, value_str);
+    printf("\n\n  La valeur de la cellule %d de la colonne %d est : \"%s\"", num_ligne, num_col, value_str);
 
     return 1;
 }
@@ -1103,153 +1103,159 @@ int delete_cdataframe(DATAFRAME2** dataframe_ptr)
     return 1;
 }
 
+int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
+{
+    if (dataframe == NULL)
+    {
+        printf("\n Veuillez d'abord creer le CDataframe\n");
+        return 0;
+    }
+
+    if (dataframe->size == 0)
+    {
+        printf("\n Veuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe->title);
+        return 0;
+    }
+
+    int ret = 0;
+    int success = 0;
+
+    ENUM_TYPE col_type = dataframe->columns[num_col]->column_type;
+
+    switch (col_type)
+    {
+    case UINT:
+        unsigned int uint_value = 0;
+        printf("\n Saisissez une valeur entière non signée (UINT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%u", &uint_value);
+
+        // Verifier que la valeur entrée corresponde bien au type de la col considérée
+        if (check_if_valid_value(&uint_value, col_type))
+            // Tenter d'ajouter la valeur à la colonne
+            if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &uint_value))
+                success = 1;
+            else
+                printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
+        break;
+    case INT:
+        signed int int_value = 0;
+        printf("\n Saisissez une valeur entiere (INT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%d", &int_value);
+
+        // Verifier que la valeur entrée corresponde bien au type de la col considérée
+        if (check_if_valid_value(&int_value, col_type))
+            // Tenter d'ajouter la valeur à la colonne
+            if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &int_value))
+                success = 1;
+            else
+                printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
+        break;
+    case CHAR:
+        char char_value = '\0';
+        printf("\n Saisissez un caractere CHAR a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%c", &char_value);
+
+        // Verifier que la valeur entrée corresponde bien au type de la col considérée
+        if (check_if_valid_value(&char_value, col_type))
+            // Tenter d'ajouter la valeur à la colonne
+            if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &char_value))
+                success = 1;
+            else
+                printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
+        break;
+    case FLOAT:
+        float float_value = 0.0f;
+        printf("\n Saisissez une valeur FLOAT a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%f", &float_value);
+
+        // Verifier que la valeur entrée corresponde bien au type de la col considérée
+        if (check_if_valid_value(&float_value, col_type))
+            // Tenter d'ajouter la valeur à la colonne
+            if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &float_value))
+                success = 1;
+            else
+                printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
+        break;
+    case DOUBLE:
+        double double_value = 0.0;
+        printf("\n Saisissez une valeur DOUBLE a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%lf", &double_value);
+
+        // Verifier que la valeur entrée corresponde bien au type de la col considérée
+        if (check_if_valid_value(&double_value, col_type))
+            // Tenter d'ajouter la valeur à la colonne
+            if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &double_value))
+                success = 1;
+            else
+                printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
+        break;
+    case STRING:
+        char* string_value = "";
+        printf("\n Saisissez une chaine de caracteres a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%s", &string_value);
+
+        // Verifier que la valeur entrée corresponde bien au type de la col considérée
+        if (check_if_valid_value(&string_value, col_type))
+            // Tenter d'ajouter la valeur à la colonne
+            if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &string_value))
+                success = 1;
+            else
+                printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
+        break;
+    case STRUCTURE:
+        void* pstructure;
+        //printf("Saisissez des caractère pour la colonne %s : ", col->title);
+        //scanf(" %c", &(svalue));
+
+        COLUMN* col = dataframe->columns[num_col];
+
+        col->data[col->size] = (void*)malloc(sizeof(pstructure));
+        if (dataframe->columns[num_col]->data[col->size] == NULL)
+        {
+            printf("\n Erreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
+            return 0;
+        }
+        // Renseigner la valeur passée en param
+        col->data[col->size] = pstructure;
+        break;
+    default:
+        break;
+    }
+
+    if (success == 1)
+    {
+        printf("\n La valeur a ete ajoutee a la colonne \"%s\"", dataframe->columns[num_col]->title);
+        success = 0;
+        return 1;
+    }
+    else
+    {
+        printf("\n Un probleme a ete rencontre lors de la tentative d'ajout de la valeur");
+        return 0;
+    }
+}
+
 int add_a_row_manually(DATAFRAME2* dataframe)
 {
-    if (dataframe == NULL || dataframe->size == 0) {
-        printf("\nLe dataframe est vide ou non intialisé.\n");
-        return 0;
+    if (dataframe == NULL)
+    {
+        printf("\n Veuillez d'abord creer ET remplir le CDataframe\n\n");
+        return -1;
+    }
+
+    if (dataframe->size == 0)
+    {
+        printf("\n Le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
+        printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
+        int ret = getchar();
+        return -1;
     }
 
     int new_size = dataframe->columns[0]->size + 1;
 
-    // Allocation de mémoire pour la nouvelle ligne dans chaque colonne
     for (int i = 0; i < dataframe->size; i++)
     {
-        COLUMN* col = dataframe->columns[i];
-        
-        // Demander à l'utilisateur de saisir la valeur en fonction du type de la colonne
-        switch (col->column_type)
-        {
-        case UINT:
-            unsigned ui = 0;
-            printf("Saisissez une valeur entière non signée pour la colonne %s : ", col->title);
-            scanf("%u", &(ui));
-            insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, i, &ui);
-            break;
-
-        // FAIRE LES AUTRES CAS EN SE BASANT SUR UINT CI DESSUS
-
-        case INT:
-
-            int ivalue = 0;
-            printf("Saisissez une valeur entière pour la colonne %s : ", col->title);
-            scanf("%d", &(i));
-
-            col->data[col->size] = (int*)malloc(sizeof(int));
-            if (col->data[col->size] == NULL)
-            {
-                printf("\nErreur d'allocation memoire pour la cellule de type INT du tableau de donnees\n");
-                return 0;
-            }
-
-            // Renseigner la valeur passée en param
-            *((int*)col->data[col->size]) = ivalue;
-
-            break;
-
-        case CHAR:
-            
-            char cvalue;
-
-            printf("Saisissez un caractère pour la colonne %s : ", col->title);
-            scanf(" %c", &(cvalue));
-            
-            col->data[col->size] = (char*)malloc(sizeof(char));
-            if (col->data[col->size] == NULL)
-            {
-                printf("\nErreur d'allocation memoire pour la cellule de type CHAR du tableau de donnees\n");
-                return 0;
-            }
-
-            // Renseigner la valeur passée en param
-            *((char*)col->data[col->size]) = cvalue;
-
-            break;
-        
-        case FLOAT:
-
-            float fvalue = 0;
-            printf("Saisissez une valeur entière pour la colonne %s : ", col->title);
-            scanf("%d", &(i));
-
-            col->data[col->size] = (float*)malloc(sizeof(float));
-            if (col->data[col->size] == NULL)
-            {
-                printf("\nErreur d'allocation memoire pour la cellule de type FLOAT du tableau de donnees\n");
-                return 0;
-            }
-
-            // Renseigner la valeur passée en param
-            *((float*)col->data[col->size]) = fvalue;
-
-            break;
-
-        case DOUBLE:
-
-            double dvalue = 0;
-            printf("Saisissez une valeur entière pour la colonne %s : ", col->title);
-            scanf("%d", &(i));
-
-            col->data[col->size] = (double*)malloc(sizeof(double));
-            if (col->data[col->size] == NULL)
-            {
-                printf("\nErreur d'allocation memoire pour la cellule de type DOUBLE du tableau de donnees\n");
-                return 0;
-            }
-
-            // Renseigner la valeur passée en param
-            *((int*)col->data[col->size]) = dvalue;
-
-            break;
-
-        case STRING:
-            
-            char* svalue[TAILLE_MAX_DATA_STRING];
-            printf("Saisissez des caractère pour la colonne %s : ", col->title);
-            scanf(" %c", &(svalue));
-
-            // Allocation de mémoire pour une chaîne de caractères
-            col->data[col->size] = malloc(strlen((char*)svalue) + 1); // +1 pour le caractère de fin de chaîne nulle
-            if (col->data[col->size] == NULL)
-            {
-                printf("\nErreur d'allocation mémoire pour la cellule de type STRING du tableau de données\n");
-                return 0;
-            }
-
-            // Copie de la chaîne de caractères
-            strcpy((char*)col->data[col->size], (char*)svalue);
-                    
-            break;
-        
-            case STRUCTURE:
-            {
-                void* pstructure;
-                //printf("Saisissez des caractère pour la colonne %s : ", col->title);
-                //scanf(" %c", &(svalue));
-
-                col->data[col->size] = (void*)malloc(sizeof(pstructure));
-                if (col->data[col->size] == NULL)
-                {
-                    printf("\nErreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
-                    return 0;
-                }
-
-                // Renseigner la valeur passée en param
-                col->data[col->size] = pstructure;
-
-                break;
-            }
-
-        default:
-            printf("Type de colonne non pris en charge pour la saisie de valeur.\n");
-            return;
-        }
-
-        // Renseigner l'index associé à cette valeur
-        col->index[col->size] = col->size;
-
-        // Incrémente la taille logique de la colonne
-        col->size++;
+        add_data_manually_in_column(dataframe, i);
     }
 }
 

@@ -91,6 +91,8 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value);
 
 int delete_cdataframe(DATAFRAME2** dataframe);
 
+int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col);
+
 int add_a_row_manually(DATAFRAME2* dataframe);
 
 void delete_row(DATAFRAME2* dataframe, int index_ligne);

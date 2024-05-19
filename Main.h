@@ -69,7 +69,7 @@ int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe);
 
 int cmd_renommer_une_colonne(DATAFRAME2* dataframe);
 
-int cmd_verifier_existence_valeur(DATAFRAME2* dataframe);
+int cmd_ne_jamais_lancer_cette_commande();
 
 int cmd_supprimer_colonne_du_cdataframe(DATAFRAME2* dataframe);
 
@@ -82,6 +82,8 @@ int cmd_supprimer_cdataframe(DATAFRAME2** dataframe);
 #pragma region menu_management_sub_menu_4
 
 int process_user_menu_choice_main_section_4(int sub_section_number);
+
+int cmd_nombre_cellules_contenant_valeur_egale_a_x(DATAFRAME2* dataframe);
 
 #pragma endregion menu_management_sub_menu_4
 

@@ -40,19 +40,21 @@ int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char* sep
     // Sauvegarder le type des colonnes du dataframe
     sauvegarder_types_colonnes_dans_fichier(dataframe, filename, separateur);
 
-    char cur_data = "";
+    char cur_data[TAILLE_MAX_DATA_STRING];
+
+    int nombre_lignes = dataframe->columns[0]->max_size;
 
     // Écrit les données du DataFrame dans le fichier CSV
     for (int i = 0; i < dataframe->size; i++)
     {
-        for (int j = 0; j < dataframe->columns; j++)
+        for (int j = 0; j < nombre_lignes; j++)
         {
             // Parcourir l'ensemble des lignes du dataframe, et stocker chaque donnée trouvée dans chaque col composant cette ligne, au fur et à mesure
-
-            // (Utiliser convert)
-            //fprintf(file, "%s", dataframe->data[i * dataframe->columns + j]);
+            // convert_value(dataframe->columns[col_courante], ligne_courante, str, sizeof(str));
+            convert_value(dataframe->columns[j], j, cur_data, sizeof(cur_data));
+            fprintf(file, "%s", cur_data);
             
-            // Tant que la derniere col n'est pas atteinte, ajouter un séparateur, sinon aller se faire voir
+            // Tant que la derniere col n'est pas atteinte, ajouter un séparateur
             if (j < dataframe->size - 1)
                 fprintf(file, separateur);
         }
