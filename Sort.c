@@ -186,9 +186,6 @@ int partition_string(COLUMN* column, int left, int right, int sort_dir)
     return i + 1;
 }
 
-
-// STRUCTURE
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 // Tri "QuickSort": A utiliser si le tableau n'a pas encore été trié
 // sort_dir = 0: Tri du plus petit au plus grand
@@ -221,6 +218,7 @@ int quick_sort_column(COLUMN* column, int left, int right, int sort_dir)
             quick_sort_column_string(column, left, right, sort_dir);
             break;
         case STRUCTURE:
+            // TODO
             //quick_sort_column_structure(colonne, gauche, droite, sort_dir);
             break;
         default:
@@ -344,7 +342,7 @@ int sort_column_after_insertion(COLUMN* column, int sort_dir)
         sort_column_after_insertion_string(column, sort_dir);
         break;
     case STRUCTURE:
-        
+        // TODO
         break;
     default:
         printf("\nCe type n'est pas reconnu\n");

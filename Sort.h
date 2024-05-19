@@ -16,7 +16,7 @@ int partition_double(COLUMN* column, int left, int right, int sort_dir);
 
 int partition_string(COLUMN* column, int left, int right, int sort_dir);
 
-// STRUCTURE
+// TODO: STRUCTURE
 
 int quick_sort_column(COLUMN* column, int left, int right, int sort_dir);
 
@@ -32,7 +32,7 @@ int quick_sort_column_double(COLUMN* column, int left, int right, int sort_dir);
 
 int quick_sort_column_string(COLUMN* column, int left, int right, int sort_dir);
  
-// STRUCTURE
+// TODO: STRUCTURE
 
 #pragma endregion Tri QuickSort
 
@@ -52,7 +52,7 @@ int sort_column_after_insertion_double(COLUMN* col, int sort_dir);
 
 int sort_column_after_insertion_string(COLUMN* col, int sort_dir);
 
-// STRUCTURE
+// TODO: STRUCTURE
 
 #pragma endregion Tri insertion
 

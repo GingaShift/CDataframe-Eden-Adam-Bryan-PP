@@ -83,7 +83,7 @@ int free_ressources(DATAFRAME2* dataframe)
 DATAFRAME2* manage_creation_of_cdataframe()
 {
     // Demander le nom du CDataframe
-    char* dataframe_title = saisie_chaine("\n Veuillez saisir le nom du CDataframe:\n");
+    char* dataframe_title = saisie_chaine("\n Veuillez saisir le nom du CDataframe : ");
 
     if (dataframe_title[0] == '\0')
     {
@@ -94,9 +94,7 @@ DATAFRAME2* manage_creation_of_cdataframe()
     DATAFRAME2* dataframe = create_cdataframe(dataframe_title);
 
     if (dataframe != NULL)
-    {
         return dataframe;
-    }
     else
         return NULL;
 }
@@ -116,40 +114,40 @@ void afficher_menu()
     printf("    *                                                                                                             *\n");
     printf("    *  \033[4m1. Alimentation\033[0m                                          \033[4m2. Affichage\033[0m                                      *\n");
     printf("    *                                                                                                             *\n");
-    printf("    *  X 11. Creation d'un CDataframe vide                      X 21. Afficher le CDataframe                      *\n");
+    printf("    *    11. Creation d'un CDataframe vide                        21. Afficher le CDataframe                      *\n");
     printf("    *                                                                                                             *\n");
-    printf("    *  X 12. Ajouter une colonne au CDataframe                  X 22. Afficher les lignes et colonnes selon       *\n");
+    printf("    *    12. Ajouter une colonne au CDataframe                    22. Afficher les lignes et colonnes selon       *\n");
     printf("    *                                                                 une eventuelle limite de l'utilisateur      *\n");
-    printf("    *  X 13. Remplir une colonne du CDataframe                                                                    *\n");
-    printf("    *                                                           X 23. Afficher le nombre de colonnes              *\n");
-    printf("    *  X 14. Ajouter une ligne de valeurs au CDataframe                                                           *\n");
-    printf("    *                                                           X 24. Afficher le nom et le type des colonnes     *\n");
-    printf("    *  X 15. Remplissage automatique du CDataframe                                                                *\n");
-    printf("    *                                                           X 25. Afficher le contenu d'une colonne           *\n");
-    printf("    *  X 16. Sauvegarder le CDataframe dans un fichier                                                            *\n");
-    printf("    *                                                           X 26. Afficher le nombre de lignes du CDataframe  *\n");
-    printf("    *  X 17. Charger un CDataframe depuis un fichier                                                              *\n");
+    printf("    *    13. Remplir une colonne du CDataframe                                                                    *\n");
+    printf("    *                                                             23. Afficher le nombre de colonnes              *\n");
+    printf("    *    14. Ajouter une ligne de valeurs au CDataframe                                                           *\n");
+    printf("    *                                                             24. Afficher le nom et le type des colonnes     *\n");
+    printf("    *    15. Remplissage automatique du CDataframe                                                                *\n");
+    printf("    *                                                             25. Afficher le contenu d'une colonne           *\n");
+    printf("    *    16. Sauvegarder le CDataframe dans un fichier                                                            *\n");
+    printf("    *                                                             26. Afficher le nombre de lignes du CDataframe  *\n");
+    printf("    *    17. Charger un CDataframe depuis un fichier                                                              *\n");
     printf("    *                                                                                                             *\n");
     printf("    *                                                                                                             *\n");
     printf("    *  \033[4m3. Operations usuelles\033[0m                                   \033[4m4. Analyse et statistiques\033[0m                        *\n");
     printf("    *                                                                                                             *\n");
-    printf("    *  X 31. Trier une colonne                                  X 41. Nombre de cellules contenant une            *\n");
+    printf("    *    31. Trier une colonne                                    41. Nombre de cellules contenant une            *\n");
     printf("    *                                                                 valeur egale a \"x\"                          *\n");
-    printf("    *  X 32. Lire la valeur d'une cellule                                                                         *\n");
-    printf("    *                                                           X 42. Nombre de cellules contenant une            *\n");
-    printf("    *  X 33. Modifier la valeur d'une cellule                         valeur superieure a \"x\"                     *\n");
+    printf("    *    32. Lire la valeur d'une cellule                                                                         *\n");
+    printf("    *                                                             42. Nombre de cellules contenant une            *\n");
+    printf("    *    33. Modifier la valeur d'une cellule                         valeur superieure a \"x\"                     *\n");
     printf("    *                                                                                                             *\n");
-    printf("    *  X 34. Renommer une colonne                               X 43. Nombre de cellules contenant une            *\n");
+    printf("    *    34. Renommer une colonne                                 43. Nombre de cellules contenant une            *\n");
     printf("    *                                                                 valeur inferieure a \"x\"                     *\n");
-    printf("    *  X 35. Ne jamais lancer cette commande                                                                      *\n");
+    printf("    *    35. Supprimer une colonne du CDataframe                                                                  *\n");
     printf("    *                                                                                                             *\n");
-    printf("    *  X 36. Supprimer une colonne du CDataframe               \033[4m5. Divers\033[0m                                          *\n");                                                   
-    printf("    *                                                                                                             *\n");
-    printf("    *    37. Supprimer une ligne de valeurs du                  X 51. Reinitialiser l'ecran et afficher le menu   *\n");
+    printf("    *    36. Supprimer une ligne de valeurs du               \033[4m5. Divers\033[0m                                            *\n");                                                   
     printf("    *        CDataframe                                                                                           *\n");
-    printf("    *                                                           X 52. Afficher les informations legales           *\n");
-    printf("    *  X 38. Supprimer le CDataframe                                                                              *\n");
-    printf("    *                                                           X 53. Quitter le programme                        *\n");
+    printf("    *                                                             51. Reinitialiser l'ecran et afficher le menu   *\n");
+    printf("    *    37. Supprimer le CDataframe                                                                              *\n");
+    printf("    *                                                             52. Afficher les informations legales           *\n");
+    printf("    *    38. Ne jamais lancer cette commande                                                                      *\n");
+    printf("    *                                                             53. Quitter le programme                        *\n");
     printf("    *                                                                                                             *\n");
     printf("    ***************************************************************************************************************\n");
 }
@@ -192,7 +190,7 @@ int process_user_menu_choice_main_section_1(int sub_section_number)
     {
         case 11:
             printf("\n 11 - Creation d'un CDataframe vide :\n");
-            return cmd_creation_cdataframe(CDataframe2);
+            return cmd_creation_cdataframe();
         case 12:
             printf("\n 12 - Ajouter une colonne au CDataframe \"%s\" :\n", dataframe_title);
             return cmd_ajouter_colonne_au_cdataframe(CDataframe2);
@@ -216,10 +214,11 @@ int process_user_menu_choice_main_section_1(int sub_section_number)
     }
 }
 
-int cmd_creation_cdataframe(DATAFRAME2* dataframe)
+int cmd_creation_cdataframe()
 {
-    dataframe = manage_creation_of_cdataframe();
-    if (dataframe != NULL)
+    CDataframe2 = manage_creation_of_cdataframe();
+    
+    if (CDataframe2 != NULL)
         printf("\n Le CDataframe \"%s\" a ete cree avec succes\n", CDataframe2->title);
     else
         printf("\n Une erreur est survenue lors de la creation du CDataframe");
@@ -229,6 +228,9 @@ int cmd_creation_cdataframe(DATAFRAME2* dataframe)
 
 int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe)
 {
+    if (!dataframe_has_data(dataframe))
+        return -1;
+
     // Ask user to input col name
     int col_type = -1;
     char col_name[NOMBRE_CHAR_MAX_NOM_COLONNE];
@@ -443,12 +445,6 @@ int cmd_remplissage_automatique_du_cdataframe(DATAFRAME2* dataframe)
     if (dataframe == NULL)
     {
         printf("\n Veuillez d'abord creer le CDataframe\n");
-        return 0;
-    }
-
-    if (dataframe->size == 0)
-    {
-        printf("\n Veuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe->title);
         return 0;
     }
 
@@ -786,17 +782,17 @@ int process_user_menu_choice_main_section_3(int sub_section_number)
         printf("\n 34 - Renommer une colonne :\n");
         return cmd_renommer_une_colonne(CDataframe2);
     case 35:
-        printf("\n 35 - Ne jamais lancer cette commande :\n");
-        return cmd_ne_jamais_lancer_cette_commande();
-    case 36:
-        printf("\n 36 - Supprimer une colonne du CDataframe : \"%s\" \n", dataframe_title);
+        printf("\n 35 - Supprimer une colonne du CDataframe : \"%s\" \n", dataframe_title);
         return cmd_supprimer_colonne_du_cdataframe(CDataframe2);
+    case 36:
+        printf("\n 36 - Supprimer une ligne de valeurs du CDataframe \"%s\" \n", dataframe_title);
+        return cmd_supprimer_ligne_du_cdataframe(CDataframe2);
     case 37:
-        printf("\n 37 - Supprimer une ligne de valeurs du CDataframe \"%s\" \n", dataframe_title);
-        //return cmd_supprimer_ligne_du_cdataframe(CDataframe2);
-    case 38:
-        printf("\n 38 - Supprimer le CDataframe : \"%s\" \n", dataframe_title);
+        printf("\n 37 - Supprimer le CDataframe : \"%s\" \n", dataframe_title);
         return cmd_supprimer_cdataframe(&CDataframe2);
+    case 38:
+        printf("\n 38 - Ne jamais lancer cette commande :\n");
+        return cmd_ne_jamais_lancer_cette_commande();
     default:
         break;
     }
@@ -1261,7 +1257,15 @@ int cmd_supprimer_colonne_du_cdataframe(DATAFRAME2* dataframe)
 
 int cmd_supprimer_ligne_du_cdataframe(DATAFRAME2* dataframe)
 {
+    if (!dataframe_has_data(dataframe))
+        return -1;
 
+    int num_ligne;
+
+    if (delete_row(dataframe, num_ligne))
+        printf("La ligne de valeurs numero \"%d\" du CDataframe \"%s\" a ete supprimee avec succes", num_ligne, dataframe->title);
+    else
+        printf("Erreur lors de la tentative de suppression de la ligne de valeurs numero \"%d\" du CDataframe \"%s\"", num_ligne, dataframe->title);
 }
 
 int cmd_supprimer_cdataframe(DATAFRAME2** dataframe_ptr)
@@ -1629,15 +1633,13 @@ int main()
     while (go == 1)
     {
         ///////////////////////////////////////////////////////////////////
-        // CREATION ET ALIMENTATION AUTO DU CDATAFRAME - POUR TESTS SEULEMENT, NE SURTOUT PAS OUBLIE DE VIRER !!!
-        if (CDataframe2 == NULL)
+        // TESTS SEULEMENT, NE SURTOUT PAS OUBLIE DE COMMENTER !!!
+        /*if (CDataframe2 == NULL)
         {
             CDataframe2 = create_cdataframe("Dataframe 2");
             populate_dataframe_automatically(CDataframe2);
-        }
-        
+        }*/
         // test();
-
         ///////////////////////////////////////////////////////////////////
         
         switch (choix_menu)

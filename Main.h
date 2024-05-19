@@ -23,7 +23,7 @@ int process_user_menu_choice(int sub_section_number);
 
 int process_user_menu_choice_main_section_1(int sub_section_number);
 
-int cmd_creation_cdataframe(DATAFRAME2* dataframe);
+int cmd_creation_cdataframe();
 
 int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe);
 

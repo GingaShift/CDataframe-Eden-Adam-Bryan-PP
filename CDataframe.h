@@ -95,8 +95,8 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col);
 
 int add_a_row_manually(DATAFRAME2* dataframe);
 
-void delete_row(DATAFRAME2* dataframe, int index_ligne);
+int delete_row(DATAFRAME2* dataframe, int index_ligne);
 
-//int afficher_cdataframe(DATAFRAME1* dataframe, int num_col_max, int int_num_ligne_max);
+int dataframe_has_data(DATAFRAME2* dataframe);
 
 #pragma endregion Fin CDataframe 2

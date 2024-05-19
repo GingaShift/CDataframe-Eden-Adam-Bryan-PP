@@ -336,7 +336,7 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
             col->data[col->size] = (void*)malloc(sizeof(value));
             if (col->data[col->size] == NULL)
             {
-                printf("\nErreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
+                printf("\n Erreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
                 return 0;
             }
 
@@ -560,6 +560,20 @@ const char* enum_to_string(ENUM_TYPE value)
         case STRUCTURE: return "STRUCTURE";
         default: return "Unknown";
     }
+}
+
+/// <summary>
+/// Supprimer l'index d'une colonne
+/// </summary>
+/// <param name="col">Ponteur sur la colonne à supprimer</param>
+void erase_index(COLUMN* col)
+{
+    if (col->index != NULL) {
+        free(col->index);
+        col->index = NULL;
+    }
+    col->index_size = 0;
+    col->valid_index = 0;
 }
 
 #pragma endregion Fin CDataframe 2
