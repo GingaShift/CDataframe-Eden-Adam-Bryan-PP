@@ -14,10 +14,17 @@
 
 #pragma region CDataframe 1
 
+// NOTE: Les commentaires sont uniquement disponible pour le CDataframe2
+
 // Declaration du CDataframe
 DATAFRAME1* CDataframe1;
 bool CDataframe1_exists = false;
 
+/// <summary>
+/// Free ressources
+/// </summary>
+/// <param name="dataframe">The current CDataframe if exists</param>
+/// <returns>If success return 1, else 0</returns>
 int free_all_ressources(DATAFRAME1* dataframe)
 {
     // liberer la mémoire allouée aux colonnes
@@ -38,6 +45,11 @@ int free_all_ressources(DATAFRAME1* dataframe)
     return 1;
 }
 
+/// <summary>
+/// Manage creation of a CDataframe
+/// </summary>
+/// <param name="dataframe_exists"></param>
+/// <returns>The CDataframe created</returns>
 DATAFRAME1* gestion_creation_cdataframe(bool* dataframe_exists)
 {
     printf("\nChoix 1 - Creation du CDataframe:\n");
@@ -73,6 +85,11 @@ OPERATEURS_DE_COMPARAISON oc_egal = { EGAL };
 OPERATEURS_DE_COMPARAISON oc_superieur = { SUPERIEUR };
 OPERATEURS_DE_COMPARAISON oc_inferieur = { INFERIEUR };
 
+/// <summary>
+/// Free all ressources
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int free_ressources(DATAFRAME2* dataframe)
 {
     delete_cdataframe(dataframe);
@@ -80,6 +97,10 @@ int free_ressources(DATAFRAME2* dataframe)
     CDataframe2 = NULL;
 }
 
+/// <summary>
+/// Manage all Dataframe's creation steps
+/// </summary>
+/// <returns>an initialized and ready to use CDataframe</returns>
 DATAFRAME2* manage_creation_of_cdataframe()
 {
     // Demander le nom du CDataframe
@@ -103,7 +124,9 @@ DATAFRAME2* manage_creation_of_cdataframe()
 }
 
 #pragma region menu_management
-
+/// <summary>
+/// user interface of the program (menu specially designed to enter commands)
+/// </summary>
 void afficher_menu()
 {
     printf("\n");
@@ -144,7 +167,7 @@ void afficher_menu()
     printf("    *                                                                 valeur inferieure a \"x\"                     *\n");
     printf("    *    35. Supprimer une colonne du CDataframe                                                                  *\n");
     printf("    *                                                                                                             *\n");
-    printf("    *    36. Supprimer une ligne de valeurs du               \033[4m5. Divers\033[0m                                            *\n");                                                   
+    printf("    *    36. Supprimer une ligne de valeurs du                  \033[4m5. Divers\033[0m                                         *\n");                                                   
     printf("    *        CDataframe                                                                                           *\n");
     printf("    *                                                             51. Reinitialiser l'ecran et afficher le menu   *\n");
     printf("    *    37. Supprimer le CDataframe                                                                              *\n");
@@ -155,9 +178,30 @@ void afficher_menu()
     printf("    ***************************************************************************************************************\n");
 }
 
+/// <summary>
+/// Commands manager for input user
+/// </summary>
+/// <param name="sub_section_number"></param>
+/// <returns>returns -1 to get back to menu management input</returns>
+
+/// <summary>
+///                                          NOTE IMPORTANTE:
+/// Toutes les fonctions débutant par "cmd_" servent à gerer les entrées utilisateur via des commandes
+/// Elles sont toutes classées par section principale telles qu'elles apparaissent dans le menu (De 1 à 5)
+/// Exemple:
+/// "process_user_menu_choice appelle(1)appelle donc "process_user_menu_choice_main_section_1" qui gère
+/// toutes les commande de la section du menu nommée "Alimentation"
+/// Le nom de chaque commande est suffisamment explicites et n'appelle donc pas de commentaires supplémenttaires
+/// </summary>
+/// <returns></returns>
 int process_user_menu_choice(int sub_section_number)
 {
     // Controler le fait que user ait fait un choix compris dans une certaine plage seulement
+    if(! check_validity_of_command_value(sub_section_number))
+    {
+        printf("\n\n La commande n'est pas valide, veuillez entrer un numero de commande correct");
+        return -1;
+    }
 
     // Extraire le num de section principale choisie (toujours le premier num)
     int main_section_number = obtenir_premier_chiffre(sub_section_number);
@@ -186,32 +230,36 @@ int process_user_menu_choice(int sub_section_number)
 }
 
 #pragma region menu_management_sub_menu_1
-
+/// <summary>
+/// Manager section 1's commands
+/// </summary>
+/// <param name="sub_section_number"></param>
+/// <returns></returns>
 int process_user_menu_choice_main_section_1(int sub_section_number)
 {   
     switch (sub_section_number)
     {
         case 11:
-            printf("\n 11 - Creation d'un CDataframe vide :\n");
+            printf("\n Choix 11 - Creation d'un CDataframe vide :\n");
             return cmd_creation_cdataframe();
         case 12:
-            printf("\n 12 - Ajouter une colonne au CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 12 - Ajouter une colonne au CDataframe %s :\n", dataframe_title);
             return cmd_ajouter_colonne_au_cdataframe(CDataframe2);
         case 13:
-            printf("\n 13 - Remplir une colonne du CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 13 - Remplir une colonne du CDataframe \"%s\" :\n", dataframe_title);
             return cmd_remplir_une_colonne_du_cdataframe(CDataframe2);
         case 14:
-            printf("\n 14 - Ajouter une ligne de valeur au CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 14 - Ajouter une ligne de valeur au CDataframe \"%s\" :\n", dataframe_title);
             return cmd_ajouter_une_ligne_au_cdataframe(CDataframe2);
         case 15:
-            printf("\n 15 - Remplissage automatique du CDataframe :\n");
+            printf("\n Choix 15 - Remplissage automatique du CDataframe :\n");
             return cmd_remplissage_automatique_du_cdataframe(CDataframe2);
         case 16:
-            printf("\n 16 - Sauvegarder le CDataframe dans un fichier :\n");
+            printf("\n Choix 16 - Sauvegarder le CDataframe dans un fichier :\n");
             return cmd_sauvegarder_cdataframe_dans_fichier(CDataframe2, NOM_FICHIER_CSV, SEPARATEUR_CSV);
         case 17:
-            printf("\n 17 - Charger un CDataframe depuis un fichier :\n");
-            return cmd_charger_cdataframe_depuis_fichier(&CDataframe2, NOM_FICHIER_CSV, SEPARATEUR_CSV);
+            printf("\n Choix 17 - Charger un CDataframe depuis un fichier :\n");
+            return cmd_charger_cdataframe_depuis_fichier(NOM_FICHIER_CSV, SEPARATEUR_CSV);
         default:
             break;
     }
@@ -231,62 +279,53 @@ int cmd_creation_cdataframe()
 
 int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe)
 {
-    if (!dataframe_has_data(dataframe))
+    if (dataframe == NULL)
+    {
+        printf("\n Veuillez d'abord creer le CDataframe\n");
         return -1;
-
+    }
+    
     // Ask user to input col name
     int col_type = -1;
     char col_name[NOMBRE_CHAR_MAX_NOM_COLONNE];
 
     // Ask user to input col name
     printf("\n Veuillez entrer le nom de la colonne a ajouter : ");
+    vider_tampon();
     int ret = scanf("%255s", col_name);
 
     if (col_name[0] == '\0')
     {
         printf("\n Le nom de la colonne est invalide, operation annulee");
-        printf("\n Appuyez sur une touche pour continuer\n");
-        vider_tampon();
-        ret = getchar();
         return -1;
     }
     else
         printf("\n Le nom de votre nouvelle colonne est : \"%s\"\n", col_name);
     
-    printf("\n Appuyez sur une touche pour continuer\n");
-    vider_tampon();
-    ret = getchar();
-
     // Ask user to input col type
     printf("\n Veuillez choisir le type de la colonne a ajouter :\n");
     printf("\n (UINT = 1, INT = 2, CHAR = 3, FLOAT = 5, DOUBLE = 6, STRING = 7, STRUCTURE = 8)");
     printf("\n\n (Si vous souhaitez annuler l'operation d'ajout de colonne, entrez la valeur \"-1\")\n");
     printf("\n\n A vous de jouer maintenant : ");
-
+    vider_tampon();
     ret = scanf("%d", &col_type);
 
     if (col_type == 0)
     {
         printf("\n\n l'opération d'ajout de colonne a ete annulee");
-        printf("\n Appuyez sur une touche pour continuer\n");
-        vider_tampon();
-        ret = getchar();
+        printf("\n Appuyez sur \"Entree\" pour continuer\n");
         return -1;
     }
     else if (col_type < 0 || col_type > NOMBRE_TYPE_COL)
     {
         printf("\n Le type de la colonne est invalide, operation annulee");
-        printf("\n Appuyez sur une touche pour continuer\n");
-        vider_tampon();
-        ret = getchar();
+        printf("\n Appuyez sur \"Entree\" pour continuer\n");
         return -1;
     }
     else
     {
         printf("\n Le type de votre nouvelle colonne est :\"%s\"\n", enum_to_string(col_type));
-        printf("\n Appuyez sur une touche pour l'ajouter au CDataframe \"%s\"...\n", dataframe->title);
-        vider_tampon();
-        getchar();
+        printf("\n Appuyez sur \"Entree\" pour l'ajouter au CDataframe \"%s\"...\n", dataframe->title);
     }
 
     if (add_column(dataframe, col_type, col_name))
@@ -294,16 +333,13 @@ int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe)
     else
         printf("\n Un probleme est survenu lors de l'ajout de la nouvelle colonne\n");
 
-    printf("\n Le CDataframe \"%s\" contient maintenant %d colonne(s), voici leur aspect: \n", dataframe->title);
+    if (dataframe->size == 1)
+        printf("\n Le CDataframe \"%s\" contient maintenant une seule et unique colonne dont voici l'aspect: \n", dataframe->title);
+    else if (dataframe->size > 1)
+        printf("\n Le CDataframe \"%s\" contient maintenant %d colonnes, voici leur aspect: \n", dataframe->title, dataframe->size);
 
     print_name_and_type_of_columns(dataframe);
     
-    printf("\n Appuyez sur une touche pour continuer\n");
-    
-    vider_tampon();
-
-    getchar();
-
     return -1;
 }
 
@@ -321,7 +357,7 @@ int cmd_remplir_une_colonne_du_cdataframe(DATAFRAME2* dataframe)
     if (dataframe->size == 0)
     {
         printf("\n Le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
-        printf("\n Appuyez sur une touche pour continuer\n");
+        printf("\n Appuyez sur \"Entree\" pour continuer\n");
         vider_tampon();
         ret = getchar();
         return -1;
@@ -343,7 +379,7 @@ int cmd_remplir_une_colonne_du_cdataframe(DATAFRAME2* dataframe)
         printf("\n\n Elles sont numerote de 0 a %d et se presentent comme suit : \n", (dataframe->size - 1));
         print_name_and_type_of_columns(dataframe);
         printf("\n\n Entrez le numero de la colonne a remplir : ");
-
+        vider_tampon();
         ret = scanf("%d", &num_col_to_fill);
 
         // Vérifier si le choix est valide, sinon prevenir
@@ -377,6 +413,7 @@ int cmd_remplir_une_colonne_du_cdataframe(DATAFRAME2* dataframe)
         if (ret == 1)
         {
             printf("\n\n  Souhaitez-vous voir le resultat ? (o/n) ");
+            vider_tampon();
             ret = scanf("%1s", choix);
             // Si oui, afficher le CDataframe en limitant le nombre de lignes celui de la nouvelle valeur pour ne pas polluer l'écran
             if (strcmp(choix, "o") == 0)
@@ -426,9 +463,7 @@ int cmd_ajouter_une_ligne_au_cdataframe(DATAFRAME2* dataframe)
     if (dataframe->size == 0)
     {
         printf("\n Le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
-        printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
-        vider_tampon();
-        int ret = getchar();
+        printf("\n Operation abandonnee et retour au menu\n");
         return -1;
     }
 
@@ -444,8 +479,8 @@ int cmd_remplissage_automatique_du_cdataframe(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL)
     {
-        printf("\n Veuillez d'abord creer le CDataframe\n");
-        return 0;
+        printf("\n Erreur: Le Cdataframe n'existe pas, veuillez d'abord le creer\n");
+        return -1;
     }
 
     if (populate_dataframe_automatically(CDataframe2))
@@ -469,7 +504,7 @@ int cmd_sauvegarder_cdataframe_dans_fichier(DATAFRAME2* dataframe, char nom_fich
     if (dataframe->size == 0)
     {
         printf("\n Le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
-        printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
+        printf("\n Appuyez sur \"Entree\"  pour continuer\n");
         ret = getchar();
         return -1;
     }
@@ -479,25 +514,19 @@ int cmd_sauvegarder_cdataframe_dans_fichier(DATAFRAME2* dataframe, char nom_fich
     else
         printf("\n Un probleme est survenue lors de la sauvegarde du CDataframe \"%s\" dans le fichier CSV \"%s\"\n", dataframe->title, NOM_FICHIER_CSV);
 
-    vider_tampon();
-    ret = getchar();
-
     return -1;
 }
 
-int cmd_charger_cdataframe_depuis_fichier(DATAFRAME2** dataframe_ptr, char nom_fichier_csv, const char separateur)
+int cmd_charger_cdataframe_depuis_fichier(char nom_fichier_csv, const char separateur)
 {
-    if (dataframe_ptr == NULL)
-        return 0;
+    int res = 0;
 
-    DATAFRAME2* dataframe = *dataframe_ptr;
-
-    dataframe = load_dataframe_from_csv("dataframe", NOM_FICHIER_CSV, SEPARATEUR_CSV);
+    CDataframe2 = load_dataframe_from_csv("dataframe", NOM_FICHIER_CSV, SEPARATEUR_CSV, &res);
     
-    if (true)
+    if (res)
         printf("\nLe CDdataframe a ete charge avec succes\n");
     else
-        printf("\n Un probleme est survenue lors du chargement du CDataframe dans le fichier CSV\n");
+        printf("\n Un probleme est survenue lors du chargement du CDataframe dans le fichier .csv\n");
 
     return -1;
 }
@@ -513,32 +542,26 @@ int process_user_menu_choice_main_section_2(int sub_section_number)
         printf("\n Veuillez d'abord creer le CDataframe\n");
         return -1;
     }
-
-    if (CDataframe2->size == 0)
-    {
-        printf("\n Veuillez d'abord creer et remplir au moins une colonne dans le CDataframe \"%s\"\n", dataframe_title);
-        return -1;
-    }
     
     switch (sub_section_number)
     {
         case 21:
-            printf("\n 21 - Afficher le CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 21 - Afficher le CDataframe \"%s\" :\n", dataframe_title);
             return cmd_afficher_cdataframe(CDataframe2);
         case 22:
-            printf("\n 22 - Afficher les lignes et colonnes du CDataframe \"%s\" selon une eventuelle limite de l'utilisateur :\n", dataframe_title);
+            printf("\n Choix 22 - Afficher les lignes et colonnes du CDataframe \"%s\" selon une eventuelle limite de l'utilisateur :\n", dataframe_title);
             return cmd_afficher_lignes_et_colonnes_selon_limites_utilisateurs(CDataframe2);
         case 23:
-            printf("\n 23 - Afficher le nombre de colonnes du CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 23 - Afficher le nombre de colonnes du CDataframe \"%s\" :\n", dataframe_title);
             return cmd_afficher_nombre_de_colonnes(CDataframe2);
         case 24:
-            printf("\n 24 - Afficher le nom et le type des colonnes du CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 24 - Afficher le nom et le type des colonnes du CDataframe \"%s\" :\n", dataframe_title);
             return cmd_afficher_noms_et_types_des_colonnes(CDataframe2);
         case 25:
-            printf("\n 25 - Afficher le contenu d'une colonne du CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 25 - Afficher le contenu d'une colonne du CDataframe \"%s\" :\n", dataframe_title);
             return cmd_afficher_contenu_de_colonne(CDataframe2);
         case 26:
-            printf("\n 26 - Afficher le nombre de lignes du CDataframe \"%s\" :\n", dataframe_title);
+            printf("\n Choix 26 - Afficher le nombre de lignes du CDataframe \"%s\" :\n", dataframe_title);
             return cmd_afficher_nombre_lignes(CDataframe2);
         default:
             break;
@@ -553,7 +576,7 @@ int cmd_afficher_cdataframe(DATAFRAME2* dataframe)
 
 int cmd_afficher_lignes_et_colonnes_selon_limites_utilisateurs(DATAFRAME2* dataframe)
 {
-    int ret = 0;
+    int continue_saisie = 0;
     int num_col_max_to_show = 0;
     int num_ligne_max_to_show = 0;
 
@@ -574,32 +597,33 @@ int cmd_afficher_lignes_et_colonnes_selon_limites_utilisateurs(DATAFRAME2* dataf
         printf("\n Le CDataframe %s ne contient aucune colonne\n", dataframe->title);
         printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
         vider_tampon();
-        ret = getchar();
+        getchar();
         return -1;
     }
+
+    continue_saisie = 1;
 
     // Saisie du nombre de col max à afficher
     do {
         printf("\n Entrez le nombre max de colonnes a afficher :\n");
-        printf("\n Le CDataframe \"%s\" contient %d colonnes :\n", dataframe->title, dataframe->size);
+        printf("\n Le CDataframe \"%s\" contient %d colonnes\n", dataframe->title, dataframe->size);
         printf("\n Pour afficher toutes les colonnes, entrez la valeur \"-1\" : ");
-
+        vider_tampon();
         scanf("%d", &num_col_max_to_show);
 
         // Vérifier si le choix est valide, sinon prevenir
         if (num_col_max_to_show == NO_LIMIT)
-            ret = 1;
+            continue_saisie = 0;
         if (num_col_max_to_show > dataframe->size)
             printf("\n Choix invalide. Veuillez entrer un num de colonne compris entre 1 et %d:\n", dataframe->size);
-        else if (num_col_max_to_show <= 1)
+        else if (num_col_max_to_show <= 1 && num_col_max_to_show != -1)
         {
-            printf("\n Le nombre doit etre positif ou egal a -1 mais pas negatif ni egal a zero");
+            printf("\n\n Le nombre doit etre positif ou egal a -1 mais pas negatif ni egal a zero");
             printf("\n Veuillez entrer un nombre de colonnes max correspondant a cela et qui ne soit pas superieur a %d:\n", dataframe->size);
-
         }
         else
-            ret = 1;
-    } while (ret != 1); // Continuer tant que les valeurs entrees sont erronnees
+            continue_saisie = 0;
+    } while (continue_saisie == 1); // Continuer tant que les valeurs entrees sont erronnees
 
     // Saisie du nombre de lignes max à afficher
     int nombre_lignes_total = get_number_of_rows(CDataframe2);
@@ -609,31 +633,35 @@ int cmd_afficher_lignes_et_colonnes_selon_limites_utilisateurs(DATAFRAME2* dataf
         printf("\n Le CDataframe \"%s\" ne contient aucune ligne\n", dataframe->title);
         printf("\n Appuyez sur une touche puis sur \"Entree\" pour continuer\n");
         vider_tampon();
-        ret = getchar();
+        getchar();
         return -1;
     }
 
+    continue_saisie = 1;
+
     do {
-        printf("\n Le CDataframe \"%s\" contient %d lignes :\n", dataframe->title, nombre_lignes_total);
+        printf("\n Le CDataframe \"%s\" contient %d lignes\n", dataframe->title, nombre_lignes_total);
         printf("\n Entrez le nombre de lignes max a afficher :\n");
         printf("\n Pour afficher toutes les lignes, entrez la valeur \"-1\" : ");
-
+        vider_tampon();
         scanf("%d", &num_ligne_max_to_show);
 
         // Vérifier si le choix est valide, sinon prevenir
-        if (num_ligne_max_to_show > nombre_lignes_total)
+        if (num_ligne_max_to_show == NO_LIMIT)
+            continue_saisie = 0;
+        else if (num_ligne_max_to_show > nombre_lignes_total)
         {
             printf("\n Choix invalide, le nombre de lignes a afficher ne doit pas exceder %d", nombre_lignes_total);
             printf("\n Veuillez entrer un nombre de lignes max compris entre 1 et %d:\n", nombre_lignes_total);
         }
-        else if (num_ligne_max_to_show <= 1)
+        else if (num_ligne_max_to_show <= 1 && num_ligne_max_to_show != -1)
         {
-            printf("\n Le nombre de lignes a afficher doit être positif ou egal a -1 mais pas negatif ni egal a zero");
+            printf("\n\n Le nombre de lignes a afficher doit être positif ou egal a -1 mais pas negatif ni egal a zero");
             printf("\n Veuillez entrer un nombre de lignes max correspondant a cela et qui ne soit pas superieur a %d:\n", nombre_lignes_total);
         }
         else
-            ret = 1;
-    } while (ret != 1); // Continuer tant que les valeurs sont erronnees
+            continue_saisie = 0;
+    } while (continue_saisie == 1); // Continuer tant que les valeurs sont erronnees
 
     show_cdataframe(CDataframe2, num_col_max_to_show, num_ligne_max_to_show);
     
@@ -666,13 +694,10 @@ int cmd_afficher_noms_et_types_des_colonnes(DATAFRAME2* dataframe)
     int nombre_col = print_name_and_type_of_columns(CDataframe2);
 
     if (nombre_col == 1)
-    {
-        printf("\n Le nom de %d colonne(s) ont ete affiche(s)\n\n", nombre_col);
-    }
+        printf("\n Le nom et le type de donnee de la colonne unique a ete affiche\n\n", nombre_col);
     else if (nombre_col > 1)
-    {
-        printf("\n Les noms de %d colonnes ont ete affiches\n\n", nombre_col);
-    }
+        printf("\n Les noms ainsi que les types de donnees heberges des %d colonnes ont ete affiches\n\n", nombre_col);
+
     return -1;
 }
 
@@ -765,31 +790,37 @@ int cmd_afficher_nombre_lignes(DATAFRAME2* dataframe)
 
 int process_user_menu_choice_main_section_3(int sub_section_number)
 {
+    if (CDataframe2 == NULL && sub_section_number != 38)
+    {
+        printf("\n Veuillez d'abord creer le CDataframe\n");
+        return -1;
+    }
+    
     switch (sub_section_number)
     {
     case 31:
-        printf("\n 31 - Trier une colonne :\n");
+        printf("\n Choix 31 - Trier une colonne :\n");
         return cmd_trier_une_colonne(CDataframe2);
     case 32:
-        printf("\n 32 - Lire la valeur d'une cellule :\n");
+        printf("\n Choix 32 - Lire la valeur d'une cellule :\n");
         return cmd_lire_valeur_cellule(CDataframe2);
     case 33:
-        printf("\n 33 - Modifier la valeur d'une cellule :\n");
+        printf("\n Choix 33 - Modifier la valeur d'une cellule :\n");
         return cmd_modifier_valeur_cellule(CDataframe2);
     case 34:
-        printf("\n 34 - Renommer une colonne :\n");
+        printf("\n Choix 34 - Renommer une colonne :\n");
         return cmd_renommer_une_colonne(CDataframe2);
     case 35:
-        printf("\n 35 - Supprimer une colonne du CDataframe : \"%s\" \n", dataframe_title);
+        printf("\n Choix 35 - Supprimer une colonne du CDataframe : \"%s\" \n", dataframe_title);
         return cmd_supprimer_colonne_du_cdataframe(CDataframe2);
     case 36:
-        printf("\n 36 - Supprimer une ligne de valeurs du CDataframe \"%s\" \n", dataframe_title);
+        printf("\n Choix 36 - Supprimer une ligne de valeurs du CDataframe \"%s\" \n", dataframe_title);
         return cmd_supprimer_ligne_du_cdataframe(CDataframe2);
     case 37:
-        printf("\n 37 - Supprimer le CDataframe : \"%s\" \n", dataframe_title);
+        printf("\n Choix 37 - Supprimer le CDataframe : \"%s\" \n", dataframe_title);
         return cmd_supprimer_cdataframe(&CDataframe2);
     case 38:
-        printf("\n 38 - Ne jamais lancer cette commande :\n");
+        printf("\n Choix 38 - Ne jamais lancer cette commande :\n");
         return cmd_ne_jamais_lancer_cette_commande();
     default:
         break;
@@ -855,7 +886,7 @@ int cmd_trier_une_colonne(DATAFRAME2* dataframe)
     ret = scanf("%1s", &choix);
 
     if (strcmp(choix, "o") == 0)
-        ret = show_cdataframe(CDataframe2, NO_LIMIT, dataframe->columns[num_col]->size);
+        ret = show_cdataframe(CDataframe2, NO_LIMIT, dataframe->columns[num_col]->size - 1);
 
     return -1;
 }
@@ -896,12 +927,15 @@ int cmd_lire_valeur_cellule(DATAFRAME2* dataframe)
         vider_tampon();
         int ret = scanf("  %d", &num_col);
 
-        if (num_col > dataframe->size || num_col < -1)
+        if (num_col > (dataframe->size -1) || num_col < -1)
         {
             printf("\n Numero de colonne fallacieux");
         }
         else if (num_col == -1)
+        {
+            printf("\n Operation abandonnee, retour au menu general");
             return -1;
+        }
         else
             ask_user_to_input_value = 0;
 
@@ -910,11 +944,11 @@ int cmd_lire_valeur_cellule(DATAFRAME2* dataframe)
     // Demander à l'utilisateur de selectionner une ligne pour la lecture de la donnée
     do
     {
-        printf("\n\n Veuillez saisir un numero de LIGNE hebergeant la donnee a lire et qui soit compris entre 0 et %d (ou \"-1\" pour abandonner) : ", nombre_de_lignes);
+        printf("\n Veuillez saisir un numero de LIGNE hebergeant la donnee a lire et qui soit compris entre 0 et %d (ou \"-1\" pour abandonner) : ", nombre_de_lignes);
         vider_tampon();
         int ret = scanf("  %d", &num_ligne);
 
-        if (num_ligne > dataframe->size || num_ligne < -1)
+        if (num_ligne > (dataframe->columns[0]->max_size -1) || num_ligne < -1)
         {
             printf("\n Numero de ligne erratique");
         }
@@ -925,7 +959,12 @@ int cmd_lire_valeur_cellule(DATAFRAME2* dataframe)
 
     } while (ask_user_to_input_value == 1);
 
-    print_value(dataframe, num_col, num_ligne);
+    printf("\n\n\n\n=========================================================================");
+
+    if (!print_value(dataframe, num_col, num_ligne))
+        printf("Une erreur est survenue lors de la lecture de la valeur");
+    else
+        printf("\n\n=========================================================================");
 
     return -1;
 }
@@ -952,7 +991,7 @@ int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe)
     int ask_user_to_input_value = 0;
     int nombre_de_lignes = 0;
 
-    nombre_de_lignes = dataframe->columns[0]->max_size;
+    nombre_de_lignes = dataframe->columns[0]->max_size - 1;
 
     // Show all col names and type 
     printf("\n Voici les colonnes disponibles...\n");
@@ -962,12 +1001,13 @@ int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe)
     // Demander à l'utilisateur de selectionner une colonne pour la lecture de la donnée
     do
     {
-        printf("\n\n Veuillez saisir un numero de COLONNE hebergeant la donnee a modifier et qui soit compris entre 0 et %d (ou \"-1\" pour abandonner) : \n", dataframe->size);
+        printf("\n\n Veuillez saisir un numero de COLONNE hebergeant la donnee a modifier et qui soit compris entre 0 et %d (ou \"-1\" pour abandonner) : ", (dataframe->size - 1));
+        vider_tampon();
         int ret = scanf("  %d", &num_col);
 
-        if (num_col > dataframe->size || num_col < -1)
+        if (num_col > (dataframe->size-1) || num_col < -1)
         {
-            printf("\n Numero de colonne aberrant");
+            printf("\n Numero de colonne aberrant !");
         }
         else if (num_col == -1)
             return -1;
@@ -976,17 +1016,18 @@ int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe)
 
     } while (ask_user_to_input_value == 1);
 
-    ask_user_to_input_value = 0;
-
-    // Demander à l'utilisateur de selectionner une ligne pour la lecture de la donnée
+    // Demander à l'utilisateur d'entrer un num de ligne pour la lecture de la donnée
+    ask_user_to_input_value = 1;
     do
     {
-        printf("\n\n Veuillez saisir un numero de LIGNE hebergeant la donnee a modifier et qui soit compris entre 0 et %d (ou \"-1\" pour abandonner) : \n", nombre_de_lignes);
+        printf("\n\n Veuillez saisir un numero de LIGNE hebergeant la donnee a modifier et qui soit compris entre 0 et %d (ou \"-1\" pour abandonner) : ", nombre_de_lignes);
+        vider_tampon();
         int ret = scanf("  %d", &num_ligne);
 
-        if (num_ligne > dataframe->size || num_ligne < -1)
+        if (num_ligne > dataframe->columns[0]->max_size - 1 || num_ligne < -1)
         {
-            printf("\n Numero de ligne deplorable");
+            printf("\n Numero de ligne deplorable !");
+            num_ligne = 0;
         }
         else if (num_ligne == -1)
             return -1;
@@ -1004,75 +1045,125 @@ int cmd_modifier_valeur_cellule(DATAFRAME2* dataframe)
     switch (col_type)
     {
     case UINT:
+
         unsigned int uint_value = 0;
-        printf("\n Saisissez une valeur entière non signée (UINT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n Saisissez une valeur entiere non signee (UINT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        vider_tampon();
         ret = scanf("%u", &uint_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
         if (!check_if_valid_value(&uint_value, col_type))
             printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
-        // Check if value got the right type
-        change_value(dataframe, num_col, num_ligne, &uint_value);
+        
+        // Change value
+        if (!change_value(dataframe, num_col, num_ligne, &uint_value))
+            printf("\n Une erreur est survenue lors de la modification de la valeur");
+        else
+            printf("\n La valeur a ete correctement modifie");
+
         break;
+
     case INT:
+
         int int_value = 0;
-        printf("\n Saisissez une valeur entière signée (INT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n Saisissez une valeur entiere signée (INT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        vider_tampon();
         ret = scanf("%d", &int_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
         if (!check_if_valid_value(&int_value, col_type))
             printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
-        // Check if value got the right type
-        change_value(dataframe, num_col, num_ligne, &int_value);
+        
+        // Change value
+        if (!change_value(dataframe, num_col, num_ligne, &int_value))
+            printf("\n Une erreur est survenue lors de la modification de la valeur");
+        else
+            printf("\n La valeur a ete correctement modifie");
+
         break;
+
     case CHAR:
+
         char char_value = '\0';
         printf("\n Saisissez une valeur (CHAR) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        vider_tampon();
         ret = scanf("%c", &char_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
         if (!check_if_valid_value(&char_value, col_type))
             printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
-        // Check if value got the right type
-        change_value(dataframe, num_col, num_ligne, &char_value);
+        
+        // Change value
+        if (!change_value(dataframe, num_col, num_ligne, &char_value))
+            printf("\n Une erreur est survenue lors de la modification de la valeur");
+        else
+            printf("\n La valeur a ete correctement modifie");
+
         break;
+
     case FLOAT:
+
         float float_value = 0.0f;
         printf("\n Saisissez une valeur (FLOAT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        vider_tampon();
         ret = scanf("%f", &float_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
         if (!check_if_valid_value(&float_value, col_type))
             printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
-        // Check if value got the right type
-        change_value(dataframe, num_col, num_ligne, &float_value);
+        
+        // Change value
+        if (!change_value(dataframe, num_col, num_ligne, &float_value))
+            printf("\n Une erreur est survenue lors de la modification de la valeur");
+        else
+            printf("\n La valeur a ete correctement modifie");
+
         break;
+
     case DOUBLE:
+
         double double_value = 0.0;
         printf("\n Saisissez une valeur (DOUBLE) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        vider_tampon();
         ret = scanf("%lf", &double_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
         if (!check_if_valid_value(&double_value, col_type))
             printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
-        // Check if value got the right type
-        change_value(dataframe, num_col, num_ligne, &double_value);
+        
+        // Change value
+        if (!change_value(dataframe, num_col, num_ligne, &double_value))
+            printf("\n Une erreur est survenue lors de la modification de la valeur");
+        else
+            printf("\n La valeur a ete correctement modifie");
+
         break;
+
     case STRING:
+
         char string_value[TAILLE_MAX_DATA_STRING];
         printf("\n Saisissez une valeur (STRING) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        vider_tampon();
         ret = scanf("%255s", string_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
         if (!check_if_valid_value(string_value, col_type))
             printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
-        // Check if value got the right type
-        change_value(dataframe, num_col, num_ligne, &string_value);
+        
+        // Change value
+        if (!change_value(dataframe, num_col, num_ligne, &string_value))
+            printf("\n Une erreur est survenue lors de la modification de la valeur");
+        else
+            printf("\n La valeur a ete correctement modifie");
+
         break;
+
     case STRUCTURE:
+        
         void* pstructure;
         printf("\n\n     TODO...");
         break;
+
     default:
         break;
     }
@@ -1091,7 +1182,7 @@ int cmd_renommer_une_colonne(DATAFRAME2* dataframe)
     if (dataframe->size == 0)
     {
         printf("\n Impossible de modifier une valeur dans une cellule d'une colonne car le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
-        printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
+        printf("\n Appuyez sur une touche puis sur \"Entree\" pour continuer\n");
         vider_tampon();
         int ret = getchar();
         return -1;
@@ -1100,36 +1191,51 @@ int cmd_renommer_une_colonne(DATAFRAME2* dataframe)
     int num_col = 0;
     int nombre_col_total = 0;
     char col_new_name[NOMBRE_CHAR_MAX_NOM_COLONNE];
-    int saisir_col_num = 1;
-
-    nombre_col_total = dataframe->size;
+    int saisir_valeur = 1;
+    
+    nombre_col_total = dataframe->size - 1;
 
     print_name_and_type_of_columns(dataframe);
 
     // Ask for col number
     do {
-        printf("\n\n Entrez le numero de la colonne a renommer :\n");
+        printf("\n\n Entrez le numero de la colonne a renommer (ou \"-1\" pour abandonner) : ");
         scanf("%d", &num_col);
 
         // Vérifier si le choix est valide, sinon prevenir
         if (num_col > nombre_col_total)
         {
             printf("\n Choix invalide, le numero de colonne a remplir ne doit pas exceder %d", nombre_col_total);
-            printf("\n Veuillez entrer un numero de colonne compris entre 0 et %d:\n", nombre_col_total);
+            printf("\n\n Veuillez entrer un numero de colonne compris entre 0 et %d: ", nombre_col_total);
+        }
+        else if (num_col == -1)
+        {
+            printf("\n Operation abandonnee, retour au menu general...");
+            return -1;
         }
         else if (num_col < 0)
-        {
             printf("\n Veuillez entrer un numero de colonne POSITIF compris entre 0 et %d:\n", nombre_col_total);
-        }
         else
-            saisir_col_num = 0;
-    } while (saisir_col_num == 1); // Continuer tant que le num de col à remplir est erronée
+            saisir_valeur = 0;
+    } while (saisir_valeur == 1); // Continuer tant que le num de col à remplir est erronée
         
-    // Stocker l'ancien nom de la col avant modification
     char* col_old_name = strdup(dataframe->columns[num_col]->title);
 
-    printf("\n Veuillez saisir le nouveau nom de la colonne \"%s\" : ", col_old_name);
+    saisir_valeur = 1;
+
+    do
+    {
+    printf("\n Veuillez saisir le nouveau nom de la colonne \"%s\" (ou abandonnez en entrant \"-1\" :) ", col_old_name);
+    vider_tampon();
+    col_new_name[0] = '\0';
     scanf("%255s", col_new_name);
+    if (strlen(col_new_name) == 0)
+        printf("\nLe nom de la colonne que vous venez de saisir est vide, recommencez ou abandonnez l'operation");
+    else if (strcmp(col_new_name, "-1") == 0)
+        return -1;
+    else
+        saisir_valeur = 0;
+    } while (saisir_valeur == 1);
 
     if (rename_column(dataframe, num_col, &col_new_name))
         printf("\n La colonne %d anciennement nommee \"%s\" a ete renomme en \"%s\"\n", num_col, col_old_name, col_new_name);
@@ -1161,12 +1267,12 @@ int cmd_ne_jamais_lancer_cette_commande()
 
     printf("\n\n\n\n\n\n\n\n\n\n                                             A la fin du compte a rebours, ton ordinateur n'existera plus...");
     printf("\n\n\n\n\n\n\n\n\n\n                                                            FALLAIT PAS BRAVER L'INTERDIT !");
-    printf("\n\n\n\n\n\n\n\n\n\n                                        Maintenant, appuie pour la derniere fois sur une touche, si t'es un bonhomme...");
+    printf("\n\n\n\n\n\n\n\n\n                                          Maintenant, appuie pour la derniere fois sur une touche, si t'es un bonhomme...");
     vider_tampon();
     getchar();
     
     for (int i = 50000; i >= 0; i--)
-        printf("                      !!!!!!!!!!!!!!!!!!!!!!!!                                %d                                !!!!!!!!!!!!!!!!!!!!!!!!                                        \n", i);
+        printf("                  !!!!!!!!!!!!!!!!!!!!!!!!                                %d                                !!!!!!!!!!!!!!!!!!!!!!!!                                        \n", i);
 
     system("cls");
     printf("\n\n\n\n\n\n\n\n\n\n                                        DESTRUCTION DE L'ORDINATEUR EN COURS...");
@@ -1215,7 +1321,7 @@ int cmd_ne_jamais_lancer_cette_commande()
 
     system("cls");
 
-    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n                                                                 Je te rends ton ordi, maintenant...");
+    printf("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n                                                               Je te rends ton ordi, maintenant...");
     vider_tampon();
     getchar();
 
@@ -1251,9 +1357,10 @@ int cmd_supprimer_colonne_du_cdataframe(DATAFRAME2* dataframe)
 
     do
     {
+        vider_tampon();
         int ret = scanf("  %d", &num_col);
         
-        if (num_col > dataframe->size || num_col < -1)
+        if (num_col > (dataframe->size-1) || num_col < -1)
             printf("\n\n Veuillez saisir un numero pour la colonne a supprimer qui soit compris entre 0 et %d ou -1 pour abandonner la suppression de la colonne\n", dataframe->size);
         else if (num_col == -1)
             return -1;
@@ -1287,20 +1394,20 @@ int cmd_supprimer_ligne_du_cdataframe(DATAFRAME2* dataframe)
     int ask_user_to_input_line_num = 0;
     int ret = 0;
 
-    nombre_lignes = dataframe->columns[0]->max_size;
+    nombre_lignes = dataframe->columns[0]->max_size - 1;
     
     ask_user_to_input_line_num = 1;
 
     do {
-        printf("\n Le CDataframe \"%s\" contient %d ligne(s) au total", dataframe->title, nombre_lignes);
-        printf("\n\n Entrez le numero de la ligne a supprimer ou \"-1\" pour abandonner l'operation: ");
-
+        printf("\n Le CDataframe \"%s\" contient %d ligne(s) au total numerotees de 0 a %d", dataframe->title, nombre_lignes, nombre_lignes);
+        printf("\n\n Entrez le numero de ligne a supprimer ou \"-1\" pour abandonner l'operation: ");
+        vider_tampon();
         ret = scanf("%d", &num_ligne_a_supprimer);
 
         // Vérifier si le choix est valide, sinon prevenir
         if (num_ligne_a_supprimer == -1)
         {
-            printf("\n Veuillez entrer un numero de ligne POSITIF compris entre 0 et %d:\n", nombre_lignes);
+            printf("\n Operation de suppression de ligne abandonnee a votre demande");
             return -1;
         }
         else if (num_ligne_a_supprimer > nombre_lignes)
@@ -1316,9 +1423,9 @@ int cmd_supprimer_ligne_du_cdataframe(DATAFRAME2* dataframe)
     } while (ask_user_to_input_line_num == 1);
 
     if (delete_row(dataframe, num_ligne_a_supprimer))
-        printf("La ligne de valeurs numero \"%d\" du CDataframe \"%s\" a ete supprimee avec succes", num_ligne_a_supprimer, dataframe->title);
+        printf("\n La ligne de valeurs numero \"%d\" du CDataframe \"%s\" a ete supprimee avec succes", num_ligne_a_supprimer, dataframe->title);
     else
-        printf("Erreur lors de la tentative de suppression de la ligne de valeurs numero \"%d\" du CDataframe \"%s\"", num_ligne_a_supprimer, dataframe->title);
+        printf("\n Erreur lors de la tentative de suppression de la ligne de valeurs numero \"%d\" du CDataframe \"%s\"", num_ligne_a_supprimer, dataframe->title);
 
     return -1;
 }
@@ -1345,7 +1452,7 @@ int cmd_supprimer_cdataframe(DATAFRAME2** dataframe_ptr)
     printf("\n ****************************************** ");
 
     printf("\n\n Etes-vous sur de vouloir supprimer le CDataframe \"%s\" (o/n) ? \n\n", dataframe->title);
-    
+    vider_tampon();
     ret = scanf("%1s", &choix);
 
     do
@@ -1389,16 +1496,22 @@ int cmd_supprimer_cdataframe(DATAFRAME2** dataframe_ptr)
 
 int process_user_menu_choice_main_section_4(int sub_section_number)
 {
+    if (CDataframe2 == NULL)
+    {
+        printf("\n Veuillez d'abord creer le CDataframe\n");
+        return -1;
+    }
+
     switch (sub_section_number)
     {
     case 41:
-        printf("\n 41 - Nombre de cellules contenant une valeur egale a \"x\" :\n");
+        printf("\n Choix 41 - Nombre de cellules contenant une valeur egale a \"x\" :\n");
         return cmd_nombre_cellules_contenant_valeur_egale_a_x(CDataframe2);
     case 42:
-        printf("\n 42 - Nombre de cellules contenant une valeur superieure a \"x\" :\n");
+        printf("\n Choix 42 - Nombre de cellules contenant une valeur superieure a \"x\" :\n");
         return cmd_nombre_cellules_contenant_valeur_superieure_a_x(CDataframe2);
     case 43:
-        printf("\n 42 - Nombre de cellules contenant une valeur inferieure a \"x\" :\n");
+        printf("\n Choix 42 - Nombre de cellules contenant une valeur inferieure a \"x\" :\n");
         return cmd_nombre_cellules_contenant_valeur_inferieure_a_x(CDataframe2);
     default:
         break;
@@ -1409,10 +1522,10 @@ int cmd_nombre_cellules_contenant_valeur_egale_a_x(DATAFRAME2* dataframe)
 {
     OPERATEURS_DE_COMPARAISON comparison_operator = oc_egal;
 
-    if (rechercher_nombre_occurences_dans_cdataframe(dataframe, comparison_operator))
-        printf("\n La recherche statistique s'est terminee avec succes");
+    if (rechercher_nombre_occurrences_dans_cdataframe(dataframe, comparison_operator))
+        printf("\n\n La recherche statistique s'est terminee avec succes");
     else
-        printf("\n Un probleme est survenu lors de la recherche statistique");
+        printf("\n\n Un probleme est survenu lors de la recherche statistique");
     
     return -1;
 }
@@ -1421,7 +1534,7 @@ int cmd_nombre_cellules_contenant_valeur_superieure_a_x(DATAFRAME2* dataframe)
 {
     OPERATEURS_DE_COMPARAISON comparison_operator = oc_superieur;
 
-    if (rechercher_nombre_occurences_dans_cdataframe(dataframe, comparison_operator))
+    if (rechercher_nombre_occurrences_dans_cdataframe(dataframe, comparison_operator))
         printf("La recherche statistique s'est terminee avec succes");
     else
         printf("Un probleme est survenu lors de la recherche statistique");
@@ -1433,7 +1546,7 @@ int cmd_nombre_cellules_contenant_valeur_inferieure_a_x(DATAFRAME2* dataframe)
 {
     OPERATEURS_DE_COMPARAISON comparison_operator = oc_inferieur;
 
-    if (rechercher_nombre_occurences_dans_cdataframe(dataframe, comparison_operator))
+    if (rechercher_nombre_occurrences_dans_cdataframe(dataframe, comparison_operator))
         printf("La recherche statistique s'est terminee avec succes");
     else
         printf("Un probleme est survenu lors de la recherche statistique");
@@ -1472,6 +1585,7 @@ int cmd_reini_ecran_et_afficher_menu()
 
     do {
         printf("Entrez votre choix (o/n) : ");
+        vider_tampon();
         ret = scanf("%1s", choix); // Lire une chaîne de caractères de longueur 1 (o ou n)
 
         // Vérifier si le choix est valide
@@ -1527,6 +1641,7 @@ int cmd_quitter_programme()
     do
     {
         // le char doit être unique et seules deux valeurs sont possibles: "o" ou "n"
+        vider_tampon();
         ret = scanf("%1s", choix);
 
         // Vérifier si le choix est valide
@@ -1574,6 +1689,12 @@ void test()
     res = show_cdataframe(CDataframe2, NO_LIMIT, 20);
 }
 
+/// <summary>
+/// Check if a specified value type is included in the expected range
+/// </summary>
+/// <param name="value">a void pointer pointing on any value type</param>
+/// <param name="type">the value type</param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int check_if_valid_value(void* value, ENUM_TYPE type)
 {
     switch (type)
@@ -1614,7 +1735,14 @@ int check_if_valid_value(void* value, ENUM_TYPE type)
     return 1;
 }
 
-int rechercher_nombre_occurences_dans_cdataframe(DATAFRAME2* dataframe, OPERATEURS_DE_COMPARAISON comparison_operator)
+/// <summary>
+/// seek and count data's occurence into columns (of the same type)
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="comparison_operator">specify the comparison's type for the specified data : "=", ">" or "<" to the value</param>
+///              Note: The secified data is specified directly by the user into the function    
+/// <returns>number of data's occurrences found in the CDataframe</returns>
+int rechercher_nombre_occurrences_dans_cdataframe(DATAFRAME2* dataframe, OPERATEURS_DE_COMPARAISON comparison_operator)
 {
     // Entrer le type de valeur à rechercher
     ENUM_TYPE value_type;
@@ -1641,9 +1769,9 @@ int rechercher_nombre_occurences_dans_cdataframe(DATAFRAME2* dataframe, OPERATEU
     }
     else
         printf("\n Le type de valeur a rechercher est : \"%s\"", enum_to_string(value_type));
-        
+
     printf("\n\n Entrez la valeur a rechercher : ");
-    
+
     // Entrer la valeur à rechercher
     switch (value_type)
     {
@@ -1691,7 +1819,7 @@ int rechercher_nombre_occurences_dans_cdataframe(DATAFRAME2* dataframe, OPERATEU
         break;
     case FLOAT:
         float float_value = 0.0f;
-        vider_tampon(); 
+        vider_tampon();
         ret = scanf("%f", &float_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
@@ -1754,8 +1882,37 @@ int rechercher_nombre_occurences_dans_cdataframe(DATAFRAME2* dataframe, OPERATEU
     return 1;
 }
 
+/// <summary>
+/// check if the command number entered by user is valid (exists...)
+/// </summary>
+/// <param name="command_number"></param>
+/// <returns></returns>
+int check_validity_of_command_value(int command_number)
+{
+    if (command_number >= 11 && command_number <= 17)
+        return 1;
+
+    if (command_number >= 21 && command_number <= 26)
+        return 1;
+
+    if (command_number >= 31 && command_number <= 38)
+        return 1;
+
+    if (command_number >= 41 && command_number <= 43)
+        return 1;
+
+    if (command_number >= 51 && command_number <= 53)
+        return 1;
+
+    return 0;
+}
+
 #pragma endregion CDataframe 2
 
+/// <summary>
+/// main function of the program
+/// </summary>
+/// <returns></returns>
 int main()
 {
     int choix_menu = -1; //7; // -1 = Choix manu, sinon indiquer la valeur choisit pr choix auto
@@ -1769,23 +1926,27 @@ int main()
     {
         ///////////////////////////////////////////////////////////////////
         // TESTS SEULEMENT, NE SURTOUT PAS OUBLIE DE COMMENTER !!!
-        if (CDataframe2 == NULL)
+        /*if (CDataframe2 == NULL)
         {
             CDataframe2 = create_cdataframe("Dataframe 2");
             populate_dataframe_automatically(CDataframe2);
-        }
+        }*/
         // test();
         ///////////////////////////////////////////////////////////////////
         
         switch (choix_menu)
         {
             case -1:
+
                 printf("\n\n");
                 printf(" Saisissez le code de la commande et appuyez sur \"Entree\"\n\n");
 
                 res_choix_menu = scanf("%d", &choix_menu);
 
                 choix_menu = process_user_menu_choice(choix_menu);
+
+                // Ne pas conserver de car parasites, sinon scanf pourrait ne plus s'arreter pour demander à l'utilisateur de saisir une valeur
+                vider_tampon();
 
                 break;
             

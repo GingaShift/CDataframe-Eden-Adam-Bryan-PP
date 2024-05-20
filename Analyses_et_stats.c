@@ -2,13 +2,6 @@
 #include "Analyses_et_stats.h"
 #include "Divers.h"
 
-//OPERATEURS_DE_COMPARAISON egal = { EGAL };
-//OPERATEURS_DE_COMPARAISON superieur = { SUPERIEUR };
-//OPERATEURS_DE_COMPARAISON inferieur = { INFERIEUR };
-
-// Exemple d'appel:
-//stats_sur_valeur(CDataframe, taille_CDataframe, 10, egal);
-
 #pragma region CDataframe 1
 
 int stats_sur_valeur(DATAFRAME1* dataframe, int valeur, OPERATEURS_DE_COMPARAISON operateur_de_comparaison)
@@ -75,6 +68,14 @@ ENUM_TYPE get_value_type(void* valptr)
     return STRING;
 }
 
+/// <summary>
+/// Establish statistics on the specified value
+/// </summary>
+/// <param name="dataframe">Specified CDataframe</param>
+/// <param name="pointer_on_value">a pointer on any value type</param>
+/// <param name="value_type">value type</param>
+/// <param name="comparison_operator">specified operator for the statistics on the value: "=", ">" or "<"</param>
+/// <returns></returns>
 int stats_on_value(DATAFRAME2* dataframe, void* pointer_on_value, ENUM_TYPE value_type, OPERATEURS_DE_COMPARAISON comparison_operator)
 {
     unsigned int uint_val = 0;

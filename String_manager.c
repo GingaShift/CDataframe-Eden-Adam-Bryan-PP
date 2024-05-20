@@ -4,6 +4,12 @@
 #include "String_manager.h"
 #include "divers.h"
 
+/// <summary>
+/// compare two strings
+/// </summary>
+/// <param name="str1">first string to compare</param>
+/// <param name="str2">second string to compare</param>
+/// <returns>result of the  comparison</returns>
 int compare_chaines(const char* str1, const char* str2)
 {
     while (*str1 && *str2)
@@ -19,6 +25,11 @@ int compare_chaines(const char* str1, const char* str2)
     return 1;
 }
 
+/// <summary>
+/// input a string
+/// </summary>
+/// <param name="invite_saisie">caption to prompt the user</param>
+/// <returns>inputted string</returns>
 char* saisie_chaine(char* invite_saisie)
 {
     char* chaine[255];
@@ -34,6 +45,11 @@ char* saisie_chaine(char* invite_saisie)
     return chaine;
 }
 
+/// <summary>
+/// get the first lettre of a string
+/// </summary>
+/// <param name="chaine">specified string where to get the first letter</param>
+/// <returns>the first letter of the specified string</returns>
 char obtenir_premiere_lettre_de_chaine(char* chaine)
 {
     
@@ -48,22 +64,3 @@ char obtenir_premiere_lettre_de_chaine(char* chaine)
 }
 
 #pragma region Tests de type de donnée contenu dans une string
-
-// Fonction pour tester si une chaîne peut être convertie en entier
-bool string_is_int(const char* chaine)
-{
-    char* fin;
-    strtol(chaine, &fin, 10);
-    if (fin != chaine && *fin == '\0')
-        return true;
-    else
-        return false;
-}
-
-// TODO: FAIRE LA SUITE SUR LE MODELE CI-DESSUS
-bool string_is_uint(const char* chaine)
-{
-    char* fin;
-    strtoul(chaine, &fin, 10);
-    return fin != chaine && *fin == '\0';
-}

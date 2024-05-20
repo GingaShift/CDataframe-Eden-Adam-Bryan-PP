@@ -92,7 +92,7 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
 
 int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show);
 
-int print_col_by_index(COLUMN* colonne);
+int print_col_by_index(COLUMN* col);
 
 const char* enum_to_string(ENUM_TYPE value);
 

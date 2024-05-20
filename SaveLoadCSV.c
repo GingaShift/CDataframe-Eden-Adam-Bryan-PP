@@ -3,7 +3,13 @@
 #include <string.h>
 #include "CDataframe.h"
 
-// Fonction servant à sauvegarder un DataFrame dans un fichier CSV
+/// <summary>
+/// save a CDataframe in a .csv file
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="filename">Name of the file where the CDataframe is saved</param>
+/// <param name="separateur">Data separator</param>
+/// <returns>returns 1 if successful otherwise 0</returns>
 int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char separator)
 {
     if (!dataframe_has_data(dataframe))
@@ -73,13 +79,20 @@ int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char sepa
     return 1;
 }
 
-// Fonction pour charger un DataFrame à partir d'un fichier CSV avec un séparateur spécifié
-DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* filename, char separator)
+/// <summary>
+/// Load a CDataframe from a csv file
+/// </summary>
+/// <param name="dataframe_title">title of the CDataframe</param>
+/// <param name="filename">name of the file containing the CDataframe to load</param>
+/// <param name="separator">data separator used to separate data into the csv file</param>
+/// <returns></returns>
+DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* filename, char separator, int* res)
 {
     FILE* file = fopen(filename, "r"); // Ouvre le fichier en mode lecture
 
     if (file == NULL) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", filename);
+        printf("Erreur lors de l'ouverture du fichier %s\n", filename);
+        res = 0;
         return NULL;
     }
 
@@ -90,10 +103,11 @@ DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* fil
 
     while (fgets(line, sizeof(line), file))
     {
+        // Lire les types de colonnes depuis la première ligne
         char* token;
         if (line_count == 0)
         {
-            // Lire les types de colonnes depuis la première ligne
+            // chopper le titre du CDataframe
             token = strtok(line, &separator);
             dataframe = create_cdataframe(token);
             if (dataframe == NULL)
@@ -116,11 +130,13 @@ DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* fil
             }
             dataframe->size = col_index;
         }
-        else {
+        else
+        {
             // Lire les valeurs de données
             int col_index = 0;
             token = strtok(line, &separator);
-            while (token != NULL) {
+            while (token != NULL)
+            {
                 insert_value_with_memory_management_of_tabs_data_of_columns (dataframe, line_count, token);
                 token = strtok(NULL, &separator);
             }

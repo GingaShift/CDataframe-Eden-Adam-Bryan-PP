@@ -8,6 +8,8 @@
 
 #pragma region CDataframe 1
 
+// NOTE: Les commentaires sont uniquement disponible pour le CDataframe2
+
 DATAFRAME1* creer_cdataframe(bool* dataframe_exists, char* nom_dataframe)
 {
     DATAFRAME1* nouveau_dataframe = (DATAFRAME1*)malloc(sizeof(DATAFRAME1));
@@ -482,6 +484,11 @@ void ajouter_ligne(DATAFRAME1* dataframe)
 
 #pragma region CDataframe 2
 
+/// <summary>
+/// Create a CDataframe
+/// </summary>
+/// <param name="dataframe_title : title of the dataframe"></param>
+/// <returns>an empty CDataframe initialized with title ready to accept new columns</returns>
 DATAFRAME2* create_cdataframe(char* dataframe_title)
 {
     DATAFRAME2* new_dataframe = (DATAFRAME2*)malloc(sizeof(DATAFRAME2));
@@ -509,6 +516,13 @@ DATAFRAME2* create_cdataframe(char* dataframe_title)
     return new_dataframe;
 }
 
+/// <summary>
+/// Add a column to the CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="column_type">column's type</param>
+/// <param name="column_title">column's title</param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_title)
 {
     // Ajout d'une colonne
@@ -538,6 +552,13 @@ int add_column(DATAFRAME2* dataframe, ENUM_TYPE column_type, const char* column_
     return 1;
 }
 
+/// <summary>
+/// rename a column
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="column_num">column number/param>
+/// <param name="new_name">column's new name</param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int rename_column(DATAFRAME2* dataframe, int column_num, char* new_name)
 {
     if (! dataframe_has_data(dataframe))
@@ -571,6 +592,12 @@ int rename_column(DATAFRAME2* dataframe, int column_num, char* new_name)
     return 1;
 }
 
+/// <summary>
+/// Delete a column from a CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="num_col">Number of the column to delete</param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int delete_column(DATAFRAME2* dataframe, int num_col)
 {
     if (! dataframe_has_data(dataframe))
@@ -627,6 +654,12 @@ int delete_column(DATAFRAME2* dataframe, int num_col)
     return 1;
 }
 
+/// <summary>
+/// Verify if a column exists in the CDataframe 
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="column_name"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int column_name_exists(DATAFRAME2* dataframe, char* column_name)
 {
     if (!dataframe_has_data(dataframe))
@@ -640,6 +673,13 @@ int column_name_exists(DATAFRAME2* dataframe, char* column_name)
     return 0;
 }
 
+/// <summary>
+/// Insert a value by controlling CDataframe data tabs's equality
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="num_col"></param>
+/// <param name="value"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int insert_value_with_memory_management_of_tabs_data_of_columns(DATAFRAME2* dataframe, int num_col, void* value)
 {
     bool block_cells_added_to_column = false;
@@ -658,6 +698,11 @@ int insert_value_with_memory_management_of_tabs_data_of_columns(DATAFRAME2* data
     return 1;
 }
 
+/// <summary>
+/// Equalize the size of tab data columns in the CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe)
 {
     // Si une seule colonne présente, point besoin d'égaliser
@@ -745,6 +790,11 @@ int equalize_size_of_tabs_data_of_columns(DATAFRAME2* dataframe)
     }
 }
 
+/// <summary>
+/// print the number of columns
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int print_number_of_columns(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL)
@@ -767,6 +817,11 @@ int print_number_of_columns(DATAFRAME2* dataframe)
     return 1;
 }
 
+/// <summary>
+/// Print the name and the type of each column of a CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int print_name_and_type_of_columns(DATAFRAME2* dataframe)
 {
     if (!dataframe_has_data(dataframe))
@@ -787,9 +842,14 @@ int print_name_and_type_of_columns(DATAFRAME2* dataframe)
     else if (dataframe->size > 0)
         printf("\n\n Il existe %d colonnes dans le CDataframe \"%s\"\n", dataframe->size, dataframe->title);
 
-    return 1;
+    return dataframe->size;
 }
 
+/// <summary>
+/// Print content of each comumns of the CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int print_columns(DATAFRAME2* dataframe)
 {
     if (!dataframe_has_data(dataframe))
@@ -801,14 +861,27 @@ int print_columns(DATAFRAME2* dataframe)
     return 1;
 }
 
+/// <summary>
+/// print all the CDataframe columns and data as a table
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="num_col_max_to_show"></param>
+/// <param name="num_ligne_max_to_show"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_ligne_max_to_show)
 {
     // TODO: Idée d'optimisation:
     // Chercher ici la colonne qui contient le plus de données, et limiter l'affichage des données
     // à cette valeur de ligne au lieu d'afficher toutes les lignes inconditionnellement.
-    
+
     if (!dataframe_has_data(dataframe))
         return 0;
+
+    if (dataframe->columns[0]->max_size == 0)
+    {
+        printf("\n\n Il n'y a pas de donnees dans le CDataframe \"%s\"", dataframe->title);
+        return 0;
+    }
 
     int largeur_colonne_nombre_col = 10;
 
@@ -877,13 +950,16 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
     switch (dataframe->size)
     {
     case 0:
-        printf("Il n'y a aucune colonne a afficher dans le CDataframe");
+        printf("Il n'y a aucune colonne a afficher dans le CDataframe \"%s\"", dataframe->title);
         break;
     case 1:
-        printf("Les valeurs d'une colonne ont ete affichee pour ce CDataframe");
+        printf("Les %d valeur(s) de la seule colonne disponible dans le CDataframe \"%s\" ont ete affichees", num_ligne_max_to_show, dataframe->title);
         break;
     default:
-        printf("Les valeurs de %d colonnes ont ete affiches pour ce CDataframe", num_col_max_to_show);
+        if (num_ligne_max_to_show == 1)
+            printf("Les valeurs de %d colonnes ont ete affiches pour l'unique ligne du CDataframe \"%\"", num_ligne_max_to_show, num_col_max_to_show, dataframe->title);
+        else if (num_ligne_max_to_show > 1)
+            printf("Les valeurs des %d lignes demandees pour les %d colonnes specifiees ont ete affiches pour le CDataframe \"%s\"", num_ligne_max_to_show, num_col_max_to_show, dataframe->title);
         break;
     }
 
@@ -892,6 +968,11 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
     return 1;
 }
 
+/// <summary>
+/// get number of rows containing data not NULL
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int get_number_of_rows_storing_data(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
@@ -909,6 +990,11 @@ int get_number_of_rows_storing_data(DATAFRAME2* dataframe)
     printf("\n La CDataframe ne contient %s lignes", dataframe->columns[0]->size);
 }
 
+/// <summary>
+/// Get the number of rows in the Datafame
+/// </summary>
+/// <param name="dataframe">The CDataframe</param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int get_number_of_rows(DATAFRAME2* dataframe)
 {
     if (dataframe->size == 0)
@@ -926,6 +1012,13 @@ int get_number_of_rows(DATAFRAME2* dataframe)
     return dataframe->columns[0]->max_size;
 }
 
+/// <summary>
+/// Print the specified value
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="num_col"></param>
+/// <param name="num_ligne"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
 {
     if (!dataframe_has_data(dataframe))
@@ -933,7 +1026,7 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
 
     if (num_col < 0 || num_col >= dataframe->size)
     {
-        printf("\nLe numéro de colonne entré est invalide.\n");
+        printf("\nLe numero de colonne est invalide.\n");
         return 0;
     }
 
@@ -941,22 +1034,30 @@ int print_value(DATAFRAME2* dataframe, int num_col, int num_ligne)
 
     if (num_ligne < 0 || num_ligne >= column->size)
     {
-        printf("\nLe numéro de ligne entré est invalide pour cette colonne.\n");
+        printf("\n Le numero de ligne entre est invalide pour cette colonne.\n");
         return 0;
     }
 
     char value_str[TAILLE_MAX_DATA_STRING];
     if (! convert_value(column, num_ligne, value_str, sizeof(value_str)))
     {
-        printf("\nErreur dans print_value lors de la conversion de la valeur a afficher\n");
+        printf("\n Erreur lors de la conversion de la valeur a afficher\n");
         return 0;
     }
 
-    printf("\n\n  La valeur de la cellule %d de la colonne %d est : \"%s\"", num_ligne, num_col, value_str);
+    printf("\n\n  La valeur situee a la colonne %d cellule %d est : \"%s\"", num_col, num_ligne, value_str);
 
     return 1;
 }
 
+/// <summary>
+/// Change a value specified
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="num_col"></param>
+/// <param name="num_row"></param>
+/// <param name="value"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
 {
     if (dataframe == NULL)
@@ -1048,8 +1149,14 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
         printf("\nErreur: Ce type de colonne n'est pas reconnu\n");
         return 0;
     }
+    return 1;
 }
 
+/// <summary>
+/// Delete the CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int delete_cdataframe(DATAFRAME2** dataframe_ptr)
 
 // Supprimer completement un dataframe et récuperer tout l'espace mémoire alloué
@@ -1093,6 +1200,12 @@ int delete_cdataframe(DATAFRAME2** dataframe_ptr)
     return 1;
 }
 
+/// <summary>
+/// Add a value to a column by managing its type
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="num_col"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
 {
     if (!dataframe_has_data(dataframe))
@@ -1224,6 +1337,11 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
     }
 }
 
+/// <summary>
+/// Add a row manually
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int add_a_row_manually(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL)
@@ -1237,17 +1355,19 @@ int add_a_row_manually(DATAFRAME2* dataframe)
     if (dataframe->size == 0)
     {
         printf("\n Le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
-        printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
-        ret = getchar();
+        printf("\n Abandon de l'operation et retour au menu principal\n");
         return -1;
     }
+
+    printf("\n Le CDataframe \"%s\" contient %d colonne(s) au total", dataframe->title, dataframe->size);
+    printf("\n Elles sont numerote de 0 a %d et se presentent comme suit : \n", (dataframe->size - 1));
+    print_name_and_type_of_columns(dataframe);
+    printf("\n Vous allez entrer des valeurs pour chaque colonne composant une ligne en les parcourant leur ordre respectif");
 
     int new_size = dataframe->columns[0]->size + 1;
 
     for (int i = 0; i < dataframe->size; i++)
-    {
         add_data_manually_in_column(dataframe, i);
-    }
 
     char choix[2];
 
@@ -1258,6 +1378,12 @@ int add_a_row_manually(DATAFRAME2* dataframe)
         ret = show_cdataframe(dataframe, NO_LIMIT, dataframe->columns[0]->size);
 }
 
+/// <summary>
+/// Delete a row from a CDataframe
+/// </summary>
+/// <param name="dataframe"></param>
+/// <param name="index_ligne"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int delete_row(DATAFRAME2* dataframe, int index_ligne)
 {
     if (!dataframe_has_data(dataframe))
@@ -1277,7 +1403,7 @@ int delete_row(DATAFRAME2* dataframe, int index_ligne)
         // Libération de la mémoire de la ligne à l'index donné dans la colonne actuelle
         free(colonne->data[index_ligne]);
 
-        free(colonne->index[index_ligne]);
+        colonne->index[index_ligne] = 0;
 
         // Déplacement des éléments suivants vers le haut pour remplir le trou laissé par la suppression de la ligne
         for (int j = index_ligne + 1; j < colonne->size; j++)
@@ -1297,6 +1423,11 @@ int delete_row(DATAFRAME2* dataframe, int index_ligne)
     return 1;
 }
 
+/// <summary>
+/// To know if a CDataframe exists and has at least a column
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns>returns 1 if successful, otherwise 0</returns>
 int dataframe_has_data(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL)

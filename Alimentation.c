@@ -4,6 +4,8 @@
 
 #pragma region CDataframe 1
 
+// NOTE: Les commentaires sont uniquement disponible pour le CDataframe2
+
 int remplir_dataframe_automatiquement(DATAFRAME1* dataframe)
 {
     int ajouter_bloc_lignes_a_toutes_les_colonnes = 0;
@@ -60,6 +62,11 @@ int remplir_dataframe_automatiquement(DATAFRAME1* dataframe)
 
 #pragma region CDataframe 2
 
+/// <summary>
+/// Populate automatically the CDataframe with many different type of columns filled of data
+/// </summary>
+/// <param name="dataframe"></param>
+/// <returns></returns>
 int populate_dataframe_automatically(DATAFRAME2* dataframe)
 {
     if (dataframe == NULL)

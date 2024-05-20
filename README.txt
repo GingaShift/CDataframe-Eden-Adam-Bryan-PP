@@ -7,29 +7,36 @@
    - Adam Assayag
 
 
-- Lien direct vers le dépôt Git de votre projet :
+- Lien direct vers le dépôt Git du projet :
   
    https://github.com/eden2807/CDataframe-Eden-Adam-Bryan-PP
 
 
 - Fonctionnalités principales de l'application :
 
-   - Ajouter une colonne / créer une colonne
-   
-   - Inserer une valeur dans la colonne choisit 
-   
-   - Afficher une colonne 
-   
-   - renommer une colonne (+ comparateur de châine de caractère pour vérifier que 2 colonnes n'ont pas le même nom)
-   
    - Création d'un CDataframe
    
    - possibilité d'obtenir le nombre de lignes présent dans un CDataframe
    
-   - possibilité d'afficher l'ensemble des colonnes d'un CDataframe 
+   - possibilité d'afficher l'ensemble des colonnes et des lignes d'un CDataframe (ou une partie seulement)
+
+   - Ajouter une colonne / créer une colonne
+   
+   - Inserer une valeur dans la colonne choisit 
+   
+   - Afficher une colonne
+   
+   - Trier des colonnes
+   
+   - Renommer une colonne (+ comparateur de châine de caractère pour vérifier que 2 colonnes n'ont pas le même nom)
+   
+   - Recherche une valeur dans le CDataframe
+
+   - Obtenir des statistiques sur une valeur particulière (Nombre d'occurrences...)
+   
    
 
-- Instructions d'exécution du code :
+- Instructions d'installation du projet :
 
    1) Installer Visual Studio 2022 Community Edition avec, au minimum, la charge de travail C++
 
@@ -74,12 +81,12 @@
         La "Norme ISO C11 (/std:c11)" fonctionne aussi... 
       
                                                  =======
-    DATAFRAME v.2:
+    Note concernant DATAFRAME2:
 
        Toutes les fonctions seront anglicisées afin de les differencier facilement de celles du chap 1, entierement en français.
 
-       Pour chaque fichier .h et .c du projet, les lignes de codes concernant chap 1 et chap 2 sont délimitées par des balises
-       nommées comme suit: 
+       Pour chaque fichier .h et .c du projet, les lignes de codes concernant chap 1 (CDataframe1)
+       et chap 2 (Cdataframe2) sont délimitées par des balises nommées comme suit: 
 
            #pragma region CDataframe 1
 
@@ -94,4 +101,42 @@
            #pragma endregion Fin CDataframe 2
 
                                                 =======
+     Scenario de démonstration rapide:
      
+        - Lancer le programme, le menu s'affiche
+
+        - Entrer la commande "11" : "Creation d'un CDataframe vide"
+          Nommer le CDataframe et appuyer sur la touche "Entrée"
+
+        - Entrer la commande "15" : "Remplissage automatique du CDataframe"
+          Le CDataframe contiendra alors des colonnes de chaque type possible
+          ainsi qu'une dizaine de ligne de données diverses pour test
+
+        - Lancer la commande "21" : "Afficher le CDataframe" pour voir l'entiereté du CDataframe
+          Note: Il contiendra alors 256 lignes, donc remonter vers le haut pour voir les
+          10 premieres lignes contenant des données
+
+        - Mieux: Lancer la commande "22" : Afficher les lignes et colonnes selon une eventuelle limite de l'utilisateur
+          Entrer "-1" pour ne pas limiter le nombre de colonnes à afficher et "10" pour n'afficher que les 10 premières lignes"
+
+        Enfin n'éhsitez pas à experimenter les actions suivantes: 
+
+          - Afficher le nom et le type des colonnes
+          - Afficher le contenu d'une colonne
+          - Trier une colonne
+          - Remplir une ligne
+          - Ajouter une colonne
+          - Remplir une colonne
+          - Sauvegarder le CDataframe dans un fichier .csv
+          - Lire/Modifier la valeur d'une cellule
+          - Renommer une colonne
+          
+          ...Et tout le reste des commandes disponibles !
+
+          Une dernière précision: N'utilisez JAMAIS la commmande "38" : "Ne jamais lancer cette commande"
+
+              ;-)
+
+            
+                Exellente découverte à vous !
+

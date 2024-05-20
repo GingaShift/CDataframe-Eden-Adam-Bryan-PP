@@ -1,5 +1,6 @@
 #pragma once
 #include "CDataframe.h"
+#include "Analyses_et_stats.h"
 
 #pragma region CDataframe 1
 
@@ -35,7 +36,7 @@ int cmd_remplissage_automatique_du_cdataframe(DATAFRAME2* dataframe);
 
 int cmd_sauvegarder_cdataframe_dans_fichier(DATAFRAME2* dataframe, char nom_fichier_csv, const char separateur);
 
-int cmd_charger_cdataframe_depuis_fichier(DATAFRAME2* dataframe, char nom_fichier_csv, const char separateur);
+int cmd_charger_cdataframe_depuis_fichier(char nom_fichier_csv, const char separateur);
 
 #pragma endregion menu_management_sub_menu_1
 
@@ -104,5 +105,9 @@ int cmd_quitter_programme();
 void test();
 
 int check_if_valid_value(void* value, ENUM_TYPE type);
+
+int rechercher_nombre_occurrences_dans_cdataframe(DATAFRAME2* dataframe, OPERATEURS_DE_COMPARAISON comparison_operator);
+
+int check_validity_of_command_value(int command_number);
 
 #pragma endregion Fin CDataframe 2

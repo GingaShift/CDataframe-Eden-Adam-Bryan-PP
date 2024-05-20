@@ -7,6 +7,8 @@
 
 #pragma region CDataframe 1
 
+// NOTE: Les commentaires sont uniquement disponible pour le CDataframe2
+
 COLONNE* creer_colonne(const char* titre)
 {
     COLONNE* nouvelle_colonne = malloc(sizeof(COLONNE));
@@ -115,6 +117,12 @@ int afficher_colonne(COLONNE* colonne)
 
 #pragma region CDataframe 2
 
+/// <summary>
+/// create a column
+/// </summary>
+/// <param name="column_type">column's data type</param>
+/// <param name="column_title">column's title</param>
+/// <returns></returns>
 COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
 {
     // Allocation de mémoire pour la colonne
@@ -152,6 +160,13 @@ COLUMN* create_column(ENUM_TYPE column_type, char* column_title)
     return new_column;
 }
 
+/// <summary>
+/// insert a value into the logical end of the specified column
+/// </summary>
+/// <param name="col">column where value will be inserted</param>
+/// <param name="value">pointer to a value of any type</param>
+/// <param name="block_cells_added_to_column">knowing if a block of celles has been added while adding the value</param>
+/// <returns></returns>
 int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
 {
     (*block_cells_added_to_column) = false;
@@ -159,13 +174,13 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
     // Retourne 0 si le pointeur de colonne ou la valeur est NULL
     if (col == NULL)
     {
-        printf("\nLa colonne n'existe pas, impossible d'y ajouter la valeur specifiee\n");
+        printf("\n La colonne n'existe pas, impossible d'y ajouter la valeur specifiee\n");
         return 0;
     }
 
     if (value == NULL)
     {
-        printf("\nLa valeur n'existe pas, ajout impossible.\n");
+        printf("\n La valeur n'existe pas, ajout impossible.\n");
         return 0;
     }
 
@@ -179,7 +194,7 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
         col->data = malloc(total_number_of_cells * sizeof(COL_TYPE*));
         if (col->data == NULL)
         {
-            printf("\nErreur d'allocation mémoire lors de la création du tab data de la colonne\n");
+            printf("\n Erreur d'allocation mémoire lors de la création du tab data de la colonne\n");
             return 0;
         }
 
@@ -187,7 +202,7 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
         col->index = malloc(total_number_of_cells * sizeof(unsigned long long int*));
         if (col->index == NULL)
         {
-            printf("\nErreur d'allocation mémoire lors de la création du tab d'index pour le tab data de la colonne\n");
+            printf("\n Erreur d'allocation mémoire lors de la création du tab d'index pour le tab data de la colonne\n");
             return 0;
         }
 
@@ -204,14 +219,14 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
         
         col->data = realloc(col->data, total_number_of_cells * sizeof(COL_TYPE*));
         if (col->data == NULL) {
-            printf("\nErreur de réallocation de mémoire lors de l'extension du tableau data de la colonne\n");
+            printf("\n Erreur de réallocation de mémoire lors de l'extension du tableau data de la colonne\n");
             return 0;
         }
 
         // Réallocation de mémoire afin d'augmenter la capacité du tab d'index pour le tab de données
         col->index = realloc(col->index, total_number_of_cells * sizeof(unsigned long long int*));
         if (col->index == NULL) {
-            printf("\nErreur de réallocation de mémoire lors de l'extension du tab d'index pour le tab de données\n");
+            printf("\n Erreur de réallocation de mémoire lors de l'extension du tab d'index pour le tab de données\n");
             return 0;
         }
     
@@ -368,7 +383,14 @@ int insert_value(COLUMN* col, void* value, bool* block_cells_added_to_column)
     return 1;
 }
 
-// Convertir une valeur en chaîne de caractères
+/// <summary>
+/// convert any value from a pointer on this value into a string
+/// </summary>
+/// <param name="col"></param>
+/// <param name="num_ligne"></param>
+/// <param name="str"></param>
+/// <param name="size"></param>
+/// <returns></returns>
 int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int size)
 {
     // Retourne si le pointeur de colonne est NULL ou si la position est invalide
@@ -451,6 +473,13 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
     return 1;
 }
 
+/// <summary>
+/// Print column content
+/// </summary>
+/// <param name="col">the specified column to print</param>
+/// <param name="show_column_title">column's title</param>
+/// <param name="number_of_rows_to_show">number of lines showed</param>
+/// <returns></returns>
 int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show)
 {
     // Retourne si le pointeur de colonne est NULL ou si la position est invalide
@@ -498,6 +527,11 @@ int print_column(COLUMN* col, bool show_column_title, int number_of_rows_to_show
     return 1;
 }
 
+/// <summary>
+/// print a column by its indexes (logical)
+/// </summary>
+/// <param name="col"></param>
+/// <returns></returns>
 int print_col_by_index(COLUMN* col)
 {
     // Vérifier si la colonne est vide
@@ -548,6 +582,11 @@ int print_col_by_index(COLUMN* col)
     return 1;
 }
 
+/// <summary>
+/// Return the associate lib to the enumeration parameter
+/// </summary>
+/// <param name="value">the number of the enum type</param>
+/// <returns>the lib matching the value of the enum type</returns>
 const char* enum_to_string(ENUM_TYPE value)
 {
     switch (value)

@@ -307,7 +307,7 @@ int quick_sort_column_string(COLUMN* column, int left, int right, int sort_dir)
     }
 }
 
-// STRUCTURE
+// STRUCTURE: TODO
 
 #pragma endregion Tri QuickSort
 
@@ -500,10 +500,16 @@ int sort_column_after_insertion_string(COLUMN* col, int sort_dir)
     return 0;
 }
 
-// STRUCTURE
+// STRUCTURE (TODO...)
 
 #pragma endregion Tri insertion
 
+/// <summary>
+/// main function called each time a sort must be done
+/// </summary>
+/// <param name="col">column on which the sort will be done</param>
+/// <param name="sort_dir">sort direction: 0 = smaller to bigger value - 1 = bigger to smaller value</param>
+/// <returns></returns>
 int sort_column(COLUMN* col, int sort_dir)
 {
 #pragma region Memo sur les tris
