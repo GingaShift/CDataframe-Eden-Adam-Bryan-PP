@@ -380,17 +380,19 @@ int convert_value(COLUMN* col, unsigned long long int num_ligne, char* str, int 
 
     if (str == NULL)
     {
-        printf("\nla string de destination passee en parametre n'existe pas, operation de conversion impossible\n");
+        printf("\n la string de destination passee en parametre n'existe pas, operation de conversion impossible\n");
         return 0;
     }
 
-    if (num_ligne >= col->size)
+    // Old: if (num_ligne >= col->size)
+    if (num_ligne >= col->max_size)
     {
         printf("\nLe numero de cellule est invalide car il ne contient pas de donnee, operation de conversion impossible\n");
         return 0;
     }
 
-    if (col->data[num_ligne] == NULL)
+    // Old: if (col->data[num_ligne] == NULL)
+    if (col->data[col->index[num_ligne]] == NULL)
     {
         snprintf(str, size, "%s", "NULL");
         return 1;

@@ -3,71 +3,79 @@
 #include <string.h>
 #include "CDataframe.h"
 
-// Fonction destinée à sauvegarder les types de chaque colonne dans un fichier CSV
-int sauvegarder_types_colonnes_dans_fichier(DATAFRAME2* dataframe, const char* filename, char* separateur)
-{
-    FILE* fichier = fopen(filename, "w");
-    if (fichier == NULL) {
-        printf("Erreur lors de l'ouverture du fichier.\n");
-        return;
-    }
-
-    // Parcourir chaque colonne du DataFrame
-    for (int i = 0; i < dataframe->size; i++) {
-        
-        // Écrire le type de la colonne dans le fichier CSV
-        fprintf(fichier, "%d", dataframe->columns[i]->column_type);
-
-        // Si ce n'est pas la dernière colonne, ajouter une virgule
-        if (i < dataframe->size - 1) {
-            fprintf(fichier, separateur);
-        }
-    }
-
-    fclose(fichier);
-}
-
 // Fonction servant à sauvegarder un DataFrame dans un fichier CSV
-int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char* separateur)
+int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char separator)
 {
-    FILE* file = fopen(filename, "w"); // Ouvre le fichier en mode écriture
+    if (!dataframe_has_data(dataframe))
+        return 0;
 
-    if (file == NULL) {
-        fprintf(stderr, "Erreur lors de l'ouverture du fichier %s\n", filename);
-        return;
+    if (separator == NULL)
+        separator = ',';
+
+    // Ouvre le fichier en mode écriture
+    FILE* file = fopen(filename, "w");
+
+    if (file == NULL)
+    {
+        fprintf("\n Erreur lors de l'ouverture du fichier %s\n", filename);
+        return 0;
     }
+
+    // Écrire le type de la colonne dans le fichier CSV
+    fprintf(file, "%s", dataframe->title);
+
+    fprintf(file, "\n");
 
     // Sauvegarder le type des colonnes du dataframe
-    sauvegarder_types_colonnes_dans_fichier(dataframe, filename, separateur);
+    for (int i = 0; i < dataframe->size; i++) {
 
-    char cur_data[TAILLE_MAX_DATA_STRING];
+        // Écrire le type de la colonne dans le fichier CSV
+        fprintf(file, "%d", dataframe->columns[i]->column_type);
 
-    int nombre_lignes = dataframe->columns[0]->max_size;
-
-    // Écrit les données du DataFrame dans le fichier CSV
-    for (int i = 0; i < dataframe->size; i++)
-    {
-        for (int j = 0; j < nombre_lignes; j++)
-        {
-            // Parcourir l'ensemble des lignes du dataframe, et stocker chaque donnée trouvée dans chaque col composant cette ligne, au fur et à mesure
-            // convert_value(dataframe->columns[col_courante], ligne_courante, str, sizeof(str));
-            convert_value(dataframe->columns[j], j, cur_data, sizeof(cur_data));
-            fprintf(file, "%s", cur_data);
-            
-            // Tant que la derniere col n'est pas atteinte, ajouter un séparateur
-            if (j < dataframe->size - 1)
-                fprintf(file, separateur);
-        }
-        fprintf(file, "\n");
+        // Si ce n'est pas la dernière colonne, ajouter une virgule
+        if (i < dataframe->size - 1)
+            fprintf(file, "%c", separator);
+        else
+            fprintf(file, "\n");
     }
 
-    fclose(file); // Ferme le fichier
+    char cur_data[TAILLE_MAX_DATA_STRING];
+    int nombre_col = dataframe->size - 1;
+    int nombre_lignes = dataframe->columns[0]->max_size-1;
+
+    // Écrit les données du DataFrame dans le fichier CSV, ligne par ligne
+    for (int cur_ligne = 0; cur_ligne <= nombre_lignes; cur_ligne++)
+    {
+        for (int cur_col = 0; cur_col <= nombre_col; cur_col++)
+        {
+            // Si la colonne contient des données pour cette ligne, les afficher
+            if (cur_ligne <= dataframe->columns[cur_col]->size - 1 && dataframe->columns[cur_col]->size > 0)
+            {
+                convert_value(dataframe->columns[cur_col], cur_ligne, cur_data, sizeof(cur_data));
+                fprintf(file, "%s", cur_data);
+            }
+            else
+                fprintf(file, "%s", "NULL");
+            
+            cur_data[0] = '\0';
+
+            // Tant que la derniere col n'est pas atteinte, ajouter un séparateur
+            if (cur_col < nombre_col)
+                fprintf(file, "%c", separator);
+            else
+                // fin de la ligne, inserer un saut de ligne
+                fprintf(file, "\n");
+        }
+    }
+    // Ferme le fichier
+    fclose(file);
+
+    return 1;
 }
 
 // Fonction pour charger un DataFrame à partir d'un fichier CSV avec un séparateur spécifié
 DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* filename, char separator)
 {
-
     FILE* file = fopen(filename, "r"); // Ouvre le fichier en mode lecture
 
     if (file == NULL) {
@@ -75,61 +83,51 @@ DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* fil
         return NULL;
     }
 
-    // Compte le nombre de lignes et de colonnes dans le fichier CSV
-    int rows = 0;
-    int cols = 0;
-    char buffer[1024];
-    while (fgets(buffer, sizeof(buffer), file) != NULL)
+    DATAFRAME2* dataframe;
+
+    char line[TAILLE_MAX_DATA_STRING];
+    int line_count = 0;
+
+    while (fgets(line, sizeof(line), file))
     {
-        rows++;
-        char* token = strtok(buffer, &separator);
-        int col_count = 0;
-        while (token != NULL)
+        char* token;
+        if (line_count == 0)
         {
-            col_count++;
-            token = strtok(NULL, &separator);
+            // Lire les types de colonnes depuis la première ligne
+            token = strtok(line, &separator);
+            dataframe = create_cdataframe(token);
+            if (dataframe == NULL)
+            {
+                printf("\n Erreur lors du chargement du CDataframe depuis le fichier csv \"%s\"", filename);
+                printf("\n Le CDataframe n'a pas pu etre cree");
+            }
         }
-        if (cols == 0) {
-            cols = col_count;
+        if (line_count == 1)
+        {
+            // Lire les types de colonnes depuis la première ligne
+            token = strtok(line, &separator);
+            int col_index = 0;
+            while (token != NULL)
+            {
+                ENUM_TYPE column_type = (ENUM_TYPE)atoi(token);
+                COLUMN* column = create_column(column_type, "1");
+                dataframe->columns[col_index++] = column;
+                token = strtok(NULL, &separator);
+            }
+            dataframe->size = col_index;
         }
-        else if (cols != col_count) {
-            fprintf(stderr, "Erreur : Les lignes du fichier CSV n'ont pas le même nombre de colonnes\n");
-            fclose(file);
-            return NULL;
+        else {
+            // Lire les valeurs de données
+            int col_index = 0;
+            token = strtok(line, &separator);
+            while (token != NULL) {
+                insert_value_with_memory_management_of_tabs_data_of_columns (dataframe, line_count, token);
+                token = strtok(NULL, &separator);
+            }
         }
+        line_count++;
     }
 
-    // Réinitialise la position du curseur de fichier au début
-    fseek(file, 0, SEEK_SET);
-
-    // Alloue de la mémoire pour le DataFrame
-    DATAFRAME2* dataframe = create_cdataframe(dataframe_title);
-    
-    dataframe->size = rows;
-    /*dataframe->cols = cols;
-    dataframe->data = (char**)malloc(rows * cols * sizeof(char*));
-    if (dataframe->data == NULL) {
-        printf("\nErreur lors de l'allocation de mémoire pour le DataFrame\n");
-        fclose(file);
-        free(dataframe);
-        return NULL;
-    }*/
-
-    // Lit les données du fichier CSV et les stocke dans le DataFrame
-    int row = 0;
-    while (fgets(buffer, sizeof(buffer), file) != NULL)
-    {
-        int col = 0;
-        char* token = strtok(buffer, &separator);
-        while (token != NULL) {
-            dataframe->columns[col] = strdup(token);
-            col++;
-            token = strtok(NULL, &separator);
-        }
-        row++;
-    }
-
-    fclose(file); // Ferme le fichier
-
-    return dataframe;
+    fclose(file);
+    return 1;
 }

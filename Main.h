@@ -33,9 +33,9 @@ int cmd_ajouter_une_ligne_au_cdataframe(DATAFRAME2* dataframe);
 
 int cmd_remplissage_automatique_du_cdataframe(DATAFRAME2* dataframe);
 
-int cmd_sauvegarder_cdataframe_dans_fichier(DATAFRAME2* dataframe);
+int cmd_sauvegarder_cdataframe_dans_fichier(DATAFRAME2* dataframe, char nom_fichier_csv, const char separateur);
 
-int cmd_charger_cdataframe_depuis_fichier(DATAFRAME2* dataframe);
+int cmd_charger_cdataframe_depuis_fichier(DATAFRAME2* dataframe, char nom_fichier_csv, const char separateur);
 
 #pragma endregion menu_management_sub_menu_1
 

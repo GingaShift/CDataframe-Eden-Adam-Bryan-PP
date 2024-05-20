@@ -587,7 +587,7 @@ int delete_column(DATAFRAME2* dataframe, int num_col)
     // Libère la mémoire allouée pour chaque donnée de la colonne
     if (dataframe->columns[num_col]->data != NULL)
     {
-        for (unsigned int i = 0; i < dataframe->columns[num_col]->size; i++)
+        for (int i = 0; i < dataframe->columns[num_col]->size; i++)
         {
             free(dataframe->columns[num_col]->data[i]);
             dataframe->columns[num_col]->data[i] = NULL;
@@ -835,10 +835,7 @@ int show_cdataframe(DATAFRAME2* dataframe, int num_col_max_to_show, int num_lign
     // Traiter toutes les lignes de toutes les colonnes du dataframe en respectant d'eventuelles limites spécifiées
     for (int ligne_courante = 0; ligne_courante <= num_ligne_max_to_show; ligne_courante++)
     {
-        if (ligne_courante == 0)
-           printf("\n");
-        else
-            printf("\n\n");
+        printf("\n\n");
 
         // Parcourir toues les cols de cette ligne et afficher les données au fur et à mesure
         for (int col_courante = 0; col_courante < num_col_max_to_show; col_courante++)
@@ -1110,7 +1107,7 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
     {
     case UINT:
         unsigned int uint_value = 0;
-        printf("\n Saisissez une valeur entière non signée (UINT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n\n Saisissez une valeur entiere non signee (UINT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
         ret = scanf("%u", &uint_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
@@ -1123,7 +1120,7 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
         break;
     case INT:
         signed int int_value = 0;
-        printf("\n Saisissez une valeur entiere (INT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n\n Saisissez une valeur entiere (INT) a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
         ret = scanf("%d", &int_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
@@ -1136,7 +1133,9 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
         break;
     case CHAR:
         char char_value = '\0';
-        printf("\n Saisissez un caractere CHAR a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n\n Saisissez un caractere CHAR a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        // Indispensable
+        vider_tampon();
         ret = scanf("%c", &char_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
@@ -1149,7 +1148,7 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
         break;
     case FLOAT:
         float float_value = 0.0f;
-        printf("\n Saisissez une valeur FLOAT a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n\n Saisissez une valeur FLOAT a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
         ret = scanf("%f", &float_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
@@ -1162,7 +1161,7 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
         break;
     case DOUBLE:
         double double_value = 0.0;
-        printf("\n Saisissez une valeur DOUBLE a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        printf("\n\n Saisissez une valeur DOUBLE a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
         ret = scanf("%lf", &double_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
@@ -1174,12 +1173,13 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
                 printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
         break;
     case STRING:
-        char* string_value = "";
-        printf("\n Saisissez une chaine de caracteres a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
-        ret = scanf("%s", &string_value);
+        //char string_value; //(char*)malloc(TAILLE_MAX_DATA_STRING * sizeof(char));
+        char string_value[TAILLE_MAX_DATA_STRING];
+        printf("\n\n Saisissez une chaine de caracteres a ajouter dans la colonne %s : ", dataframe->columns[num_col]->title);
+        ret = scanf("%255s", string_value);
 
         // Verifier que la valeur entrée corresponde bien au type de la col considérée
-        if (check_if_valid_value(&string_value, col_type))
+        if (check_if_valid_value(string_value, col_type))
             // Tenter d'ajouter la valeur à la colonne
             if (insert_value_with_memory_management_of_tabs_data_of_columns(dataframe, num_col, &string_value))
                 success = 1;
@@ -1187,6 +1187,11 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
                 printf("\n Ajout impossible: La valeur saisie n'est pas valide en tant que \"%s\"", enum_to_string(col_type));
         break;
     case STRUCTURE:
+        printf("\n\n L'ajout d'une donnee de type \"STRUCTURE\" sera bientot pris en charge...");
+        vider_tampon();
+        getchar();
+        return 1;
+
         void* pstructure;
         //printf("Saisissez des caractère pour la colonne %s : ", col->title);
         //scanf(" %c", &(svalue));
@@ -1208,13 +1213,13 @@ int add_data_manually_in_column(DATAFRAME2* dataframe, int num_col)
 
     if (success == 1)
     {
-        printf("\n La valeur a ete ajoutee a la colonne \"%s\"", dataframe->columns[num_col]->title);
+        printf("\n\n La valeur a ete ajoutee a la colonne \"%s\"", dataframe->columns[num_col]->title);
         success = 0;
         return 1;
     }
     else
     {
-        printf("\n Un probleme a ete rencontre lors de la tentative d'ajout de la valeur");
+        printf("\n\n Un probleme a ete rencontre lors de la tentative d'ajout de la valeur");
         return 0;
     }
 }
@@ -1227,11 +1232,13 @@ int add_a_row_manually(DATAFRAME2* dataframe)
         return -1;
     }
 
+    int ret = 0;
+
     if (dataframe->size == 0)
     {
         printf("\n Le CDataframe \"%s\" ne contient aucune colonne\n", dataframe->title);
         printf("\n Appuyez sur une touche puis sur \"Entree\"  pour continuer\n");
-        int ret = getchar();
+        ret = getchar();
         return -1;
     }
 
@@ -1241,6 +1248,14 @@ int add_a_row_manually(DATAFRAME2* dataframe)
     {
         add_data_manually_in_column(dataframe, i);
     }
+
+    char choix[2];
+
+    printf("\n\n Voulez-vous voir le resultat global (avec toutes les autres colonnes) dans le CDataframe \"%s\" (o/n) ? \n\n", dataframe->title);
+    ret = scanf("%1s", &choix);
+
+    if (strcmp(choix, "o") == 0)
+        ret = show_cdataframe(dataframe, NO_LIMIT, dataframe->columns[0]->size);
 }
 
 int delete_row(DATAFRAME2* dataframe, int index_ligne)
