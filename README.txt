@@ -51,6 +51,8 @@
 
    6) Lancer le projet en appuyant sur la touche F5
 
+   7) Pour ouvrir de nouveau le projet, cliquer sur le fichier "CDataframe.sln"
+
 
 - Reglages à effectuer impérativement pour pouvoir tester le code sous Visual Studio 2022:
 
