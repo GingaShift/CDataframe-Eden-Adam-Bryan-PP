@@ -12,6 +12,10 @@
    https://github.com/eden2807/CDataframe-Eden-Adam-Bryan-PP
 
 
+- IMPORTANT: LE PROGRAMME EXECUTABLE SE TROUVE UN DES SOUS-DOSSIERS DES SOURCES "\x64\Release\":
+  Exemple: C:\CDataframe\x64\Release\CDataframe.exe
+
+
 - Fonctionnalités principales de l'application :
 
    - Création d'un CDataframe
@@ -33,6 +37,9 @@
    - Recherche une valeur dans le CDataframe
 
    - Obtenir des statistiques sur une valeur particulière (Nombre d'occurrences...)
+
+   - Sauvegarde du CDataframe dans un fichier nommé "save_dataframe.csv".
+     Ce fichier est sauvegardé dans le chemin ou est situé le programme / le source
    
    
 

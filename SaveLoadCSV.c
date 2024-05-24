@@ -27,7 +27,7 @@ int save_dataframe_to_csv(DATAFRAME2* dataframe, const char* filename, char sepa
         return 0;
     }
 
-    // Écrire le type de la colonne dans le fichier CSV
+    // Écrire le nom du dataframe dans le fichier CSV
     fprintf(file, "%s", dataframe->title);
 
     fprintf(file, "\n");

@@ -75,7 +75,7 @@ int res = 0;
 
 int major_version = 1;
 int minor_version = 0;
-int rev_version = 1;
+int rev_version = 2;
 
 // Declaration du CDataframe
 DATAFRAME2* CDataframe2;
@@ -719,14 +719,14 @@ int cmd_afficher_contenu_de_colonne(DATAFRAME2* dataframe)
     }
 
     // Check if cols exist
-    int nombre_col_total = dataframe->size;
+    int nombre_col_total = dataframe->size - 1;
     int num_col_to_show = 0;
     int val_correcte = 0;
 
     // Ask user to input col num:
     do {
         printf("\n Le CDataframe \"%s\" contient %d colonne(s) au total", dataframe->title, nombre_col_total);
-        printf("\n Elles sont numerote de 0 à %d\n", nombre_col_total);
+        printf("\n Elles sont numerote de 0 a %d\n", nombre_col_total);
         printf("\n Entrez le numero de la colonne a afficher :\n");
 
         scanf("%d", &num_col_to_show);
