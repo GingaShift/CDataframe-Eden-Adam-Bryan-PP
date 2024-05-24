@@ -140,3 +140,18 @@
             
                 Exellente découverte à vous !
 
+Edit: Un petit bug d'affichage s'est glissé lorsqu'on lance la commande suivante:
+"12. Ajouter une colonne au CDataframe"
+ainsi que la commande
+"41 - Nombre de cellules contenant une valeur egale a "x""
+
+L'ecran affiche les choix suivants:
+UINT = 1, INT = 2, CHAR = 3, FLOAT = 5, DOUBLE = 6, STRING = 7, STRUCTURE = 8)")
+
+Il y a donc une erreur entre CHAR = 3 et FLOAT = 5
+Pour la creation d'une col de type FLOAT, il faut donc taper la valeur 4, et non 5
+Pour la creation d'une col de type DOUBLE, il faut donc taper la valeur 5, et non 6
+Pour la creation d'une col de type STRING, il faut donc taper la valeur 6, et non 7
+
+Le bug a été corrigé dans la version 1.0.1:
+UINT = 1, INT = 2, CHAR = 3, FLOAT = 4, DOUBLE = 5, STRING = 6, STRUCTURE = 7)

@@ -75,7 +75,7 @@ int res = 0;
 
 int major_version = 1;
 int minor_version = 0;
-int rev_version = 0;
+int rev_version = 1;
 
 // Declaration du CDataframe
 DATAFRAME2* CDataframe2;
@@ -304,7 +304,7 @@ int cmd_ajouter_colonne_au_cdataframe(DATAFRAME2* dataframe)
     
     // Ask user to input col type
     printf("\n Veuillez choisir le type de la colonne a ajouter :\n");
-    printf("\n (UINT = 1, INT = 2, CHAR = 3, FLOAT = 5, DOUBLE = 6, STRING = 7, STRUCTURE = 8)");
+    printf("\n (UINT = 1, INT = 2, CHAR = 3, FLOAT = 4, DOUBLE = 5, STRING = 6, STRUCTURE = 7)");
     printf("\n\n (Si vous souhaitez annuler l'operation d'ajout de colonne, entrez la valeur \"-1\")\n");
     printf("\n\n A vous de jouer maintenant : ");
     vider_tampon();
@@ -1671,7 +1671,7 @@ int cmd_quitter_programme()
 
 void test()
 {
-    // UINT = 1, INT = 2, CHAR = 3, FLOAT = 5, DOUBLE = 6, STRING = 7, STRUCTURE = 8
+    // UINT = 1, INT = 2, CHAR = 3, FLOAT = 4, DOUBLE = 5, STRING = 6, STRUCTURE = 7
     
     /////////////////////////////////////////////////////////////////////////////////////////
     // Tri de la colonne INT par tri
@@ -1752,7 +1752,7 @@ int rechercher_nombre_occurrences_dans_cdataframe(DATAFRAME2* dataframe, OPERATE
 
     // Demander le type de valeur à rechercher
     printf("\n Veuillez choisir le type de valeur a rechercher :\n");
-    printf("\n (UINT = 1, INT = 2, CHAR = 3, FLOAT = 5, DOUBLE = 6, STRING = 7, STRUCTURE = 8)");
+    printf("\n (UINT = 1, INT = 2, CHAR = 3, FLOAT = 4, DOUBLE = 5, STRING = 6, STRUCTURE = 7)");
     printf("\n\n (Si vous souhaitez annuler l'operation de recherche statistique entrez la valeur \"-1\")\n");
     vider_tampon();
     ret = scanf("%d", &value_type);

@@ -96,7 +96,7 @@ DATAFRAME2* load_dataframe_from_csv(const char* dataframe_title, const char* fil
         return NULL;
     }
 
-    DATAFRAME2* dataframe;
+    DATAFRAME2* dataframe = NULL;
 
     char line[TAILLE_MAX_DATA_STRING];
     int line_count = 0;

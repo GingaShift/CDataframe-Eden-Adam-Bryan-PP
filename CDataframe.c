@@ -1130,7 +1130,7 @@ int change_value(DATAFRAME2* dataframe, int num_col, int num_row, void* value)
     case STRUCTURE:
     {
         // Taille de la structure
-        size_t struct_size;
+        size_t struct_size = NULL;
         dataframe->columns[num_col]->data[num_row] = malloc(struct_size);
         if (dataframe->columns[num_col]->data[num_row] == NULL) {
             printf("\n Erreur d'allocation mémoire pour la cellule de type STRUCTURE du tableau de données\n");
