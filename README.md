@@ -1,104 +1,125 @@
 <h1 align="center">📊 CDataframe</h1>
-<p align="center"><i>Un mini-tableur C à la sauce DataFrame — puissance, structure et fun en C pur !</i></p>
+<p align="center"><i>A mini DataFrame system in pure C — low-level performance meets data science</i></p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Language-C-blue?logo=c&logoColor=white" alt="C">
-  <img src="https://img.shields.io/badge/Platform-Windows-lightgrey?logo=windows&logoColor=white" alt="Windows">
-  <img src="https://img.shields.io/badge/Project-Etudiant-purple" alt="Projet étudiant">
-  <img src="https://img.shields.io/badge/Version-1.0.1-success" alt="Version">
+  <img src="https://img.shields.io/badge/Language:-C-00599C?style=flat-square&logo=c&logoColor=white" />
+  <img src="https://img.shields.io/badge/Platform:-Windows-0078D6?style=flat-square&logo=windows&logoColor=white" />
+  <img src="https://img.shields.io/badge/Research-Driven-8E2DE2?style=flat-square&logo=googlescholar&logoColor=white" />
+  <img src="https://img.shields.io/badge/Version-1.0.1-27AE60?style=flat-square&logo=semantic-release&logoColor=white" />
 </p>
 
----
-
-## 👥 Équipe projet
-
-- 👤 Eden Elfassy  
-- 👤 Bryan Tewouda  
-- 👤 Adam Assayag  
 
 ---
 
-## 🔗 Dépôt GitHub
+## 👥 Project Team
 
-📎 [Accéder au dépôt](https://github.com/eden2807/CDataframe-Eden-Adam-Bryan-PP)
+- 👤 **Eden Elfassy**  
+- 👤 **Bryan Tewouda**  
+- 👤 **Adam Assayag**
 
-📂 **Exécutable Windows** disponible ici :  
+---
+
+## 🔗 Repository
+
+📎 [👉 Access the GitHub Repository](https://github.com/GingaShift/CDataframe-Eden-Adam-Bryan-PP)  
+
+📂 **Windows executable available at**:  
 `/x64/Release/CDataframe.exe`
 
 ---
 
-## 🚀 Fonctionnalités principales
+## 🚀 Key Features
 
-> ⚙️ Manipulez des données structurées comme dans un DataFrame Python… mais en C !
+> ⚙️ Manipulate structured data like a Python DataFrame… but in pure C!
 
-✅ Création d’un CDataframe  
-✅ Ajout/suppression de colonnes  
-✅ Insertion de valeurs dans des cellules  
-✅ Affichage partiel ou complet du tableau  
-✅ Recherche de valeurs, renommage de colonnes, tri par colonnes  
-✅ Génération de statistiques sur les valeurs (nombre d’occurrences, etc.)  
-✅ Sauvegarde au format `.csv`
+✅ Create a CDataframe  
+✅ Add/remove columns  
+✅ Insert values into cells  
+✅ Display partial or complete tables  
+✅ Search values, rename columns, sort by column  
+✅ Generate statistics on values (occurrences, frequency, etc.)  
+✅ Save results as `.csv`  
 
-🆕 Version 2.0 (en cours) avec **fonctions anglicisées** et **structuration modulaire** (`#pragma region` pour séparer les versions).
+🆕 **Version 2.0 (in progress)** with:  
+- Functions fully written in English  
+- Modular structuring with `#pragma region`  
 
 ---
 
 ## 🛠️ Installation (Windows + Visual Studio 2022)
 
-1. 📥 Installer [Visual Studio 2022 Community](https://visualstudio.microsoft.com/fr/vs/community/)  
-   ➕ Inclure **la charge de travail C++**
+1. 📥 Install [Visual Studio 2022 Community](https://visualstudio.microsoft.com/vs/community/)  
+   ➕ Include the **C++ workload**
 
-2. 🧲 Cloner le dépôt :  
-   Menu **"Cloner un dépôt"** → URL :  
+2. 🧲 Clone the repository:  
+   `Git > Clone Repository` → paste repo URL  
 
-3. 📁 Choisir un dossier local et **cloner**
+3. 📁 Select a local folder and **clone**
 
-4. ▶️ Appuyer sur **F5** pour exécuter le projet
+4. ▶️ Press **F5** to run the project  
 
-5. 📂 Pour rouvrir le projet : double-cliquer sur `CDataframe.sln`
-
----
-
-## ⚠️ Réglages importants sous Visual Studio
-
-### ✅ Corriger `scanf_s` :
-1. Clic droit sur le projet → **Propriétés**  
-2. Aller dans : `C/C++ > General > SDL checks` → **No (/GS-)**
-
-### ✅ Corriger l’erreur `E1072` :
-1. Aller dans : `C/C++ > Langage > Norme du langage C`  
-2. Choisir : `Norme ISO C17 (/std:c17)` ✅  
-_(La norme C11 fonctionne aussi)_
+5. 📂 To reopen the project: double-click `CDataframe.sln`
 
 ---
 
-## 🧪 Démo express
+## ⚙️ Important Visual Studio Settings
 
-🎬 **Tester rapidement en 3 étapes :**
+### ✅ Fixing `scanf_s`:
+1. Right-click project → **Properties**  
+2. Navigate: `C/C++ > General > SDL checks` → **No (/GS-)**
 
-1. Lancer le programme → Menu d'accueil
-2. Taper `11` → Créer un CDataframe vide (donner un nom)
-3. Taper `15` → Remplissage automatique avec colonnes et données
-
-🎯 Ensuite :
-- `21` → Afficher tout le Dataframe  
-- `22` → Afficher les 10 premières lignes (`-1` colonnes, `10` lignes)  
-- 🔍 Testez les options : trier, chercher, ajouter une colonne, renommer, sauvegarder…
-
-❌ **Ne surtout pas lancer la commande `38`…**  
-Vous êtes prévenus. 😈
+### ✅ Fixing `E1072` error:
+1. Navigate: `C/C++ > Language > C Language Standard`  
+2. Choose: `ISO C17 (/std:c17)` ✅  
+_(C11 is also compatible)_
 
 ---
 
-## 💡 À propos du code
+## 🧪 Quick Demo
 
-🔀 Les versions sont séparées :
+🎬 **3-step test run**:  
+1. Launch program → Home menu  
+2. Type `11` → Create an empty CDataframe (name it)  
+3. Type `15` → Auto-fill with columns & sample data  
+
+🎯 Examples:  
+- `21` → Show entire Dataframe  
+- `22` → Show first 10 rows (`-1` columns, `10` rows)  
+- 🔍 Try options: sort, search, add column, rename, save  
+
+⚠️ **Do not run command `38`...**  
+You’ve been warned 😈  
+
+---
+
+## 🖼️ Screenshots
+
+<p align="center">
+  <!-- Screenshot 1 -->
+ <img width="800" height="656" alt="image" src="https://github.com/user-attachments/assets/c5989685-32dd-4201-9412-b76235bf39a8" />
+  <br><em>🔹 Main program interface</em>
+</p>
+
+<p align="center">
+  <!-- Screenshot 2 -->
+
+  <img width="684" height="272" alt="image" src="https://github.com/user-attachments/assets/55e07e5f-e607-4172-a3ee-c32f2065b74a" />
+  <br><em>🔹 Example: inserting and displaying tabular data</em>
+</p>
+
+
+
+---
+
+## 💡 About the Code
+
+The project is modularized in versions:  
 
 ```c
 #pragma region CDataframe 1
-// Fonctions version chap. 1 (français)
+// Functions v1 (French)
 #pragma endregion
 
 #pragma region CDataframe 2
-// Fonctions version chap. 2+ (anglicisées)
+// Functions v2+ (English + modular)
 #pragma endregion
